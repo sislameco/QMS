@@ -27,6 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compose", "Compose", "{6C8F
 		WebApi\infra.yml = WebApi\infra.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{4F29507D-24CF-45DE-A6B3-70C2F465328B}"
+	ProjectSection(SolutionItems) = preProject
+		HelpDeskDocumentDetail_v1.txt = HelpDeskDocumentDetail_v1.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +64,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6C8FCEE7-907A-43A7-A8EE-A9F9A789DE76} = {D1B53E7E-51FF-43EA-82E3-1403FFD87CE0}
+		{4F29507D-24CF-45DE-A6B3-70C2F465328B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {78805DA2-43DD-4FB5-B4D2-0C655A6AB86D}

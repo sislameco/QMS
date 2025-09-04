@@ -1,0 +1,843 @@
+
+
+
+Contents
+Overview	2
+Scope	2
+Out of Scope	3
+QMS admin panel	3
+User Management	3
+Helpdesk (Ticket Centre)	4
+Kanban View	4
+Table View	4
+Create ticket	5
+View & Edit Ticket	5
+Customer Complaints	7
+Kanban View	7
+Table View	7
+Create Customer Complaint	8
+Customer Complaint fields	9
+CAPA	10
+Kanban View	11
+Table View	11
+CAPA fields	11
+QMS Company Setup	13
+Company Setup	13
+Ticket Type Setup	13
+Customer Complaint Setup	15
+CAPA Setup	16
+Root Cause Setup	17
+Resolution Setup	17
+Company Defined Fields	17
+Qsmart QMS integration	19
+Qsmart Frontend	19
+Create ticket	19
+My Tickets (user ticket centre)	19
+Qsmart Admin (Backoffice)	20
+Quality Menu	20
+Department Menu	21
+SLA’s	22
+Notification’s	22
+
+Overview
+We need to development a quality management system (QMS) that is a standalone platform that is a SAAS and plugged in to our different companies. 
+Each of our companies has its own ERP and will need bespoke integration.
+The quality management system will consist of the following: 
+- Helpdesk. User support via tickets submitted on ERP frontend that are sent to the ticket centre and department ticket list in ERP back office.
+- Customer Complaints. Able to create customer complaint items and these are listed within quality and customer care dashboard in ERP back office.
+- CAPA. Located in quality dashboard in ERP back office, Quality manager can create CAPA items or frontend users can create support tickets for CAPA and also existing tickets can be escalated to CAPA.
+- Risk Register. Located in quality menu in ERP back office. Quality manager can create risk items and link to helpdesk tickets, customer complaints, CAPA items or Goals
+- Goals: Located in quality menu in ERP back office. Quality manager can create Goal items and link to helpdesk tickets, customer complaints, CAPA items or Risk items. Goals are also mapped to departments.
+
+
+Scope
+Scope for this development is to develop a standalone QMS and connect the Churchfield ERP called Qsmart to it. The scope is
+* QMS Admin panel
+o Helpdesk (Ticket Centre) 
+* Qsmart connection for creating tickets and viewing ticket centre
+o Customer Complaints
+* Qsmart connection for creating customer complaints and viewing Customer complaints register
+o CAPA. 
+* Qsmart connection for creating customer complaints and viewing Customer complaints register
+* Qsmart QMS integration
+o Qsmart Frontend
+o Qsmart Admin
+* SLA’s
+* Notifications
+
+
+
+
+Out of Scope
+* Risk Register (to be added in next development milestone)
+* Goals (to be added in next development milestone)
+* Connection to Materials direct ERP and Smart lotto ERP 
+* Qsmart customer dashboard QMS integration
+
+QMS admin panel
+As QMS is standalone it will need an admin panel
+* User management
+o Create users
+o Grant permissions
+* Helpdesk (Ticket Centre)
+o List of all tickets created from all companies
+* Customer Complaints
+o List of all customer complaints created from all companies
+* CAPA
+o List of all CAPA created from all companies
+* Setup for each company is managed
+o Ticket types
+* SLA
+* Notifications
+o Customer Complaints
+* SLA
+* Notifications
+o CAPA
+* SLA
+* Notifications
+
+
+User Management
+Need to be able to create users and manage their access within QMS admin panel
+* User list, CRUD functionality
+* Able to enable\ disable permissions per user
+* Super Admin Role
+o A new role that overrides company-level scoping.
+o Super Admin has access to all companies, tickets, complaints, CAPA, and company setups across QMS and Qsmart.
+o Super Admin also sees all department menus in Qsmart backoffice, without restriction.
+o When IsSuperAdmin = true, company-based permissions are ignored.
+o On initial system setup, one Super Admin user must be created automatically through seed data.
+
+* Permissions enabled 
+o per company so these tickets are listed
+o per left side menu
+* Ticket centre
+* Company complaints
+* CAPA
+* Company settings
+
+
+Helpdesk (Ticket Centre)
+All tickets for all companies are listed. 
+* Two views for the list
+o Kanban (column for each status)
+o Table (list of all tickets)
+* Able to search on the list by subject or department or assigned user and list filters
+* Able to filter by Company,  ticket type, assigned user, priority, status
+* Able to create a new ticket
+* Able to update and edit a ticket
+* Able to export filtered list to excel
+
+
+Kanban View
+* Column for each status, same statuses for all ticket types (Open, In Progress, Resolved, Closed)
+* Card for each ticket
+o Card lists subject ticket type, priority, departments and assigned user
+* In kanban view able to drag and drop tickets to different statuses
+* Tickets where SLA’s are due are highlighted (colour or icon)
+* Tickets where SLA’s are overdue are highlighted (colour or icon)
+
+
+Table View
+All tickets listed in a table view. Column for 
+* Ticket number (clickable and opens to view item)
+* Created date and timestamp
+* Company
+* Ticket Type
+* Subject
+* Priority
+* Submitted By
+* Status
+* Assigned To
+* Due date
+* Departments
+* Tickets where SLA’s are due are highlighted (colour or icon)
+* Tickets where SLA’s are overdue are highlighted (colour or icon)
+
+Create ticket
+When creating a ticket the user will see the following 4 screens
+Screen 1: Company and Subject and project
+* Select company for ticket (only Churchfield will be listed for this scope of development but in future other companies will be listed)
+* Subject
+Screen 2: Type of ticket and Project
+* Type of issue
+o Defined list within QMS admin panel
+* Is the issue related to a project or customer? (Yes/No) (question is only displayed for Churchfield tickets)
+o If yes show a project search that user can search by project address or customer name and select the project \ customer
+Screen 3: Sub-form for Type of ticket
+Depending on the ticket type selected the sub-form for the ticket type is then listed
+
+Screen 4: Departments and attachments
+* Departments
+o As per company selected. Defined multi-select list
+* Attachments
+o Able to upload any file as an attachment
+
+Once submitted the ticket will be listed within the ticket centre.
+
+View & Edit Ticket
+When ticket is selected (ticket card in kanban view or ticket# in table view) ticket opens and the details are displayed. The following fields are listed:
+* Ticket number
+o System generated
+o Prefix as per prefix set for company of ticket
+o Un-editable
+* Company
+o As per company of ticket
+o Un-editable
+* Subject
+o Single line text field
+o Editable
+* Description
+o Test area
+o Editable
+* Submitted by
+o First and last name of user who submitted ticket
+o Un-editable
+* Created date and timestamp
+o Un-editable
+* Ticket type
+o Un-editable
+* Company specific fields	
+o Project
+o Assigned user
+* List of qsmart users
+o Departments
+* Defined list of departments for qsmart
+o Root cause
+* Single select list as set in QMS admin for company
+o Resolution
+* Single select list as set in QMS admin for company
+* Status
+o Single select list
+o Open, In-Progress, Resolved, Closed
+o Editable
+* Priority
+o Single select list
+o P1 -Highest, P2-High, P3-Medium, P4-Low
+o Editable
+* Assigned To
+o Dependant on the company of the ticket
+o For scope of this development only company is Churchfield. List will be all qsmart users
+o Single select list of users
+o Selected user will see the ticket within their ticket centre 
+* Attachments
+o Able to add and remove attachments
+* Linked items
+o Able to link other tickets, CAPA and customer complaints for the same company
+* Comments
+o Able to add a comment
+o Able to tag a user in a comment
+o Update notification is sent once a comment is added
+* Audit log
+o Date and timestamp of each update to the ticket and user who did the update.
+* Watch list
+o Multi-select list of all users (as per company user list)
+o Users receive all notifications for the ticket
+* Ticket type sub-form fields
+o Editable
+o Defined per ticket type per company
+* Estimated Time
+o Time field, values entered post fixed with w for weeks, D for days, h for hours
+* Due Date
+o Calculated = SLA for priority of ticket type
+* Resolved Time
+o Time field. Calculated =  date and time ticket was placed in resolved status  –created date and time. 
+
+
+Customer Complaints
+All Customer complaints for all companies are listed.
+* Same as ticket centre with two list views (Kanban and table view)
+* Able to create a new customer complaint  
+* Able to view a customer complaint
+* Able to update a customer complaint.
+* Able to search on the list by customer or assigned user and list filters
+* Able to filter by Company, customer, assigned user, priority, status
+* Able to export filtered list to excel
+
+Kanban View
+* Column for each status, same statuses as per ticket centre (Open, In Progress, Resolved, Closed)
+* Card for each customer complaint
+o Card lists company, project address, customer name, priority, assigned user
+* In kanban view able to drag and drop tickets to different statuses
+* Items where SLA’s are due are highlighted (colour or icon)
+* Items where SLA’s are overdue are highlighted (colour or icon)
+
+
+Table View
+All customer complaints listed in a table view. Column for 
+* Customer complaint number (clickable and opens to view item)
+* Company
+* Complaint type
+* Created date and timestamp
+* Project address
+* Customer name
+* Priority
+* Submitted By
+* Status
+* Assigned To
+* Due Date
+* Items where SLA’s are due are highlighted (colour or icon)
+* Items where SLA’s are overdue are highlighted (colour or icon)
+
+
+Create Customer Complaint
+Similar to submitting a ticket the  user selects submit customer complaint and will see the following 3 screens
+Screen1 : Map to Company, customer and project
+* Select company for ticket (only Churchfield will be listed for this scope of development but in future other companies will be listed)
+
+Then option to search for existing customer and when selected populates the customer fields, however, these fields are still editable and will be empty if no customer is selected and are required to proceed.
+* First name
+* Last name
+* Primary contact mobile
+* Primary contact email
+
+Option to map to existing project. Project search, project should be prepopulated with newest project if customer is selected.
+* Project address
+* Project number
+
+
+Screen 2 : customer complaint sub-form
+Defined per company.
+Churchfield Customer complaint fields
+* Subject
+o Single line text
+* Description
+o Text area
+
+
+Screen 3: Attachments
+Attachments, optional, user can submit the customer complaint on this screen. 
+* Able to upload any file as an attachment
+Once submitted customer complaint is listed on the customer complaint register.
+
+
+
+
+
+Customer Complaint fields
+Selecting a card in kanban view or selecting the ticket number opens the customer complaint. Able to edit the fields. All customer complaints will have the following fields
+* Customer complaint number
+o System generated
+o Prefix set within company setup in QMS admin
+* Submitted by
+o First and last name of user who created customer complaint
+o Un-editable
+* Created date and timestamp
+o Subject
+* Un-Editable
+o Description
+* Un-Editable
+* Complaint type
+o Single select list
+o Informal Complaint ; Formal Complaint
+
+* Company Specific fields
+o Project Address
+* Editable
+o Customer name
+* Editable
+o Customer email
+* Editable
+o Customer phone
+* Editable
+o Assigned user
+* List of qsmart users
+o Departments
+* Defined list of departments for qsmart
+o Root cause
+* Single select list as set in QMS admin for company
+o Resolution
+* Single select list as set in QMS admin for company
+* 
+* Status
+o Single select list
+o Open, In-Progress, Resolved, Closed
+* Priority
+o Single select list
+o P1 -Highest, P2-High, P3-Medium, P4-Low
+* Attachments
+o Able to add or remove attachments
+* Action Plan
+o Create new or link existing ticket for each item in action plan
+* Linked items. Able to link an existing item or create a new item and link to it
+o Ticket
+* From ticket centre
+o Customer complaint
+* From customer complaints register
+o CAPA
+* From CAPA register
+o Jira item
+* JIRA API?
+* Comments
+o Able to add comment and tag user in comment
+o Update notification is sent once comment is created
+* Audit log
+o Date and timestamp of each update to the ticket and user who did the update.
+* Watch list
+o Multi-select list of all users
+* Estimated Time
+o Time field, values entered post fixed with w for weeks, D for days, h for hours
+* Due Date
+o Calculated = SLA for priority of customer complaint
+* Resolved Time
+o Time field. Calculated =  date and time customer complaint was placed in resolved status  –created date and time. 
+
+CAPA
+Corrective action Preventative action. Any ticket, customer complaint or other CAPA can be linked to a CAPA item.
+
+CAPA Register
+* Same as ticket centre with two list views (Kanban and table view)
+* Able to create a new CAPA item
+* Able to view a CAPA item
+* Able to update a CAPA item
+* Able to search on the list by subject and list filters
+* Able to filter by Company, department, customer, assigned user, priority, status
+* Able to export filtered list to excel
+
+
+Kanban View
+* Column for each status (Open, In Progress, Resolved, Closed)
+* Card for each CAPA item
+o Card lists company, subject, priority, departments and assigned user
+* In kanban view able to drag and drop tickets to different statuses
+* Items where SLA’s are due are highlighted (colour or icon)
+* Items where SLA’s are overdue are highlighted (colour or icon)
+
+
+Table View
+All CAPA items listed in a table view. Column for 
+* CAPA item number (clickable and opens to view item)
+* Company
+* Created date and timestamp
+* Subject
+* Priority
+* Status
+* Assigned To
+* Due date
+* Departments
+* Items where SLA’s are due are highlighted (colour or icon)
+* Items where SLA’s are overdue are highlighted (colour or icon)
+
+
+CAPA fields
+All CAPA items will have the following fields
+* CAPA item number
+o System generated number
+o Prefix set within QMS admin company setup
+* Created date and timestamp
+o Un-editable
+* Created By
+o First and last name of user who created
+* Subject
+o Single line text field
+o editable
+* Description
+o Text area
+o editable
+* Company specific fields
+o Project Address
+* Editable
+o Assigned user
+* List of qsmart users
+o Departments
+* Defined list of departments for qsmart
+o Root cause
+* Single select list as set in QMS admin for company
+o Resolution
+* Single select list as set in QMS admin for company
+* Status
+o Single select list
+o Open, In-Progress, Resolved, Closed
+* Priority
+o Single select list
+o P1 -Highest, P2-High, P3-Medium, P4-Low
+* Risk Assessment
+o Single select list
+o R1 -Highest, R2-High, R3-Medium, R4-Low
+* Attachments
+* Action Plan
+o Create new or link existing ticket for each item in action plan
+* Link item. Able to link an existing item or create a new item and link to it
+o Ticket
+* From ticket centre
+o CAPA
+* From CAPA register
+o Customer complaint
+* From customer complaints register
+o Jira item
+* JIRA API?
+* Comments
+o Able to add comment.
+o Able to tag user in comment and user receives a notification and can see the ticket in their ticket centre
+* Audit log
+o Date and timestamp of each update to the ticket and user who did the update.
+* Watch list
+o Multi-select list of all users
+* Estimated Time
+o Time field, values entered post fixed with w for weeks, D for days, h for hours
+* Due Date
+o Calculated = SLA for priority of CAPA
+* Resolved Time
+o Time field. Calculated =  date and time customer complaint was placed in resolved status  – created date and time. 
+
+
+
+QMS Company Setup
+Each company connected to QMS will have its own setup in QMS admin panel. Churchfield is the only company in scope for this development so these will only appear for Churchfield but when future companies are added these will be listed for them too.
+* Company Setup
+o Able to set prefix for tickets, customer complaints and CAPA
+* Ticket Types
+o All ticket types are defined and the form fields for them, however, for each ticket type able to edit and set the SLA and notifications for it
+* Customer Complaint Setup
+o Able to set the SLA and notifications for Customer complaints for the company
+* CAPA Setup
+o Able to set the SLA and notifications for Customer complaints for the company
+* Root Cause Setup
+o CRUD list that populates root cause field within tickets, Customer complaints and CAPA
+* Resolution Setup
+o CRUD list that populates root cause field within tickets, Customer complaints and CAPA
+* Company defined fields
+o Each company will have its own defined fields specific to the company. E.g project for qsmart
+
+Company Setup
+* Able to set the prefix for tickets
+* Able to set the prefix for customer complaints
+* Able to set the prefix for CAPA
+
+Ticket Type Setup
+Helpdesk has a setup for ticket types
+* List of all ticket types
+* Able to edit a ticket type
+* Able to disable/enable a ticket type
+o When disabled no new tickets can be created for the ticket type
+
+Edit ticket type
+* Able to change name of ticket type
+* Able to set default departments for ticket type
+o Multi-select list of all departments as per QMS company setup
+* Set default assigned user for ticket type
+o Single select list of each user as per QMS company setup
+* Set default priority for ticket type
+o Single select list of priorities
+* Each ticket type has SLA for each priority level
+o SLA is a time field. Time entered in hours
+o Enter SLA for each of the 4 priorities 
+* Able to set the notifications for the ticket type.  The type of notification (Push or Email), the subject and the body content. Also able to set the cc for each notification. Also able to disable if the notification is not needed for the ticket type
+o When ticket is created
+* Sent to user who submitted the ticket
+o When ticket has been updated
+* Sent to user who submitted the ticket
+* Sent to all users in the watch list for the ticket
+o When ticket is resolved status
+* Sent to user who submitted the ticket
+* Sent to all users in the watch list for the ticket
+o When ticket is closed status
+* Sent to user who submitted the ticket
+* Sent to all users in the watch list for the ticket
+o When SLA is due in < 2 hours
+* Sent to assigned user for the ticket 
+o When SLA is overdue
+* Sent to assigned user for the ticket 
+Ticket types
+
+ICT Support
+* Device
+o Single select list; Laptop/desktop , Phone, tablet, Scanner
+Non-conformance Issue
+* Platform
+o Qsmart backoffice 
+o Qsmart frontend
+o Qsmart Native app (mobile)
+o Form Builder
+o Pipedrive
+o Fast field
+o Zapier
+o Other
+Improvement Recommendation
+* Platform
+o Qsmart backoffice 
+o Qsmart frontend
+o Qsmart Native app (mobile)
+o Form Builder
+o Pipedrive
+o Fast field
+o Zapier
+o Other
+
+
+Change Request
+* Type
+o Single select list; Qsmart Request, Form Builder Request, Fast field Request, Pipedrive Request, Zapier Request, Other
+* Reason for change
+o Text area
+* Impact Assessment
+o Text area
+o 
+Marketing Feedback
+* Lead Origin
+o Single select list; Direct Referral, Website(chatbot, Request a call back, etc..), Previous Customer, Social Media(Facebook, Instagram, LinkedIn), Site Signage(on scaffolding), Fleet Branding(vans and cars), Traditional Media (Radio, Brochures, TV etc..), Events (SEAI Energy Show etc..)
+* What do you think about our current marketing status overall
+o Rating field (1-5 stars)
+* Impact Assessment
+o Text area
+
+
+
+Customer Complaint Setup
+Customer complaint setup for the SLA for each priority and the notifications
+* Set default assigned user for customer complaints
+* Set default priority for customer complaints
+* SLA for each priority level
+o SLA is a time field. Time entered in hours
+o Enter SLA for each of the 4 priorities 
+* Able to set the notifications for the customer complaint. The type of notification (Push or Email), the subject and the body content. Also able to set the cc for each notification. Also able to disable if the notification is not needed.
+* Able to also set the CC for each event.
+o When customer complaint is created
+* Sent to user who submitted the customer complaint
+o When customer complaint has been updated
+* Sent to user who submitted the customer complaint
+* Sent to all users in the watch list for the customer complaint
+o When customer complaint is resolved status
+* Sent to user who submitted the customer complaint
+* Sent to all users in the watch list for the customer complaint
+o When customer complaint is closed status
+* Sent to user who submitted the customer complaint
+* Sent to all users in the watch list for the customer complaint
+o When SLA is due in < 2 hours
+* Sent to assigned user for the customer complaint
+o When SLA is overdue
+* Sent to assigned user for the customer complaint
+CAPA Setup
+CAPA setup for the SLA for each priority and the notifications
+* Set default assigned user for CAPA
+* Set default priority for CAPA
+* SLA for each priority level
+o SLA is a time field. Time entered in hours
+o Enter SLA for each of the 4 priorities 
+* Able to set the notifications for the CAPA. The type of notification (Push or Email), the subject and the body content. Also able to set the cc for each notification. Also able to disable if the notification is not needed.
+* Able to also set the CC for each event.
+o When customer complaint is created
+* Sent to user who submitted the CAPA
+o When customer complaint has been updated
+* Sent to user who submitted the CAPA
+* Sent to all users in the watch list for the CAPA
+o When customer complaint is resolved status
+* Sent to user who submitted the CAPA
+* Sent to all users in the watch list for the CAPA
+o When customer complaint is closed status
+* Sent to user who submitted the CAPA
+* Sent to all users in the watch list for the CAPA
+o When SLA is due in < 2 hours
+* Sent to assigned user for the CAPA
+o When SLA is overdue
+* Sent to assigned user for the CAPA
+
+Root Cause Setup
+Setup list per company in QMS admin panel. Able to add, update and archive root cause items. This populates the root cause field within a ticket, CAPA item and customer complaint
+
+Resolution Setup
+Setup list per company in QMS admin panel. Able to add, update and archive resolution items. This populates the resolution field within a ticket, CAPA item and customer complaint
+
+Company Defined Fields
+As Churchfield is the only company in scope for this development the defined fields are from Qsmart as follows
+Project
+Used in tickets, Customer complaints and CAPA
+* Searchable field of qsmart project list
+* Populates 2 fields
+o Project number
+o Project address
+o 
+
+Customer
+Used in customer complaints
+* Searchable field of qsmart project list
+* Populates 4 fields
+o Customer  first name
+o Customer Last name
+o Primary contact email
+o Primary contact phone
+
+Assigned Users \ Watch List
+Used in tickets, customer complaints and CAPA
+As per list of all qsmart employees, Contractors and Operatives
+* Assigned user will only see the ticket in their ticket centre
+* Customer complaints and CAPA are admin only and they will be listed within customer complaints register and CAPA register and only users with access will see them.
+
+Departments
+List of each top level menu in qsmart admin. Each top level menu will have a ticket centre and any ticket tagged to the department will be listed within. (same as per power-bi department dashboards
+
+* Management
+* Human Resources
+* Procurement
+* Marketing
+* Sales
+* Project Planning
+* Surveying
+* Project Management
+* Customer Care
+* QHSE
+* Technical
+* Accounts
+* ICT
+
+Scheme
+Used within tickets, customer complaints and CAPA. Defined list 
+* ENQS
+* HEA
+* LSS
+* HEU
+* IEU
+* WHS
+
+
+Qsmart QMS integration
+The QMS will integrate within Qsmart frontend and backoffice (qsmart admin)
+
+Qsmart Frontend
+Qsmart Frontend is visible to all qsmart users. Qsmart  frontend user able to
+* Create a new ticket
+* View tickets 
+.
+Create ticket
+When creating a ticket a new browser window opens QMS and will show the create ticket form as per QMS. Same 4 pages of new ticket form are displayed except company is set to Churchfield and is not editable (qsmart users can only create QMS items for Churchfield)
+Once submitted 
+* The ticket will be listed within the ticket centre in QMS
+* The ticket is listed within ticket centre for user who created ticket
+* The ticket is listed within ticket centre for Quality menu in qsmart admin
+* The ticket is listed within ticket centre for department menu in qsmart admin fpr each department tagged in ticket
+
+My Tickets (user ticket centre)
+All tickets user created, their subordinates in their team created, they are tagged in or they are assigned are listed within my tickets list. 
+
+When user selects my tickets this opens the my tickets page in qsmart which has the ticket centre within it (iframe). Ticket centre is filtered to 
+* List view and kanban view available
+* Able to open a ticket and view the details
+* Able to add a comment to a ticket
+* Able to add attachment
+* Able to edit a ticket
+* Audit log lists all updates to the ticket
+
+
+
+Qsmart Admin (Backoffice)
+For users with access to qsmart admin the ticket centre will be available in all department menus with customer complaints available in quality menu and customer care menu and with CAPA available in quality menu only.
+
+Quality Menu
+Within the quality menu the QMS will be available and will appear in iframe on right side of the screen. 
+* Ticket Centre
+* Customer Complaints 
+* CAPA Register
+
+Ticket Centre
+ Ticket centre within quality menu in qsmart will list all tickets created for Churchfield (when other companies are added to QMS the ticket centre filters to show only tickets from Churchfield)
+
+Same features as per QMS admin panel
+* Two views for the list
+o Kanban (column for each status)
+o Table (list of all tickets)
+* Able to search on the list by subject or department or assigned user and list filters
+* Able to filter by Company,  ticket type, assigned user, priority, status
+* Able to create a new ticket
+* Able to update and edit a ticket
+* Able to export filtered list to excel
+
+Customer Complaints
+Customer Complaints within quality menu in qsmart will list all Customer Complaints created for Churchfield (when other companies are added to QMS the Customer Complaints filters to show only tickets from Churchfield)
+
+Same features as per QMS admin panel
+* Same as ticket centre with two list views (Kanban and table view)
+* Able to create a new customer complaint  
+* Able to view a customer complaint
+* Able to update a customer complaint.
+* Able to search on the list by customer or assigned user and list filters
+* Able to filter by Company, customer, assigned user, priority, status
+* Able to export filtered list to excel
+
+CAPA
+CAPA Register within quality menu in qsmart will list all CAPA items created for Churchfield (when other companies are added to QMS the Customer Complaints filters to show only tickets from Churchfield)
+Same features as per QMS admin panel
+* Same as ticket centre with two list views (Kanban and table view)
+* Able to create a new CAPA item
+* Able to view a CAPA item
+* Able to update a CAPA item
+* Able to search on the list by subject and list filters
+* Able to filter by Company, department, customer, assigned user, priority, status
+* Able to export filtered list to excel
+
+Department Menu
+Within each department menu the ticket centre will be available and will appear in iframe on right side of the screen. 
+* Ticket Centre
+* Customer Complaints (Customer Care menu and Quality menu only)
+
+Ticket Centre
+Ticket centre within department menu in qsmart will list all tickets created for Churchfield (when other companies are added to QMS the ticket centre filters to show only tickets from Churchfield) that are tagged with the department. No tickets that are not tagged to the department are listed i.e if ticket is tagged to Project planning department then this is listed within the ticket centre for the project planning department but not listed for other departments.
+
+Same features as per QMS admin panel
+* Two views for the list
+o Kanban (column for each status)
+o Table (list of all tickets)
+* Able to search on the list by subject or department (no tickets that or assigned user and list filters
+* Able to filter by Company,  ticket type, assigned user, priority, status
+* Able to create a new ticket
+* Able to update and edit a ticket
+* Able to export filtered list to excel
+
+Customer Complaints
+Customer Complaints are listed within Quality and Customer Care menu in qsmart only. No other department will see customer complaints. All Customer Complaints created for Churchfield (when other companies are added to QMS the Customer Complaints filters to show only tickets from Churchfield) are listed
+
+Same features as per QMS admin panel
+* Same as ticket centre with two list views (Kanban and table view)
+* Able to create a new customer complaint  
+* Able to view a customer complaint
+* Able to update a customer complaint.
+* Able to search on the list by customer or assigned user and list filters
+* Able to filter by Company, customer, assigned user, priority, status
+* Able to export filtered list to excel
+
+
+SLA’s
+SLA’s are set within QMS admin panel company settings.
+* For tickets SLA is set per ticket type and per priority
+* For Customer complaints these are set within customer complaint setup per priority
+* For CAPA  these are set within CAPA setup per priority
+
+SLA is a time value that creates the due date for the ticket/customer complaint/ CAPA. User enters a time value (post fixed by W for weeks, D for days or H for hours). Due date is then calculated as Created date and timestamp + SLA value. i.e SLA  of 4H set for “IT issue” ticket type priority 2. Ticket created for IT issue ticket type on 16/07/2025 10:30am and priority is updated to 2. Due date is calculated 16/07/2025 10:30am + 4H = 16/07/2025 2:30pm. If SLA for priority 3 = 1 day and priority is changed to 3 then due date should be updated for the ticket (16/07/2025 2:30pm. Changes to 17/07/2025 10:30am.)
+Notification’s
+Notifications are defined per ticket type and for customer complaint and for CAPA. We can have a standard header and footer all email notifications will have.
+Following triggers are listed
+* When ticket is created
+o Sent to user who submitted the ticket
+* When ticket has been updated
+o Sent to all users in the watch list for the ticket
+o Sent to user tagged in comment
+* When ticket is resolved status
+o Sent to user who submitted the ticket
+o Sent to all users in the watch list for the ticket
+* When ticket is closed status
+o Sent to user who submitted the ticket
+o Sent to all users in the watch list for the ticket
+* When SLA is due in < 2 hours
+o Sent to assigned user for the ticket 
+* When SLA is overdue
+o Sent to assigned user for the ticket 
+
+For each trigger able to set the following
+* Enable\disable the type of notification. (if none are enabled then no notification is sent)
+o Push (in app notification)
+o Email
+* Set the subject
+o Text
+o Able to add variables of the ticket fields e.g subject, description, department, assign user, root cause, resolution etc..
+o This is the title of the push notification that is displayed in the push notification card without it expanded
+* Set the body
+o Text area
+o Able to add variables of the ticket fields e.g subject, description, department, assign user, root cause, resolution etc..
+o This is the body of the email and the body of the push notification that appears when push notification card is expanded
+* Set the receiptants
+o Able to add the users who receive the notification
+o Multi-select list of users
+o Also able to select 
+* Creator (user who created item)
+* Assigned (user who is assigned to the item
+
+
