@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/help-desk-api/Models/obj
+/help-desk-api/Repository/bin/Debug/net9.0
+/help-desk-api/Repository/obj
+/help-desk-api/Services/bin/Debug/net9.0
+/help-desk-api/Services/obj
+/help-desk-api/Utils/bin/Debug/net9.0
+/help-desk-api/Utils/obj
+/help-desk-api/WebApi/bin/Debug/net9.0
+/help-desk-api/WebApi/obj
+/help-desk-api/Models/bin/Debug/net9.0
+/help-desk-api/.vs
