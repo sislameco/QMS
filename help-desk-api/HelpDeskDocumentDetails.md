@@ -375,21 +375,6 @@ Represents a department within a company.
 
 ---
 
-## Menu:#BaseEntity    
-Represents a menu/module for permission control.  
-- Name (string, required, max 100)  
-- ParentId (int?, FK → Menu for hierarchy)  
-- TemplateId (int)  
-- DisplayOrder (string, max 50)  
-- IconClass (string, max 100)  
-- IconViewBox (string, max 100)  
-- Route (string, max 250)  
-
-**Relations**  
-- One `Menu` → Many `RoleMenuPermission`  
-
----
-
 ## UserRole:#BaseEntity    
 Mapping table that links users and roles.  
 - FkUserId (long, FK → User)  
@@ -397,21 +382,6 @@ Mapping table that links users and roles.
 
 **Relations**  
 - Many-to-Many between `User` and `Role`  
-
----
-
-## RoleMenuPermission : #BaseEntity  
-Defines what a Role can do on a given Menu.  
-- FkRoleId (int, FK → Role)  
-- FkMenuId (int, FK → Menu)  
-- CanView (bool)  
-- CanCreate (bool)  
-- CanEdit (bool)  
-- CanDelete (bool)  
-
-**Relations**  
-- One `Role` → Many `RoleMenuPermission`  
-- One `Menu` → Many `RoleMenuPermission`  
 
 ---
 
@@ -459,4 +429,55 @@ Represents an audit trail of actions performed within the QMS.
 
 **Relations**  
 - One `User` → Many `AuditLog` (user actions are logged).  
-- One `AuditLog` → One target entity (linked by EntityName + EntityId).  
+- One `AuditLog` → One target entity (linked by EntityName + EntityId).
+
+## Menu : #BaseEntity  
+Represents a menu/module in the system.  
+- Name (string, required, max 100)  
+- ParentId (int?, FK → Menu for hierarchy)  
+- TemplateId (int)  
+- DisplayOrder (int)  
+- IconClass (string, max 100)  
+- IconViewBox (string, max 100)  
+- Route (string, max 250)  
+
+**Relations**  
+- One `Menu` → Many `MenuActionMap`  
+
+---
+
+## MenuAction : #BaseEntity  
+Defines an **action** that can be performed on a menu.  
+- Name (string, required, max 100)  
+  - Examples: View, Create, Edit, Delete, Export, Approve  
+- HttpVerb (enum: GET, POST, PUT, DELETE, PATCH, etc.)  
+- Description (string, max 250)  
+
+**Relations**  
+- One `MenuAction` → Many `MenuActionMap`  
+
+---
+
+## MenuActionMap : #BaseEntity  
+Mapping table linking menus to the actions available on them.  
+- FkMenuId (int, FK → Menu)  
+- FkMenuActionId (int, FK → MenuAction)  
+
+**Relations**  
+- One `Menu` → Many `MenuActionMap`  
+- One `MenuAction` → Many `MenuActionMap`  
+- One `MenuActionMap` → Many `MenuActionRoleMapping`  
+
+---
+
+## MenuActionRoleMapping : #BaseEntity  
+Defines what **roles** are allowed to perform which **actions** on which **menu**.  
+- FkRoleId (int, FK → Role)  
+- FkMenuActionMapId (int, FK → MenuActionMap)  
+- IsAllowed (bool)  
+
+**Relations**  
+- One `Role` → Many `MenuActionRoleMapping`  
+- One `MenuActionMap` → Many `MenuActionRoleMapping`  
+
+---
