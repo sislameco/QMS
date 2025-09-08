@@ -29,6 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compose", "Compose", "{6C8F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{4F29507D-24CF-45DE-A6B3-70C2F465328B}"
 	ProjectSection(SolutionItems) = preProject
+		copilotCommand.txt = copilotCommand.txt
+		C:\Users\User\OneDrive\Desktop\HelpDesk\HelpDesk\Docs\Features\hdArchitecture.md = C:\Users\User\OneDrive\Desktop\HelpDesk\HelpDesk\Docs\Features\hdArchitecture.md
+		HelpDeskDocumentDetails.md = HelpDeskDocumentDetails.md
 		HelpDeskDocumentDetail_v1.txt = HelpDeskDocumentDetail_v1.txt
 	EndProjectSection
 EndProject

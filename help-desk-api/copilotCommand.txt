@@ -1,0 +1,115 @@
+// INDEX
+// 01. Master Requirements Doc (HelpDeskDocumentDetails.md style)
+// 02. High-Level Wireframes (Admin, Ticket Centre, CC, CAPA, Qsmart embeds)
+// 03. Feature Breakdown + Acceptance Criteria (module by module)
+// 04. RBAC & Permission Matrix (incl. Super Admin + seed case)
+// 05. Data Model (Entities, FKs, Enums, M:N maps)
+// 06. ERD (Mermaid) + Textual Relationships
+// 07. API Surface (REST endpoints, query params, paging, export)
+// 08. SLA Engine Logic (W/D/H parsing, recalculation rules)
+// 09. Notifications (triggers, templates, variables, recipients)
+// 10. Company Setup (prefixes, ticket types, CC, CAPA)
+// 11. Ticket Types Catalogue (ICT Support… Marketing Feedback)
+// 12. Qsmart Integration (Frontend + Backoffice iframes, filters)
+// 13. Seed Data (Super Admin, departments, ticket types, SLAs)
+// 14. Audit, Watchlist, Linked Items (Tickets/CC/CAPA/Jira)
+// 15. Search/Filter/Sort/Export behaviours
+// 16. Non-Functional (multi-tenant, performance, security, auditability)
+// 17. Test Plan (happy paths, edge cases, permissions)
+// 18. Delivery Checklist (DoD, handover, docs)
+
+// 01) COPILOT: Create Master Requirements Doc
+// Generate a Markdown requirements document titled “HelpDeskDocumentDetails.md” that follows the sectioning style of HelpDeskDocumentDetail_v1 (Overview, Scope, Out of Scope, Admin Panel, User Management, Helpdesk, Customer Complaints, CAPA, Company Setup, Qsmart Integration, SLA’s, Notifications).
+// Use the tone/structure of ReferralRewardsFullRequirements.md (clear bullets, dashboard/list/create/edit sections, and “Entities” chapter).
+// Source content from “QMS and Qsmart Integration – v2” (dated 17/07/2025). Include Super Admin role with seed data.
+// Focus initial scope on Churchfield but keep multi-company ready. Maintain wording parity with the original where applicable.
+
+// 02) COPILOT: Produce High-Level Wireframes
+// Create low-fidelity wireframes (ASCII/Markdown blocks) for:
+// • QMS Admin ? User Management (list, create/edit drawer, permission toggles, Super Admin badge).
+// • Ticket Centre (Kanban with status columns; Table with filters, highlights for due/overdue).
+// • Create Ticket (4 steps), View/Edit Ticket (right panel tabs: Details, Comments, Attachments, Linked Items, Audit).
+// • Customer Complaint (3 steps), CAPA (list + details).
+// • Qsmart Frontend “My Tickets” page (iframe filter pre-applied) and Qsmart Backoffice (Quality/Department menus with embedded Ticket Centre/CC/CAPA).
+
+// 03) COPILOT: Feature Breakdown + Acceptance Criteria
+// For each module (User Management, Ticket Centre, Customer Complaints, CAPA, Company Setup, Notifications, SLA):
+// • Describe user stories.
+// • Provide Given/When/Then acceptance criteria.
+// • Include highlights for SLA due/overdue visual cues and export to Excel.
+
+// 04) COPILOT: RBAC & Permission Matrix
+// Define roles and permissions: Normal User, Department Admin, Company Admin, Super Admin.
+// • Super Admin: full multi-company access; bypass company scoping; sees all departments and modules.
+// • Include a table: modules (Ticket Centre, CC, CAPA, Company Setup), actions (view/list/create/edit/export), scope (self/team/department/company/all).
+// • Note: Super Admin is created by seed on first run (active = true).
+
+// 05) COPILOT: Data Model (Entities, FKs, Enums)
+// Generate C#-style entity lists (names + fields only, no code) with brief descriptions:
+// • User (IsSuperAdmin, Status, Email, DisplayName)
+// • Company (PrefixTicket, PrefixCC, PrefixCAPA)
+// • Department
+// • Ticket, TicketType, TicketTypeSLA (per priority), TicketAttachment, TicketComment, TicketLink, TicketWatch
+// • CustomerComplaint, CAPA, their Attachments/Comments/Links/Watch
+// • RootCause, Resolution
+// • CompanyDefinedField (e.g., Project {ProjectNumber, ProjectAddress})
+// • Scheme (ENQS, HEA, LSS, HEU, IEU, WHS)
+// • AuditLog
+// Enums: TicketStatus (Open/In-Progress/Resolved/Closed), Priority (P1..P4), Risk (R1..R4), ComplaintType (Informal/Formal).
+
+// 06) COPILOT: ERD (Mermaid) + Textual Relationships
+// Produce a Mermaid ER diagram capturing all entities and relationships (1-N, N-N via maps), plus a prose section explaining cardinalities and cascade rules.
+
+// 07) COPILOT: API Surface Spec
+// List REST endpoints with methods, paths, key query params, and responses (no code).
+// Include: search/filter/sort/paging; export endpoints; comments/attachments operations; watchers; link/unlink items; SLA recalculation hook; notification dispatch triggers.
+
+// 08) COPILOT: SLA Engine Logic
+// Specify how to store per-priority SLAs for Ticket Types/CC/CAPA.
+// Define parsing of user-entered durations with suffix W/D/H.
+// Rules for due date calculation on create and when priority changes.
+// Describe “due soon” (<2 hours) and “overdue” detection and UI highlighting.
+
+// 09) COPILOT: Notifications Spec
+// Enumerate triggers (created/updated/resolved/closed, SLA due soon/overdue, @mentions).
+// Provide template model (subject/body variables), recipients (creator, assigned, watchlist), push vs email toggles, CC list.
+// Include a sample variable list (Subject, Description, Department, AssignedUser, RootCause, Resolution, DueDate).
+
+// 10) COPILOT: Company Setup Specification
+// Detail editable prefixes; ticket type list management (enable/disable); default departments/assignee/priority; per-priority SLA values; notification templates for Ticket/CC/CAPA.
+
+// 11) COPILOT: Ticket Types Catalogue
+// Generate the preconfigured types and their special fields as per source doc: ICT Support (Device), Non-Conformance Issue (Platform), Improvement Recommendation (Platform), Change Request (Type, Reason, Impact), Marketing Feedback (Lead Origin, Rating, Impact).
+
+// 12) COPILOT: Qsmart Integration
+// Describe Qsmart Frontend create flow (new window to QMS; company fixed to Churchfield for now).
+// Describe Qsmart Backoffice embeds (Quality + Department menus), filters (company/department scoping) and parity with QMS features.
+// Include “My Tickets” iframe view and allowed actions inside the embed.
+
+// 13) COPILOT: Seed Data Plan
+// Specify initial seed records: one Super Admin (active), default departments list, default ticket types, sample SLAs, basic RootCause/Resolution items.
+// Note: Super Admin bypasses company permissions and can add companies later.
+
+// 14) COPILOT: Audit, Watchlist, Linked Items
+// Define audit log entries (who/when/what before/after).
+// Watchlist semantics (receives notifications).
+// Linked items: allowed cross-links (Ticket?Ticket, Ticket?CC, Ticket?CAPA, CC?CAPA, optional Jira).
+
+// 15) COPILOT: Search/Filter/Sort/Export
+// Specify searchable fields per module; filter facets (Company, Type, Assigned, Priority, Status, Date range); sort keys; CSV/XLSX export format with selected filters applied.
+
+// 16) COPILOT: Non-Functional Requirements
+// Multi-tenant isolation by Company ID; permissions enforced server-side; pagination defaults; optimistic concurrency; attachment size/type constraints; audit retention; performance targets for list queries.
+
+// 17) COPILOT: Test Plan
+// Produce test cases per module (creation, edit, permission checks, SLA due/overdue transitions, notifications fan-out, export correctness).
+// Include Super Admin vs Company-scoped user scenarios.
+
+// 18) COPILOT: Delivery Checklist
+// Definition of Done: requirements doc approved, ERD reviewed, API spec signed off, seed data verified (Super Admin exists), embeds working in Qsmart FE/Backoffice, SLA/Notifications test green, exports verified.
+
+// ——— Sources (for Copilot’s grounding) ———
+// Use “QMS and Qsmart Integration – v2” for all module specs, flows, and fields; preserve statuses, priorities, prefixes, and 4-step/3-step create flows.
+// Use “ReferralRewardsFullRequirements.md” as the stylistic template for clarity and the “Entities” chapter structure.
+// Use “HelpDeskDocumentDetail_v1.txt” as the exact section ordering and headings to mirror output.
+//
