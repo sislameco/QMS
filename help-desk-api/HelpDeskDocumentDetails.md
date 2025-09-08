@@ -189,12 +189,54 @@ Scope for this development is to deliver a standalone QMS platform and connect i
   - Manage company-specific settings for integration with Qsmart.  
 
 - **Ticket Type Setup**  
-  - List all ticket types per company.  
-  - Enable/disable ticket types (disabled types cannot be selected for new tickets).  
-  - Configure default values: assigned user, departments, priority.  
-  - Define SLA per priority level (time in hours).  
-  - Configure notifications for each ticket type (trigger, channel, subject/body, recipients).  
+- 
+The Helpdesk has a setup section in the QMS Admin Panel for defining and managing ticket types. Each ticket type determines the workflow, defaults, SLA, and notifications for new tickets.  
+- **List of all ticket types** (per company).  
+- **Enable/Disable ticket types**  
+  - Disabled types cannot be selected for new tickets.  
+- **Edit ticket type**  
+  - Change ticket type name.  
+  - Set default departments (multi-select from company’s departments).  
+  - Set default assigned user (single-select from company’s users).  
+  - Set default priority (single-select from P1–P4).  
+  - Configure SLA per priority level (time in hours, defined for each of the 4 priorities).  
+  - Configure notifications for lifecycle events.  
 
+### SLA per Priority  
+- SLA is entered in **hours**.  
+- SLA is configured separately for each priority (P1–P4).  
+- Due dates are automatically calculated = Created Date + SLA.  
+- Updating ticket priority recalculates the due date.  
+
+### Notifications per Ticket Type  
+For each ticket type, administrators can configure notifications:  
+- **Notification options:** Push (in-app), Email, or Disabled.  
+- **Notification template:** Subject and body (with placeholders like `{TicketNumber}`, `{Subject}`, `{AssignedUser}`).  
+- **Notification recipients:** Creator, Assigned User, Watch List, or specific CC list.  
+
+**Events that trigger notifications:**  
+- Ticket Created → Creator.  
+- Ticket Updated → Creator + Watch List.  
+- Ticket Resolved → Creator + Watch List.  
+- Ticket Closed → Creator + Watch List.  
+- SLA Due (< 2 hours before due) → Assigned User.  
+- SLA Overdue → Assigned User.  
+
+### Example Ticket Types & Custom Fields  
+- **ICT Support**  
+  - Device (single-select: Laptop/Desktop, Phone, Tablet, Scanner).  
+- **Non-Conformance Issue**  
+  - Platform (single-select: Qsmart Backoffice, Frontend, Native App, Form Builder, Pipedrive, Fast Field, Zapier, Other).  
+- **Improvement Recommendation**  
+  - Platform (same options as above).  
+- **Change Request**  
+  - Type (single-select: Qsmart Request, Form Builder Request, Fast Field Request, Pipedrive Request, Zapier Request, Other).  
+  - Reason for Change (text area).  
+  - Impact Assessment (text area).  
+- **Marketing Feedback**  
+  - Lead Origin (single-select: Direct Referral, Website, Previous Customer, Social Media, Site Signage, Fleet Branding, Traditional Media, Events).  
+  - Feedback Rating (1–5 stars).  
+  - Impact Assessment (text area).  
 - **Customer Complaint Setup**  
   - Configure default assigned user and priority.  
   - Define SLA per priority level (time in hours).  
