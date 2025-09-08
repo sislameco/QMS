@@ -86,14 +86,21 @@ Scope for this development is to deliver a standalone QMS platform and connect i
   - Assign permissions per company and per module (Ticket Centre, Complaints, CAPA, Company Setup).  
   - Enable or disable users.  
   - Super Admin role with unrestricted access across all companies, departments, and QMS features.  
-
-- **Company Setup**  
-  - Configure ticket prefixes, complaint prefixes, CAPA prefixes.  
-  - Manage ticket types, default users, default departments, and SLAs per priority.  
-  - Configure complaint setup (default user, SLA rules, notifications).  
-  - Configure CAPA setup (default user, SLA rules, notifications).  
-  - Manage root cause and resolution libraries (CRUD).  
-  - Define company-specific fields (e.g., Qsmart project, customer mapping).  
+  - **Menus available for permission control:**  
+    - Ticket Centre  
+    - Customer Complaints  
+    - CAPA  
+    - Company Setup  
+    - SLA Setup  
+    - Notifications Setup  
+    - Root Cause Setup  
+    - Resolution Setup  
+    - Department Menus (Management, HR, Procurement, Marketing, Sales, Project Planning, Surveying, Project Management, Customer Care, QHSE, Technical, Accounts, ICT)  
+  - **Role-wise permissions:**  
+    - **Super Admin:** Full system access; all companies, menus, and modules.  
+    - **Company Admin:** Full access to modules for their assigned company only.  
+    - **Department Manager:** Access to Ticket Centre, Complaints, and CAPA limited to their department.  
+    - **User:** Access to tickets or complaints they created, are assigned to, or are tagged in (My Tickets view).  
 
 ---
 
