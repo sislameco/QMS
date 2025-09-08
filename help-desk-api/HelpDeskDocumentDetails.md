@@ -235,20 +235,56 @@ Scope for this development is to deliver a standalone QMS platform and connect i
 
 ---
 
-## SLA’s  
-- SLA rules set per ticket type, complaint, and CAPA.  
-- Entered in W (weeks), D (days), H (hours).  
-- Due date = Created date + SLA value.  
-- Priority changes recalculate due dates.  
+## SLA Settings  
+- SLA rules are defined **per company** within the QMS Admin panel.  
+- SLA applies to:  
+  - Tickets (per ticket type + per priority).  
+  - Customer Complaints (per priority).  
+  - CAPA (per priority).  
+- SLA is expressed as a **time value** with suffix:  
+  - `W` → Weeks  
+  - `D` → Days  
+  - `H` → Hours  
+- Due Date calculation = Created Date + SLA value.  
+- If priority is updated → Due Date recalculates.  
+- SLA is also tied to notifications (due reminder, overdue alert).  
 
 ---
 
-## Notifications  
-- Triggers: Create, Update, Resolve, Close, SLA due, SLA overdue.  
-- Channels: Push (in-app) and Email.  
-- Configurable per item type (ticket, complaint, CAPA).  
-- Recipients: Creator, Assigned user, Watch list, Tagged users.  
-- Template variables available (subject, description, department, assigned user, root cause, resolution, etc.).  
+## Priority Settings  
+- Priorities are defined as **P1, P2, P3, P4** (highest to lowest).  
+- Each priority level has its own SLA time configured.  
+- Example:  
+  - P1 = 4 Hours (critical IT issue).  
+  - P2 = 1 Day.  
+  - P3 = 3 Days.  
+  - P4 = 1 Week.  
+- Priority is selectable on Ticket, Complaint, and CAPA forms.  
+- Changing priority mid-lifecycle updates SLA-driven Due Date.  
+
+------
+
+## Notification Settings  
+- Configurable **per company and per item type** (Ticket, Complaint, CAPA).  
+- **Triggers:**  
+  - Created  
+  - Updated  
+  - Resolved  
+  - Closed  
+  - SLA Due (X hours before due)  
+  - SLA Overdue  
+- **Channels:**  
+  - Push (in-app notification in Qsmart/QMS)  
+  - Email (configured per company template)  
+- **Recipients:**  
+  - Creator  
+  - Assigned User  
+  - Watch List  
+  - Tagged Users  
+- **Templates:**  
+  - Subject and Body support variables (e.g., `{TicketNumber}`, `{Subject}`, `{AssignedUser}`, `{DueDate}`).  
+
+---
 
 ---
 
@@ -278,10 +314,9 @@ Represents a system user.
 - LastLoginDate (DateTime?)  
 
 **Relations**  
-- One `User` → Many `UserRole` (maps user to roles)  
-- One `User` → Many `UserPermission` (direct permissions)  
-- One `User` → Many `UserCompany` (companies user belongs to)  
-- One `User` → Many `UserDepartment` (departments user belongs to)  
+- One `User` → Many `UserRole`  
+- One `User` → Many `UserCompany`  
+- One `User` → Many `UserDepartment`  
 
 ---
 
@@ -291,21 +326,11 @@ Defines a role for RBAC.
 - Description (string, max 250)  
 
 **Relations**  
-- One `Role` → Many `UserRole` (users in this role)  
-- One `Role` → Many `RolePermission` (permissions granted to this role)  
+- One `Role` → Many `UserRole`  
+- One `Role` → Many `RoleMenuPermission`  
 
 ---
 
-## Permission:#BaseEntity    
-Represents a specific permission that can be assigned directly or through a role.  
-- Name (string, required, max 100)  
-- Description (string, max 250)  
-
-**Relations**  
-- One `Permission` → Many `RolePermission` (roles that include this permission)  
-- One `Permission` → Many `UserPermission` (users assigned this permission directly)  
-
----
 ## Company : #BaseEntity  
 Represents a company/tenant within the QMS.  
 - Name (string, required, max 200)  
@@ -315,7 +340,7 @@ Represents a company/tenant within the QMS.
 **Relations**  
 - One `Company` → One `CompanyScopeConfig`  
 - One `Company` → Many `Department`  
-- One `Company` → Many `UserCompany` (users assigned to this company)  
+- One `Company` → Many `UserCompany`  
 - One `Company` → Many `Ticket` / `CustomerComplaint` / `CAPA`  
 
 ---
@@ -331,15 +356,9 @@ Represents company-level scoping and numbering rules.
 - RootCauseOptions (ICollection<RootCauseModel>)  
 - ResolutionOptions (ICollection<ResolutionModel>)  
 
-
- **Relations**  
+**Relations**  
 - One `CompanyScopeConfig` → One `Company`  
 - One `CompanyScopeConfig` → Many SLA/Notification/RootCause/Resolution definitions  
-
-**Relations**  
-- One `Company` → Many `Department`  
-- One `Company` → Many `UserCompany` (users assigned to this company)  
-- One `Company` → Many `Ticket` / `CustomerComplaint` / `CAPA`  
 
 ---
 
@@ -351,7 +370,7 @@ Represents a department within a company.
 
 **Relations**  
 - One `Department` → One `Company`  
-- One `Department` → Many `UserDepartment` (users assigned to this department)  
+- One `Department` → Many `UserDepartment`  
 - One `Department` → Many `Tickets` / `Complaints` / `CAPAs`  
 
 ---
@@ -360,14 +379,14 @@ Represents a department within a company.
 Represents a menu/module for permission control.  
 - Name (string, required, max 100)  
 - ParentId (int?, FK → Menu for hierarchy)  
-- TemplateId (int)
-- DisplayOrder (string, max 50)
--IconClass (string, max 100)
--IconViewBox (string, max 100)
--Route (string, max 250)
-- 
+- TemplateId (int)  
+- DisplayOrder (string, max 50)  
+- IconClass (string, max 100)  
+- IconViewBox (string, max 100)  
+- Route (string, max 250)  
+
 **Relations**  
-- One `Menu` → Many `Permission` (permissions applicable to this menu)  
+- One `Menu` → Many `RoleMenuPermission`  
 
 ---
 
@@ -381,23 +400,18 @@ Mapping table that links users and roles.
 
 ---
 
-## RolePermission:#BaseEntity    
-Mapping table that links roles and permissions.  
+## RoleMenuPermission : #BaseEntity  
+Defines what a Role can do on a given Menu.  
 - FkRoleId (int, FK → Role)  
-- FkPermissionId (int, FK → Permission)  
+- FkMenuId (int, FK → Menu)  
+- CanView (bool)  
+- CanCreate (bool)  
+- CanEdit (bool)  
+- CanDelete (bool)  
 
 **Relations**  
-- Many-to-Many between `Role` and `Permission`  
-
----
-
-## UserPermission:#BaseEntity    
-Mapping table that links users and permissions directly.  
-- FkUserId (long, FK → User)  
-- FkPermissionId (int, FK → Permission)  
-
-**Relations**  
-- Many-to-Many between `User` and `Permission`  
+- One `Role` → Many `RoleMenuPermission`  
+- One `Menu` → Many `RoleMenuPermission`  
 
 ---
 
@@ -419,4 +433,30 @@ Mapping table that links users to departments.
 **Relations**  
 - Many-to-Many between `User` and `Department`  
 
----
+
+
+
+
+
+
+
+
+
+
+## AuditLog : #BaseEntity  
+Represents an audit trail of actions performed within the QMS.  
+
+- EntityName (string, required, max 200) → name of the entity being changed (e.g., Ticket, Complaint, CAPA, User).  
+- EntityId (long, required) → the primary key of the entity being changed.  
+- ActionType (enum: Created, Updated, Deleted, Viewed, Restored, StatusChanged)  
+- OldValues (string, nullable, JSON) → serialized snapshot of values before change.  
+- NewValues (string, nullable, JSON) → serialized snapshot of values after change.  
+- ChangedDate (DateTime, required)  
+- ChangedBy (int, FK → User.Id) → who performed the action.  
+- IPAddress (string, max 50, nullable) → optional tracking of the request origin.  
+- UserAgent (string, max 250, nullable) → browser/device info for context.  
+- Notes (string, max 500, nullable)  
+
+**Relations**  
+- One `User` → Many `AuditLog` (user actions are logged).  
+- One `AuditLog` → One target entity (linked by EntityName + EntityId).  

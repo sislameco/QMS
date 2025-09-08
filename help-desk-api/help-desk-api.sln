@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{4F
 	ProjectSection(SolutionItems) = preProject
 		HelpDeskDocumentDetails.md = HelpDeskDocumentDetails.md
 		HelpDeskDocumentDetail_v1.txt = HelpDeskDocumentDetail_v1.txt
+		TicketView.txt = TicketView.txt
 	EndProjectSection
 EndProject
 Global

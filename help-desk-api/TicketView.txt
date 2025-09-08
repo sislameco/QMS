@@ -1,0 +1,35 @@
+---------------------------------------------------------
+| Ticket # CHS-12345     | Company: Churchfield         |
+---------------------------------------------------------
+| Subject: Printer not working                          |
+| Description:                                           |
+|   The office printer is not responding.               |
+---------------------------------------------------------
+| Submitted By: John Smith   | Created: 05/09/2025 14:30|
+| Ticket Type: ICT Support                              |
+---------------------------------------------------------
+| Project: Qsmart Project #245  (Address auto-filled)   |
+| Assigned User: Lorna (Support Manager)                |
+| Departments: ICT, Procurement                         |
+| Root Cause: Hardware Failure                          |
+| Resolution: Replace Device                            |
+---------------------------------------------------------
+| Status: In-Progress   | Priority: P2 (High)           |
+| Assigned To: Brian Kelly                              |
+---------------------------------------------------------
+| Attachments:                                           |
+|   - screenshot1.png  [Download]                       |
+|   - error_log.txt   [Download]                        |
+---------------------------------------------------------
+| Linked Items:                                          |
+|   - Complaint #C-78 (Customer Complaint)               |
+|   - CAPA #CA-15 (Preventive Action)                   |
+---------------------------------------------------------
+| Comments:                                              |
+|   John Smith (05/09/2025 14:32): "Raised issue"       |
+|   Lorna (05/09/2025 14:45): "@Brian please check"     |
+---------------------------------------------------------
+| Audit Log:                                             |
+|   05/09/2025 14:30 - Ticket Created by John Smith      |
+|   05/09/2025 14:45 - Assigned to Brian by Lorna        |
+---------------------------------------------------------

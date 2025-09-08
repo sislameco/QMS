@@ -10,6 +10,7 @@
     <Compile Remove="Entities\UserManagement\MenuModel.cs" />
     <Compile Remove="Entities\UserManagement\RoleMenuModel.cs" />
     <Compile Remove="Entities\UserManagement\RoleModel.cs" />
+    <Compile Remove="Entities\UserManagement\RolePermissionModel.cs" />
     <Compile Remove="Entities\UserManagement\UserModel.cs" />
     <Compile Remove="Entities\UserManagement\UserRoleModel.cs" />
   </ItemGroup>
