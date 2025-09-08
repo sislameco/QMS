@@ -523,3 +523,101 @@ Defines what **roles** are allowed to perform which **actions** on which **menu*
 - One `MenuActionMap` → Many `MenuActionRoleMapping`  
 
 ---
+
+
+
+
+## TicketType : #BaseEntity  
+Represents a ticket type within the Helpdesk.  
+- Name (string, required, max 100)  
+- Description (string, max 250, optional)  
+- IsEnabled (bool, default true)  
+- DefaultPriority (enum: P1, P2, P3, P4)  
+- DefaultAssignedUserId (int?, FK → User)  
+- DefaultDepartments (ICollection<TicketTypeDepartmentMap>)  
+
+**Relations**  
+- One `TicketType` → Many `Tickets`  
+- One `TicketType` → Many `SLAConfig`  
+- One `TicketType` → Many `NotificationConfig`  
+- One `TicketType` → Many `TicketTypeDepartmentMap`  
+
+---
+
+## SLAConfig : #BaseEntity  
+Defines SLA rules per priority level for a given ticket type.  
+- TicketTypeId (int, FK → TicketType)  
+- Priority (enum: P1, P2, P3, P4)  
+- DurationHours (int, required)  
+
+**Relations**  
+- One `TicketType` → Many `SLAConfig`  
+
+---
+
+## NotificationConfig : #BaseEntity  
+Defines the rules for sending notifications.  
+- TicketTypeId (int, FK → TicketType)  
+- Trigger (enum: Created, Updated, Resolved, Closed, SLADue, SLAOverdue)  
+- NotificationType (enum: Email, SMS, App, System)  
+- EmailConfigurationId (int?, FK → EmailConfiguration, only when type = Email)  
+- SubjectTemplate (string, max 200)  
+- BodyTemplate (string, max 1000)  
+- CcList (string, max 500, optional)  
+- IsEnabled (bool, default true)  
+
+**Relations**  
+- One `TicketType` → Many `NotificationConfig`  
+- One `NotificationConfig` → One `EmailConfiguration` (optional)  
+
+---
+
+## TicketTypeDepartmentMap : #BaseEntity  
+Mapping table linking Ticket Types to default departments.  
+- TicketTypeId (int, FK → TicketType)  
+- DepartmentId (int, FK → Department)  
+
+**Relations**  
+- Many-to-Many between `TicketType` and `Department`  
+
+---
+
+## EmailConfiguration : #BaseEntity  
+Represents credentials and settings for sending emails.  
+- UserName (string, max 200)  
+- Password (string, max 200, encrypted)  
+- Host (string, max 200)  
+- SMTPPort (int, required)  
+- IMAPPort (int, required)  
+- AccessKey (string, max 200, optional)  
+- SecretKey (string, max 200, optional, encrypted)  
+- Status (enum: Active, Inactive)  
+- BCC (string, max 1000, optional, comma-separated list)  
+- IsDefault (bool, default false)  
+- Name (string, max 200, friendly name)  
+- ReplyTo (string, max 200, optional)  
+
+**Relations**  
+- One `EmailConfiguration` → Many `NotificationConfig`  
+
+---
+
+## NotificationSchedule : #BaseEntity  
+Represents a scheduled notification that must be processed by a background worker.  
+- NotificationConfigId (int, FK → NotificationConfig)  
+- TicketId (int?, FK → Ticket, nullable if not ticket-related)  
+- Recipient (string, required, max 500)  
+- Subject (string, max 200)  
+- Body (string, max 2000)  
+- NotificationType (enum: Email, SMS, App, System)  
+- EmailConfigurationId (int?, FK → EmailConfiguration, only when type = Email)  
+- ScheduledTime (DateTime, required)  
+- SentTime (DateTime, nullable)  
+- RetryCount (int, default 0)  
+- MaxRetryCount (int, default 3)  
+- Status (enum: Pending, Processing, Sent, Failed, Cancelled)  
+- ErrorMessage (string, max 1000, optional)  
+
+**Relations**  
+- One `NotificationConfig` → Many `NotificationSchedule`  
+- One `EmailConfiguration` → Many `NotificationSchedule` (optional, only for Email)  
