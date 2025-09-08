@@ -100,6 +100,7 @@ Scope for this development is to deliver a standalone QMS platform and connect i
     - **Super Admin:** Full system access; all companies, menus, and modules.  
     - **Company Admin:** Full access to modules for their assigned company only.  
     - **Department Manager:** Access to Ticket Centre, Complaints, and CAPA limited to their department.  
+    - **Supervisor:** Can see all tickets created by their subordinates in addition to their own.
     - **User:** Access to tickets or complaints they created, are assigned to, or are tagged in (My Tickets view).  
 
 ---
@@ -248,5 +249,174 @@ Scope for this development is to deliver a standalone QMS platform and connect i
 - Configurable per item type (ticket, complaint, CAPA).  
 - Recipients: Creator, Assigned user, Watch list, Tagged users.  
 - Template variables available (subject, description, department, assigned user, root cause, resolution, etc.).  
+
+---
+
+
+# Entities  
+
+## BaseEntity<TId>  
+Represents the base entity inherited by all models.  
+- Id (TId, primary key)  
+- CreatedDate (DateTime, required)  
+- CreatedBy (int, FK → User.Id)  
+- ModifiedDate (DateTime?)  
+- ModifiedBy (int, FK → User.Id) 
+- Status (enum: Active, Inactive, Archived)  
+- DeletedDate (DateTime?)  
+- DeletedBy (int, FK → User.Id) 
+
+---
+
+## User: #BaseEntity  
+Represents a system user.  
+- FirstName (string, required, max 100)  
+- LastName (string, required, max 100)  
+- Email (string, required, unique, max 200)  
+- PasswordHash (string, required, max 500)  
+- IsActive (bool, default true)  
+- LastLoginDate (DateTime?)  
+
+**Relations**  
+- One `User` → Many `UserRole` (maps user to roles)  
+- One `User` → Many `UserPermission` (direct permissions)  
+- One `User` → Many `UserCompany` (companies user belongs to)  
+- One `User` → Many `UserDepartment` (departments user belongs to)  
+
+---
+
+## Role:#BaseEntity  
+Defines a role for RBAC.  
+- Name (string, required, unique, max 100)  
+- Description (string, max 250)  
+
+**Relations**  
+- One `Role` → Many `UserRole` (users in this role)  
+- One `Role` → Many `RolePermission` (permissions granted to this role)  
+
+---
+
+## Permission:#BaseEntity    
+Represents a specific permission that can be assigned directly or through a role.  
+- Name (string, required, max 100)  
+- Description (string, max 250)  
+
+**Relations**  
+- One `Permission` → Many `RolePermission` (roles that include this permission)  
+- One `Permission` → Many `UserPermission` (users assigned this permission directly)  
+
+---
+## Company : #BaseEntity  
+Represents a company/tenant within the QMS.  
+- Name (string, required, max 200)  
+- Description (string, max 500)  
+- Status (enum: Active, Inactive)  
+
+**Relations**  
+- One `Company` → One `CompanyScopeConfig`  
+- One `Company` → Many `Department`  
+- One `Company` → Many `UserCompany` (users assigned to this company)  
+- One `Company` → Many `Ticket` / `CustomerComplaint` / `CAPA`  
+
+---
+
+## CompanyScopeConfig : #BaseEntity  
+Represents company-level scoping and numbering rules.  
+- CompanyId (long, FK → Company)  
+- PrefixTicket (string, max 10)  
+- PrefixComplaint (string, max 10)  
+- PrefixCAPA (string, max 10)  
+- SLASettings (ICollection<SLAConfigModel>)  
+- NotificationSettings (ICollection<NotificationModel>)  
+- RootCauseOptions (ICollection<RootCauseModel>)  
+- ResolutionOptions (ICollection<ResolutionModel>)  
+
+
+ **Relations**  
+- One `CompanyScopeConfig` → One `Company`  
+- One `CompanyScopeConfig` → Many SLA/Notification/RootCause/Resolution definitions  
+
+**Relations**  
+- One `Company` → Many `Department`  
+- One `Company` → Many `UserCompany` (users assigned to this company)  
+- One `Company` → Many `Ticket` / `CustomerComplaint` / `CAPA`  
+
+---
+
+## Department:#BaseEntity    
+Represents a department within a company.  
+- Name (string, required, max 100)  
+- Description (string, max 250)  
+- FkCompanyId (long, FK → Company)  
+
+**Relations**  
+- One `Department` → One `Company`  
+- One `Department` → Many `UserDepartment` (users assigned to this department)  
+- One `Department` → Many `Tickets` / `Complaints` / `CAPAs`  
+
+---
+
+## Menu:#BaseEntity    
+Represents a menu/module for permission control.  
+- Name (string, required, max 100)  
+- ParentId (int?, FK → Menu for hierarchy)  
+- TemplateId (int)
+- DisplayOrder (string, max 50)
+-IconClass (string, max 100)
+-IconViewBox (string, max 100)
+-Route (string, max 250)
+- 
+**Relations**  
+- One `Menu` → Many `Permission` (permissions applicable to this menu)  
+
+---
+
+## UserRole:#BaseEntity    
+Mapping table that links users and roles.  
+- FkUserId (long, FK → User)  
+- FkRoleId (int, FK → Role)  
+
+**Relations**  
+- Many-to-Many between `User` and `Role`  
+
+---
+
+## RolePermission:#BaseEntity    
+Mapping table that links roles and permissions.  
+- FkRoleId (int, FK → Role)  
+- FkPermissionId (int, FK → Permission)  
+
+**Relations**  
+- Many-to-Many between `Role` and `Permission`  
+
+---
+
+## UserPermission:#BaseEntity    
+Mapping table that links users and permissions directly.  
+- FkUserId (long, FK → User)  
+- FkPermissionId (int, FK → Permission)  
+
+**Relations**  
+- Many-to-Many between `User` and `Permission`  
+
+---
+
+## UserCompany:#BaseEntity    
+Mapping table that links users to companies.  
+- FkUserId (long, FK → User)  
+- FkCompanyId (long, FK → Company)  
+
+**Relations**  
+- Many-to-Many between `User` and `Company`  
+
+---
+
+## UserDepartment:#BaseEntity    
+Mapping table that links users to departments.  
+- FkUserId (long, FK → User)  
+- FkDepartmentId (int, FK → Department)  
+
+**Relations**  
+- Many-to-Many between `User` and `Department`  
 
 ---
