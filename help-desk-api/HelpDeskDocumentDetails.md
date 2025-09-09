@@ -124,6 +124,7 @@ Scope for this development is to deliver a standalone QMS platform and connect i
   - Subject & Description.  
   - Ticket type (company-defined).  
   - Project mapping (address, number).  
+  - Ticket Cetagory (Ticket,Capa,Goals,complaints).
   - Assigned user (Qsmart list).  
   - Department (multi-select).  
   - Root cause & Resolution.  
@@ -705,7 +706,8 @@ Represents a scheduled notification that must be processed by a background worke
 - Subject (string, required, max 200)
 - Description (string, max 4000)
 - SubmittedByUserId (long, FK → User, required)
-- CreatedAt (DateTime, required)
+- TicketTypeId (long, FK → TicketType, required)
+- TicketCategory (enum: Ticket, CAPA, Goals, Complaints)
 - Status (enum: Open, InProgress, Resolved, Closed)
 - Priority (enum: P1, P2, P3, P4)
 - AssignedUserId (long?, FK → User)
