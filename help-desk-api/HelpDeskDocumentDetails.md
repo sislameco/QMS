@@ -621,3 +621,144 @@ Represents a scheduled notification that must be processed by a background worke
 **Relations**  
 - One `NotificationConfig` → Many `NotificationSchedule`  
 - One `EmailConfiguration` → Many `NotificationSchedule` (optional, only for Email)  
+
+
+
+
+
+## TicketType : #BaseEntity
+- Name (string, required, max 100)
+- Description (string, max 250, optional)
+- IsEnabled (bool, default true)
+- DefaultPriority (enum: P1, P2, P3, P4)
+- DefaultAssignedUserId (int?, FK → User)
+- DefaultDepartments (ICollection<TicketTypeDepartmentMap>)
+
+**Relations**
+- One `TicketType` → Many `Tickets`
+- One `TicketType` → Many `SLAConfig`
+- One `TicketType` → Many `NotificationConfig`
+- One `TicketType` → Many `TicketTypeDepartmentMap`
+
+---
+
+## TicketLink : #BaseEntity
+- TicketId (long, FK → Ticket, required)
+- LinkedEntityType (enum: Ticket, Complaint, CAPA, Jira)
+- LinkedEntityId (long?, FK when internal)
+- ExternalKey (string, max 100, optional)
+- Notes (string, max 250, optional)
+
+**Relations**
+- One `Ticket` → Many `TicketLink`
+
+---
+
+## TicketDepartmentMap : #BaseEntity
+- TicketId (long, FK → Ticket, required)
+- DepartmentId (long, FK → Department, required)
+
+**Relations**
+- Many-to-Many between `Ticket` and `Department`
+
+---
+
+## TicketWatchList : #BaseEntity
+- TicketId (long, FK → Ticket, required)
+- UserId (long, FK → User, required)
+
+**Relations**
+- Many-to-Many between `Ticket` and `User`
+
+---
+
+## TicketComment : #BaseEntity
+- TicketId (long, FK → Ticket, required)
+- CommentText (string, required, max 4000)
+- CreatedByUserId (long, FK → User, required)
+- CreatedAt (DateTime, required)
+- MentionUserIds (string, max 500, optional)
+
+**Relations**
+- One `Ticket` → Many `TicketComment`
+- One `User` → Many `TicketComment`
+
+---
+
+## TicketAttachment : #BaseEntity
+- TicketId (long, FK → Ticket, required)
+- FileName (string, required, max 255)
+- FilePath (string, required, max 500)
+- ContentType (string, max 100)
+- SizeBytes (long)
+- UploadedByUserId (long, FK → User, required)
+- UploadedAt (DateTime, required)
+
+**Relations**
+- One `Ticket` → Many `TicketAttachment`
+
+---
+
+## Ticket : #BaseEntity
+- CompanyId (long, FK → Company, required)
+- TicketNumber (string, required, max 30)
+- Subject (string, required, max 200)
+- Description (string, max 4000)
+- SubmittedByUserId (long, FK → User, required)
+- CreatedAt (DateTime, required)
+- Status (enum: Open, InProgress, Resolved, Closed)
+- Priority (enum: P1, P2, P3, P4)
+- AssignedUserId (long?, FK → User)
+- ProjectDirectoryId (long?, FK → ProjectDirectory)
+- RootCauseId (long?, FK → RootCause)
+- ResolutionId (long?, FK → Resolution)
+- EstimatedTime (string?, `\d+[WDH]`)
+- DueDate (DateTime?, computed)
+- ResolvedAt (DateTime?)
+
+**Relations**
+- One `Company` → Many `Ticket`
+- One `User` → Many `Ticket`
+- One `ProjectDirectory` → Many `Ticket`
+- One `Ticket` → Many `TicketAttachment`
+- One `Ticket` → Many `TicketComment`
+- One `Ticket` → Many `TicketWatchList`
+- One `Ticket` → Many `TicketDepartmentMap`
+- One `Ticket` → Many `TicketLink`
+
+---
+
+## RootCause : #BaseEntity
+- CompanyId (long, FK → Company, required)
+- Name (string, required, max 100)
+- Code (string, max 30, optional)
+- Description (string, max 250, optional)
+- IsActive (bool, default true)
+- DisplayOrder (int, default 0)
+
+**Relations**
+- One `RootCause` → Many `Ticket`
+
+---
+
+## Resolution : #BaseEntity
+- CompanyId (long, FK → Company, required)
+- Name (string, required, max 100)
+- Code (string, max 30, optional)
+- Description (string, max 250, optional)
+- IsActive (bool, default true)
+- DisplayOrder (int, default 0)
+
+**Relations**
+- One `Resolution` → Many `Ticket`
+
+---
+
+## ProjectDirectory : #BaseEntity
+- CompanyId (long, FK → Company, required)
+- ProjectNumber (string, max 50)
+- ProjectAddress (string, max 300)
+- ExternalRef (string, max 100, optional)
+
+**Relations**
+- One `ProjectDirectory` → Many `Ticket`
