@@ -4,7 +4,7 @@ using Models.Entities.UserManagement;
 
 namespace Models.Entities.Audit
 {
-    [Table("AuditLog", Schema = "Audit")]
+    [Table("AuditLog", Schema = "log")]
     public class AuditLogModel : BaseEntity<long>
     {
         public string EntityName { get; set; } // e.g., Ticket, Complaint, CAPA, User
