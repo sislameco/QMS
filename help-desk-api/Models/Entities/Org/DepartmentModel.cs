@@ -1,6 +1,7 @@
+using Models.Entities;
+using Models.Entities.Issue;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Models.Entities;
 
 namespace Models.Entities.Org
 {
@@ -9,7 +10,8 @@ namespace Models.Entities.Org
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public long CompanyId { get; set; }
+        public long FKCompanyId { get; set; }
+        [ForeignKey("FKCompanyId")]
         public CompanyModel Company { get; set; }
         public ICollection<UserDepartmentModel> UserDepartments { get; set; }
     }

@@ -21,7 +21,4 @@ namespace Models.Entities.Setup
         public NotificationScheduleStatus Status { get; set; }
         public string ErrorMessage { get; set; }
     }
-
-    public enum NotificationType { Email, SMS, App, System }
-    public enum NotificationScheduleStatus { Pending, Processing, Sent, Failed, Cancelled }
 }

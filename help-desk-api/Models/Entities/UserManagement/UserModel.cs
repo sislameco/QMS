@@ -15,7 +15,7 @@ namespace Models.Entities.UserManagement
         public string PasswordHash { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
         public DateTime? LastLoginDate { get; set; }
-
+        public bool IsSuperAdmin { get; set; } = false;
         public ICollection<UserRoleModel> UserRoles { get; set; } = new List<UserRoleModel>();
         public ICollection<UserCompanyModel> UserCompanies { get; set; } = new List<UserCompanyModel>();
         public ICollection<UserDepartmentModel> UserDepartments { get; set; } = new List<UserDepartmentModel>();

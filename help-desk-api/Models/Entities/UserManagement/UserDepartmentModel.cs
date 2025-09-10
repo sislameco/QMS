@@ -7,9 +7,9 @@ namespace Models.Entities.UserManagement
     [Table("UserDepartment", Schema = "UserMgmt")]
     public class UserDepartmentModel : BaseEntity<long>
     {
-        public long UserId { get; set; }
+        public long FKUserId { get; set; }
         public UserModel User { get; set; }
-        public long DepartmentId { get; set; }
+        public long FKDepartmentId { get; set; }
         public DepartmentModel Department { get; set; }
     }
 }

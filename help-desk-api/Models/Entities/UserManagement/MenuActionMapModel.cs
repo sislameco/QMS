@@ -7,9 +7,9 @@ namespace Models.Entities.UserManagement
     [Table("MenuActionMap", Schema = "UserMgmt")]
     public class MenuActionMapModel : BaseEntity<long>
     {
-        public int MenuId { get; set; }
+        public int FKMenuId { get; set; }
         public MenuModel Menu { get; set; }
-        public int MenuActionId { get; set; }
+        public int FKMenuActionId { get; set; }
         public MenuActionModel MenuAction { get; set; }
         public ICollection<MenuActionRoleMappingModel> MenuActionRoleMappings { get; set; }
     }

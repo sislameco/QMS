@@ -1,3 +1,5 @@
+using Models.Entities.UserManagement;
+using Models.Enum;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,8 +12,10 @@ namespace Models.Entities.Issue
         public string Description { get; set; }
         public bool IsEnabled { get; set; }
         public TicketPriority DefaultPriority { get; set; }
-        public long? DefaultAssignedUserId { get; set; }
-        public ICollection<TicketDepartmentMapModel> DefaultDepartments { get; set; }
+        public long? FKAssignedUserId { get; set; }
+
+        [ForeignKey("FKAssignedUserId")]
+        public UserModel User { get; set; }
     }
 
 

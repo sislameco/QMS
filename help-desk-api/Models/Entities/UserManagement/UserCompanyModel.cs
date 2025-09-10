@@ -7,9 +7,9 @@ namespace Models.Entities.UserManagement
     [Table("UserCompany", Schema = "UserMgmt")]
     public class UserCompanyModel : BaseEntity<long>
     {
-        public long UserId { get; set; }
+        public long FKUserId { get; set; }
         public UserModel User { get; set; }
-        public long CompanyId { get; set; }
+        public long FKCompanyId { get; set; }
         public CompanyModel Company { get; set; }
     }
 }
