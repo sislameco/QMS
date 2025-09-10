@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Models.Entities.Company
+namespace Models.Entities.Issue
 {
-    [Table("TicketWatchList", Schema = "company")]
+    [Table("TicketWatchList", Schema = "issue")]
     public class TicketWatchListModel : BaseEntity<long>
     {
         public long TicketId { get; set; }

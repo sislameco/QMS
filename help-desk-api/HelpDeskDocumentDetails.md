@@ -699,35 +699,55 @@ Represents a scheduled notification that must be processed by a background worke
 - One `Ticket` → Many `TicketAttachment`
 
 ---
-
-## Ticket : #BaseEntity
-- CompanyId (long, FK → Company, required)
-- TicketNumber (string, required, max 30)
-- Subject (string, required, max 200)
-- Description (string, max 4000)
-- SubmittedByUserId (long, FK → User, required)
-- TicketTypeId (long, FK → TicketType, required)
-- TicketCategory (enum: Ticket, CAPA, Goals, Complaints)
-- Status (enum: Open, InProgress, Resolved, Closed)
-- Priority (enum: P1, P2, P3, P4)
-- AssignedUserId (long?, FK → User)
-- ProjectDirectoryId (long?, FK → ProjectDirectory)
-- RootCauseId (long?, FK → RootCause)
-- ResolutionId (long?, FK → Resolution)
-- EstimatedTime (string?, `\d+[WDH]`)
-- DueDate (DateTime?, computed)
-- ResolvedAt (DateTime?)
+## LeadCustomer : #BaseEntity
+- CompanyId (long, FK → Company, required)  
+- ProjectNumber (string, max 50)  
+- ProjectAddress (string, max 300)  
+- CustomerFirstName (string, max 100)  
+- CustomerLastName (string, max 100)  
 
 **Relations**
-- One `Company` → Many `Ticket`
-- One `User` → Many `Ticket`
-- One `ProjectDirectory` → Many `Ticket`
-- One `Ticket` → Many `TicketAttachment`
-- One `Ticket` → Many `TicketComment`
-- One `Ticket` → Many `TicketWatchList`
-- One `Ticket` → Many `TicketDepartmentMap`
-- One `Ticket` → Many `TicketLink`
+- One `Company` → Many `LeadCustomer`  
+- One `LeadCustomer` → Many `TicketLeadCustomerMap`
 
+---
+
+## TicketLeadCustomerMap : #BaseEntity
+- TicketId (long, FK → Ticket, required)  
+- LeadCustomerId (long, FK → LeadCustomer, required)  
+
+**Relations**
+- One `Ticket` → Many `TicketLeadCustomerMap`  
+- One `LeadCustomer` → Many `TicketLeadCustomerMap`  
+
+---
+
+## Ticket : #BaseEntity
+- CompanyId (long, FK → Company, required)  
+- TicketNumber (string, required, max 30)  
+- Subject (string, required, max 200)  
+- Description (string, max 4000)  
+- SubmittedByUserId (long, FK → User, required)  
+- TicketTypeId (long, FK → TicketType, required)  
+- TicketCategory (enum: Ticket, CAPA, Goals, Complaints)  
+- Status (enum: Open, InProgress, Resolved, Closed, Reopen)  
+- Priority (enum: P1, P2, P3, P4)  
+- AssignedUserId (long?, FK → User)  
+- RootCauseId (long?, FK → RootCause)  
+- ResolutionId (long?, FK → Resolution)  
+- EstimatedTime (string?, `\d+[WDH]`)  
+- DueDate (DateTime?, computed)  
+- ResolvedAt (DateTime?)  
+
+**Relations**
+- One `Company` → Many `Ticket`  
+- One `User` → Many `Ticket`  
+- One `Ticket` → Many `TicketAttachment`  
+- One `Ticket` → Many `TicketComment`  
+- One `Ticket` → Many `TicketWatchList`  
+- One `Ticket` → Many `TicketDepartmentMap`  
+- One `Ticket` → Many `TicketLink`  
+- One `Ticket` → Many `TicketLeadCustomerMap`
 ---
 
 ## RootCause : #BaseEntity
@@ -756,11 +776,3 @@ Represents a scheduled notification that must be processed by a background worke
 
 ---
 
-## ProjectDirectory : #BaseEntity
-- CompanyId (long, FK → Company, required)
-- ProjectNumber (string, max 50)
-- ProjectAddress (string, max 300)
-- ExternalRef (string, max 100, optional)
-
-**Relations**
-- One `ProjectDirectory` → Many `Ticket`

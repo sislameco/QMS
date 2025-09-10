@@ -13,13 +13,7 @@ namespace Models.Entities.UserManagement
     {
         public required string Name { get; set; }
         public string? Url { get; set; }
-
         public int? ParentId { get; set; }
-        public MenuModel? Parent { get; set; }
-        public ICollection<MenuModel> Children { get; set; } = new List<MenuModel>();
-
-        public ICollection<RoleMenuModel> RoleMenus { get; set; } = new List<RoleMenuModel>();
-
         public int TemplateId { get; set; }
         public int DisplayOrder { get; set; }
         public string IconClass { get; set; } = null!;
