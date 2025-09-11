@@ -1,6 +1,4 @@
-using Models.Entities;
-using Models.Entities.Issue;
-using System.Collections.Generic;
+using Models.Entities.UserManagement;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.Org
