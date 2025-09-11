@@ -11,13 +11,22 @@ using Utils.EmailUtil;
 using WebApi.Extensions;
 using WebApi.Middlewares;
 using WebApi.Transformers;
+using Models.AppSettings;
+using WebApi.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+var env = builder.Environment;
+
+// Load custom config
+var appConfiguration = env.GetAppConfiguration();
+builder.Configuration.AddConfiguration(appConfiguration);
+var configuration = builder.Configuration; // after AddConfiguration(appConfiguration)
+builder.Services.Configure<AppSettings>(configuration.GetSection("AppProperties"));
 
 builder.Services.AddDbContext<HelpDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("dbConn")));
 
 builder.Services.AddControllers(options =>
 {

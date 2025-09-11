@@ -4,8 +4,8 @@
     {
         public bool Success { get; set; } = true;
         public int StatusCode { get; set; } = 200;
-        public string? Message { get; set; }
-        public List<string>? Errors { get; set; }
+        public string Message { get; set; }
+        public List<string> Errors { get; set; }
     }
 
     public class ListResponse<T>: BaseResponse
@@ -15,7 +15,7 @@
 
     public class ObjectResponse<T>: BaseResponse
     {
-        public T? Data { get; set; }
+        public T Data { get; set; }
     }
 
     public class PaginatedResponse<T>: BaseResponse
