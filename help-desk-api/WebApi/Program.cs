@@ -4,6 +4,8 @@ using Repository;
 using Repository.Db;
 using Repository.Seeds;
 using Services;
+using Services.Interfaces;
+using Services.Implementations;
 using Utils;
 using Utils.EmailUtil;
 using WebApi.Extensions;
@@ -45,6 +47,9 @@ builder.Services.AddHttpContextAccessor();
 // Register the task queue as a singleton
 builder.Services.AddSingleton<IMailBackgroundTaskQueue>(_ => new MailBackgroundTaskQueue(100));
 builder.Services.AddHostedService<QueuedMailBackgroundService>();
+
+// Register UserService for DI
+builder.Services.AddScoped<IUserService, UserService>();
 
 // 🔄 Load origins from config
 var allowedOrigins = builder.Configuration
