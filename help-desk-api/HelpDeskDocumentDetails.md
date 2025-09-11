@@ -556,7 +556,7 @@ Defines SLA rules per priority level for a given ticket type.
 
 ---
 
-## NotificationConfig : #BaseEntity  
+## NotificationTemplate : #BaseEntity  
 Defines the rules for sending notifications.  
 - TicketTypeId (int, FK → TicketType)  
 - Trigger (enum: Created, Updated, Resolved, Closed, SLADue, SLAOverdue)  
@@ -568,7 +568,7 @@ Defines the rules for sending notifications.
 - IsEnabled (bool, default true)  
 
 **Relations**  
-- One `TicketType` → Many `NotificationConfig`  
+- One `TicketType` → Many `NotificationTemplate`  
 - One `NotificationConfig` → One `EmailConfiguration` (optional)  
 
 ---

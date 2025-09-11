@@ -1,3 +1,4 @@
+using Models.Entities.Company;
 using Models.Entities.Org;
 using Models.Enum;
 using System;
@@ -27,6 +28,6 @@ namespace Models.Entities.Setup
         public EmailConfigurationModel EmailConfiguration { get; set; }
 
         [ForeignKey("FKTicketId")]
-        public EmailConfigurationModel EmailConfiguration { get; set; }
+        public TicketModel Ticket { get; set; }
     }
 }

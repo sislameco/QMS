@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Models.Entities.UserManagement;
+using Models.Enum;
 
 namespace Models.Entities.Audit
 {
@@ -18,15 +19,5 @@ namespace Models.Entities.Audit
         public string UserAgent { get; set; }
         public string Notes { get; set; }
         public UserModel User { get; set; } // Navigation property
-    }
-
-    public enum AuditActionType
-    {
-        Created,
-        Updated,
-        Deleted,
-        Viewed,
-        Restored,
-        StatusChanged
     }
 }
