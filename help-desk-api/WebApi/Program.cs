@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Models.AppSettings;
 using Repository;
 using Repository.Db;
 using Repository.Seeds;
 using Services;
-using Services.Interfaces;
 using Services.Implementations;
+using Services.Interfaces;
 using Utils;
 using Utils.EmailUtil;
+using WebApi.Configuration;
 using WebApi.Extensions;
 using WebApi.Middlewares;
 using WebApi.Transformers;
-using Models.AppSettings;
-using WebApi.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +27,8 @@ var configuration = builder.Configuration; // after AddConfiguration(appConfigur
 builder.Services.Configure<AppSettings>(configuration.GetSection("AppProperties"));
 
 builder.Services.AddDbContext<HelpDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("dbConn")));
-
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+var ddd = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(new KebabCaseParameterTransformer()));
