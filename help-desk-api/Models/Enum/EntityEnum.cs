@@ -36,4 +36,11 @@ namespace Models.Enum
     /// Type of audit action performed.
     /// </summary>
     public enum AuditActionType { Created = 1, Updated = 2, Deleted = 3, Viewed = 4, Restored = 5, StatusChanged = 6 }
+
+    public enum EnumEntityStatus
+    {
+        Active = 1,
+        Inactive = 2,
+        Deleted = 3
+    }
 }

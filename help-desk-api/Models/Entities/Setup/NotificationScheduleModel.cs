@@ -1,7 +1,5 @@
-using Models.Entities.Company;
-using Models.Entities.Org;
+using Models.Entities.Issue;
 using Models.Enum;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.Setup
@@ -10,7 +8,7 @@ namespace Models.Entities.Setup
     public class NotificationScheduleModel : BaseEntity<long>
     {
         public long FKNotificationConfigId { get; set; }
-        public int? FKTicketId { get; set; }
+        public long? FKTicketId { get; set; }
         public string Recipient { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }

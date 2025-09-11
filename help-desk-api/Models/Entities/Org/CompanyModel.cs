@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Models.Entities;
+using Models.Entities.UserManagement;
 
 namespace Models.Entities.Org
 {
