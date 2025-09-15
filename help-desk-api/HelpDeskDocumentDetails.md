@@ -105,85 +105,6 @@ Scope for this development is to deliver a standalone QMS platform and connect i
 
 ---
 
-## Helpdesk (Ticket Centre)  
-- **Views**  
-  - **Kanban View:** Columns for Open, In Progress, Resolved, Closed. Cards show subject, type, priority, department, and assigned user. Drag-and-drop status changes. SLA due/overdue highlighting.  
-  - **Table View:** Full ticket list with sortable/filterable columns (ticket number, company, type, subject, status, assigned user, priority, due date). SLA due/overdue highlighting.  
-
-- **Ticket Creation**  
-  - Four-step form:  
-    1. Company & Subject  
-    2. Ticket Type & Project/Customer mapping  
-    3. Ticket-type specific sub-form  
-    4. Departments & Attachments  
-  - Once submitted, ticket appears in Ticket Centre.  
-
-- **Ticket Fields**  
-  - Ticket number (auto-generated, company prefix).  
-  - Company (fixed).  
-  - Subject & Description.  
-  - Ticket type (company-defined).  
-  - Project mapping (address, number).  
-  - Ticket Cetagory (Ticket,Capa,Goals,complaints).
-  - Assigned user (Qsmart list).  
-  - Department (multi-select).  
-  - Root cause & Resolution.  
-  - Status (Open → Closed).  
-  - Priority (P1–P4).  
-  - Attachments, comments (with tagging & notifications).  
-  - Linked items (tickets, complaints, CAPA).  
-  - Watch list & audit log.  
-  - SLA-driven Due Date & Resolved Time.  
-
----
-
-## Customer Complaints  
-- **Views**  
-  - **Kanban View:** Columns for Open, In Progress, Resolved, Closed. Cards show company, customer name, project address, priority, and assigned user. SLA highlighting.  
-  - **Table View:** Complaint list with sortable/filterable columns (complaint number, type, company, project, customer, status, assigned user, priority, due date). SLA highlighting.  
-
-- **Complaint Creation**  
-  - Three-step form:  
-    1. Company, Customer, Project (search for existing customer/project or enter details).  
-    2. Complaint sub-form (subject, description).  
-    3. Attachments (optional).  
-
-- **Complaint Fields**  
-  - Complaint number (auto-generated, prefix per company).  
-  - Customer details (name, email, phone).  
-  - Project mapping (address, number).  
-  - Complaint type (Informal, Formal).  
-  - Subject & Description.  
-  - Departments & Assigned user.  
-  - Root cause & Resolution.  
-  - Status & Priority.  
-  - Attachments, action plans, comments (with tagging), watch list, linked items (tickets, complaints, CAPA, Jira).  
-  - SLA-driven Due Date & Resolved Time.  
-
----
-
-## CAPA (Corrective and Preventive Action)  
-- **Views**  
-  - **Kanban View:** Columns for Open, In Progress, Resolved, Closed. Cards show subject, priority, departments, and assigned user. SLA highlighting.  
-  - **Table View:** CAPA list with sortable/filterable columns (CAPA number, company, subject, status, assigned user, priority, due date). SLA highlighting.  
-
-- **CAPA Fields**  
-  - CAPA number (auto-generated, prefix per company).  
-  - Subject & Description.  
-  - Created date/by.  
-  - Project mapping (address, number).  
-  - Departments & Assigned user.  
-  - Root cause & Resolution.  
-  - Status & Priority.  
-  - Risk Assessment (R1–R4).  
-  - Attachments, comments (with tagging & notifications).  
-  - Linked items (tickets, complaints, CAPA, Jira).  
-  - Action Plan creation.  
-  - Watch list & audit log.  
-  - SLA-driven Due Date & Resolved Time.  
-
----
-
 ## QMS Company Setup  
 - **Company Setup**  
   - Define prefixes for tickets, customer complaints, and CAPA.  
@@ -267,6 +188,87 @@ For each ticket type, administrators can configure notifications:
 
 ---
 
+## Helpdesk (Ticket Centre)  
+- **Views**  
+  - **Kanban View:** Columns for Open, In Progress, Resolved, Closed. Cards show subject, type, priority, department, and assigned user. Drag-and-drop status changes. SLA due/overdue highlighting.  
+  - **Table View:** Full ticket list with sortable/filterable columns (ticket number, company, type, subject, status, assigned user, priority, due date). SLA due/overdue highlighting.  
+
+- **Ticket Creation**  
+  - Four-step form:  
+    1. Company & Subject  
+    2. Ticket Type & Project/Customer mapping  
+    3. Ticket-type specific sub-form  
+    4. Departments & Attachments  
+  - Once submitted, ticket appears in Ticket Centre.  
+
+- **Ticket Fields**  
+  - Ticket number (auto-generated, company prefix).  
+  - Company (fixed).  
+  - Subject & Description.  
+  - Ticket type (company-defined).  
+  - Project mapping (address, number).  
+  - Ticket Cetagory (Ticket,Capa,Goals,complaints).
+  - Assigned user (Qsmart list).  
+  - Department (multi-select).  
+  - Root cause & Resolution.  
+  - Status (Open → Closed).  
+  - Priority (P1–P4).  
+  - Attachments, comments (with tagging & notifications).  
+  - Linked items (tickets, complaints, CAPA).  
+  - Watch list & audit log.  
+  - SLA-driven Due Date & Resolved Time.  
+
+---
+
+## Customer Complaints  
+- **Views**  
+  - **Kanban View:** Columns for Open, In Progress, Resolved, Closed. Cards show company, customer name, project address, priority, and assigned user. SLA highlighting.  
+  - **Table View:** Complaint list with sortable/filterable columns (complaint number, type, company, project, customer, status, assigned user, priority, due date). SLA highlighting.  
+
+- **Complaint Creation**  
+  - Three-step form:  
+    1. Company, Customer, Project (search for existing customer/project or enter details).  
+    2. Complaint sub-form (subject, description).  
+    3. Attachments (optional).  
+
+- **Complaint Fields**  
+  - Complaint number (auto-generated, prefix per company).  
+  - Customer details (name, email, phone).  
+  - Project mapping (address, number).  
+  - Complaint type (Informal, Formal).  
+  - Subject & Description.  
+  - Departments & Assigned user.  
+  - Root cause & Resolution.  
+  - Status & Priority.  
+  - Attachments, action plans, comments (with tagging), watch list, linked items (tickets, complaints, CAPA, Jira).  
+  - SLA-driven Due Date & Resolved Time.  
+
+---
+
+## CAPA (Corrective and Preventive Action)  
+- **Views**  
+  - **Kanban View:** Columns for Open, In Progress, Resolved, Closed. Cards show subject, priority, departments, and assigned user. SLA highlighting.  
+  - **Table View:** CAPA list with sortable/filterable columns (CAPA number, company, subject, status, assigned user, priority, due date). SLA highlighting.  
+
+- **CAPA Fields**  
+  - CAPA number (auto-generated, prefix per company).  
+  - Subject & Description.  
+  - Created date/by.  
+  - Project mapping (address, number).  
+  - Departments & Assigned user.  
+  - Root cause & Resolution.  
+  - Status & Priority.  
+  - Risk Assessment (R1–R4).  
+  - Attachments, comments (with tagging & notifications).  
+  - Linked items (tickets, complaints, CAPA, Jira).  
+  - Action Plan creation.  
+  - Watch list & audit log.  
+  - SLA-driven Due Date & Resolved Time.  
+
+---
+
+
+
 ## Qsmart QMS Integration  
 - **Frontend**  
   - Create tickets via QMS popup (company fixed to Churchfield).  
@@ -295,13 +297,13 @@ For each ticket type, administrators can configure notifications:
 ---
 
 ## Priority Settings  
-- Priorities are defined as **P1, P2, P3, P4** (highest to lowest).  
+- Priorities are defined as **Highest, High, Medium, Low** (highest to lowest).  
 - Each priority level has its own SLA time configured.  
 - Example:  
-  - P1 = 4 Hours (critical IT issue).  
-  - P2 = 1 Day.  
-  - P3 = 3 Days.  
-  - P4 = 1 Week.  
+  - Highest = 1 Week  
+  - High = 3 Days.  
+  - Medium = 1 Day.  
+  - Low = 4 Hours (critical IT issue).  
 - Priority is selectable on Ticket, Complaint, and CAPA forms.  
 - Changing priority mid-lifecycle updates SLA-driven Due Date.  
 
@@ -329,7 +331,6 @@ For each ticket type, administrators can configure notifications:
 
 ---
 
----
 
 
 # Entities  

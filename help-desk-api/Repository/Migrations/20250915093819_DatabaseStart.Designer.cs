@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20250911064851_DatabaseInitialization")]
-    partial class DatabaseInitialization
+    [Migration("20250915093819_DatabaseStart")]
+    partial class DatabaseStart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,36 +52,30 @@ namespace Repository.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("EntityName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("IPAddress")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("NewValues")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("OldValues")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserAgent")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -103,11 +97,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CustomerFirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CustomerLastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("DeletedAt")
@@ -120,11 +112,9 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("ProjectAddress")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ProjectNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -146,7 +136,6 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -156,7 +145,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("DisplayOrder")
@@ -172,7 +160,6 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -194,7 +181,6 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -204,7 +190,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("DisplayOrder")
@@ -220,7 +205,6 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -242,7 +226,6 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("ContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -255,11 +238,9 @@ namespace Repository.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("FileName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FilePath")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
@@ -284,7 +265,6 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("CommentText")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -297,7 +277,6 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("MentionUserIds")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("TicketId")
@@ -401,7 +380,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ExternalKey")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("FKTicketId")
@@ -411,7 +389,6 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -442,14 +419,12 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("EstimatedTime")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("FKCompanyId")
@@ -477,7 +452,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Subject")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("SubmittedByUserId")
@@ -487,7 +461,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("TicketNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -520,7 +493,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long?>("FKAssignedUserId")
@@ -533,7 +505,6 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -590,11 +561,9 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("BodyTemplate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CcList")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -616,7 +585,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("SubjectTemplate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("TicketTypeId")
@@ -648,14 +616,12 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
@@ -690,15 +656,12 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("PrefixCAPA")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PrefixComplaint")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PrefixTicket")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -727,7 +690,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("FKCompanyId")
@@ -737,7 +699,6 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -759,11 +720,9 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AccessKey")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BCC")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -773,7 +732,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Host")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("IMAPPort")
@@ -786,29 +744,24 @@ namespace Repository.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ReplyTo")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("SMTPPort")
                         .HasColumnType("integer");
 
                     b.Property<string>("SecretKey")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -825,7 +778,6 @@ namespace Repository.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Body")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -835,7 +787,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ErrorMessage")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long?>("FKEmailConfigurationId")
@@ -857,7 +808,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Recipient")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("RetryCount")
@@ -873,7 +823,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Subject")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -911,10 +860,10 @@ namespace Repository.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MenuActionId")
+                    b.Property<int?>("MenuActionId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MenuId")
+                    b.Property<int?>("MenuId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -944,18 +893,15 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HttpVerb")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -992,10 +938,10 @@ namespace Repository.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<long>("MenuActionMapId")
+                    b.Property<long?>("MenuActionMapId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1028,25 +974,21 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("IconClass")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("IconViewBox")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Route")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("TemplateId")
@@ -1122,14 +1064,12 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1148,7 +1088,7 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CompanyId")
+                    b.Property<long?>("CompanyId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1169,7 +1109,7 @@ namespace Repository.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -1195,7 +1135,7 @@ namespace Repository.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("DepartmentId")
+                    b.Property<long?>("DepartmentId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("FKDepartmentId")
@@ -1210,7 +1150,7 @@ namespace Repository.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -1237,15 +1177,12 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
@@ -1261,11 +1198,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1299,13 +1234,13 @@ namespace Repository.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -1321,9 +1256,7 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -1516,15 +1449,11 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.UserManagement.MenuActionModel", "MenuAction")
                         .WithMany("MenuActionMaps")
-                        .HasForeignKey("MenuActionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MenuActionId");
 
                     b.HasOne("Models.Entities.UserManagement.MenuModel", "Menu")
                         .WithMany("MenuActionMaps")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MenuId");
 
                     b.Navigation("Menu");
 
@@ -1535,15 +1464,11 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.UserManagement.MenuActionMapModel", "MenuActionMap")
                         .WithMany("MenuActionRoleMappings")
-                        .HasForeignKey("MenuActionMapId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MenuActionMapId");
 
                     b.HasOne("Models.Entities.UserManagement.RoleModel", "Role")
                         .WithMany("MenuActionRoleMappings")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("MenuActionMap");
 
@@ -1573,15 +1498,11 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.Org.CompanyModel", "Company")
                         .WithMany("UserCompanies")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany("UserCompanies")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Company");
 
@@ -1592,15 +1513,11 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.Org.DepartmentModel", "Department")
                         .WithMany("UserDepartments")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany("UserDepartments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Department");
 
@@ -1611,15 +1528,11 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.UserManagement.RoleModel", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Role");
 
@@ -1645,8 +1558,7 @@ namespace Repository.Migrations
                 {
                     b.Navigation("Departments");
 
-                    b.Navigation("ScopeConfig")
-                        .IsRequired();
+                    b.Navigation("ScopeConfig");
 
                     b.Navigation("UserCompanies");
                 });
