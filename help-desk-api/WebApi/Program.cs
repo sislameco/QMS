@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Models.AppSettings;
 using Repository;
 using Repository.Db;
@@ -8,6 +7,7 @@ using Repository.Seeds;
 using Services;
 using Services.Implementations;
 using Services.Interfaces;
+using Utilities.Redis;
 using Utils;
 using Utils.EmailUtil;
 using WebApi.Configuration;
@@ -61,6 +61,13 @@ builder.Services.AddHostedService<QueuedMailBackgroundService>();
 // Register UserService for DI
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Redis configuration
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = AppSettings.Redis.ConnectionString;
+});
+builder.Services.AddSingleton<ICacheService, CacheService>();
+
 // 🔄 Load origins from config
 var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
@@ -105,6 +112,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowFrontend");
+
+var cacheService = app.Services.GetRequiredService<ICacheService>();
+AuthCacheUtil.RedisCacheInitialize(cacheService);
 
 app.UseAuthorization();
 

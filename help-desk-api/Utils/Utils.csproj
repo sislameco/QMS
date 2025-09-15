@@ -9,10 +9,13 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.Core" Version="4.0.0.26" />
     <PackageReference Include="AWSSDK.SimpleEmailV2" Version="4.0.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.13.1" />
     <PackageReference Include="MimeKit" Version="4.13.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="11.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.1" />
   </ItemGroup>
 
