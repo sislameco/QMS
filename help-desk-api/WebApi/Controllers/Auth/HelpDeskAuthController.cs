@@ -27,7 +27,7 @@ namespace WebApi.Controllers.Auth
         [ProducesResponseType(typeof(HelpDeskLoginResponseDto), 200)]
         public async Task<IActionResult> Login([FromBody] HelpDeskLoginDto dto)
         {
-            var response = await _authService.LoginAsync(dto);
+            var response = await _authService.LoginAsync(dto,HttpContext,Request);
             return Ok(response);
         }
     }

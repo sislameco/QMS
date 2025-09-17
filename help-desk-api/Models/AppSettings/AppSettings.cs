@@ -9,11 +9,12 @@ namespace Models.AppSettings
     public class AppSettings
     {
         public static string Env { get; set; }
-        public static ReidsCon Redis { get; set; }
+        public static Redis Redis { get; set; }
         public static ELKConfiguration ELKConfiguration { get; set; }
         public static List<string> CorsOrigins { get; set; }
+        public static JWT Jwt { get; set; }
     }
-    public class ReidsCon
+    public class Redis
     {
         public string ConnectionString { get; set; }
     }
@@ -22,5 +23,11 @@ namespace Models.AppSettings
         public string Uri { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+    }
+    public class JWT
+    {
+        public string SecretKey { get; set; }
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
     }
 }

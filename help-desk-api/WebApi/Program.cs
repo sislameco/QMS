@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Models.AppSettings;
 using Repository;
 using Repository.Db;
@@ -25,6 +26,8 @@ var appConfiguration = env.GetAppConfiguration();
 builder.Configuration.AddConfiguration(appConfiguration);
 var configuration = builder.Configuration; // after AddConfiguration(appConfiguration)
 builder.Services.Configure<AppSettings>(configuration.GetSection("AppProperties"));
+builder.Services.AddSingleton(resolver =>
+    resolver.GetRequiredService<IOptions<AppSettings>>().Value);
 
 builder.Services.AddDbContext<HelpDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -50,7 +53,7 @@ builder.Services.RegisterServices(
 // Register Generic Repository + UnitOfWork
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
 // Registering HttpAccessor
 builder.Services.AddHttpContextAccessor();
 
@@ -64,7 +67,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 // Redis configuration
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = AppSettings.Redis.ConnectionString;
+    // Use configuration binding instead of static property
+    var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+    options.Configuration = redisConnectionString;
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();
 

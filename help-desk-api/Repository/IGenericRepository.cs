@@ -20,6 +20,7 @@ namespace Repository
         Task DeleteAsync(TId id);
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync();
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     }
 
     public class GenericRepository<T, TId> : IGenericRepository<T, TId> where T : BaseEntity<TId>
@@ -107,5 +108,10 @@ namespace Repository
 
         public async Task<int> CountAsync() =>
             await _dbSet.CountAsync(e => !e.IsDeleted);
+
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).Where(e => !e.IsDeleted).FirstOrDefaultAsync();
+        }
     }
 }

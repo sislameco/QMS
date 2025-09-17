@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Text.Json.Serialization;
+using UAParser;
 
 namespace Models.Dto.Auth
 {
@@ -10,5 +13,8 @@ namespace Models.Dto.Auth
 
         [Required]
         public string Password { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public Tuple<ClientInfo, IPAddress> Browser { get; set; }
     }
 }
