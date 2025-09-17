@@ -37,5 +37,20 @@ namespace Services.Implementations
             await _unitOfWork.Repository<UserModel, long>().DeleteAsync(id);
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task<UserModel?> ValidateCredentialsAsync(string email, string password)
+        {
+            var user = (await _unitOfWork.Repository<UserModel, long>()
+                .FindByConditionAsync(u => u.Email == email && u.IsActive))
+                .FirstOrDefault();
+
+            if (user == null) return null;
+
+            // Use a secure password hash comparison in production!
+            if (user.PasswordHash == password) // Replace with hash check
+                return user;
+
+            return null;
+        }
     }
 }

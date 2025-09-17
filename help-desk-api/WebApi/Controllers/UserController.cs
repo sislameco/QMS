@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities.UserManagement;
+using Models.Dto.Auth;
 using Services.Interfaces;
+using Utils.Auth;
 
 namespace WebApi.Controllers
 {

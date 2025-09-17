@@ -12,8 +12,4 @@
     <Compile Remove="Entities\Org\UserDepartmentModel.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\Auth\" />
-  </ItemGroup>
-
 </Project>

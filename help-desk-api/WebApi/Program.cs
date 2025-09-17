@@ -60,6 +60,7 @@ builder.Services.AddHostedService<QueuedMailBackgroundService>();
 
 // Register UserService for DI
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Redis configuration
 builder.Services.AddStackExchangeRedisCache(options =>
