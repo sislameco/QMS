@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Entities.UserManagement;
 using Services.Interfaces;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -1,9 +1,6 @@
 ﻿using Amazon.Runtime.Internal.Util;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
-using Model.DTOs.Authorization;
-using Model.DTOs.Menu;
-using Nest;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
