@@ -1,3 +1,7 @@
+using Models.Entities.UserManagement; // Add this at the top of the file
+
+namespace Repository.Seeds;
+
 modelBuilder.Entity<UserModel>().HasData(
 
 new UserModel
