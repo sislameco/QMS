@@ -4,16 +4,16 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class HealthController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<HealthController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public HealthController(ILogger<HealthController> logger)
         {
             _logger = logger;
         }

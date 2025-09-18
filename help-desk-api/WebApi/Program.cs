@@ -58,7 +58,8 @@ builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericReposito
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
 builder.Services.AddScoped<IHelpDeskAuthService, HelpDeskAuthService>();
-
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 // Registering HttpAccessor
 builder.Services.AddHttpContextAccessor();
 
