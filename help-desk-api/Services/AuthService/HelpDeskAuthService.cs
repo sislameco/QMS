@@ -16,12 +16,10 @@ namespace Services.AuthService
     public class HelpDeskAuthService : IHelpDeskAuthService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly PasswordHasher<UserModel> _passwordHasher;
         private readonly IJwtGenerator _jwtGenerator;
         public HelpDeskAuthService(IUnitOfWork unitOfWork, IJwtGenerator jwtGenerator)
         {
             _unitOfWork = unitOfWork;
-            _passwordHasher = new PasswordHasher<UserModel>();
             _jwtGenerator = jwtGenerator;
         }
         //*7wTu/0DUo
