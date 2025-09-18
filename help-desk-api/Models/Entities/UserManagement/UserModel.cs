@@ -5,7 +5,7 @@ using Models.Entities;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("User", Schema = "UserMgmt")]
+    [Table("Users", Schema = "UserMgmt")]
     public class UserModel : BaseEntity<long>
     {
         public string FirstName { get; set; } = string.Empty;

@@ -24,12 +24,12 @@ namespace Services.AuthService
             _passwordHasher = new PasswordHasher<UserModel>();
             _jwtGenerator = jwtGenerator;
         }
-
+        //*7wTu/0DUo
         public async Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskLoginDto dto, HttpContext httpContext, HttpRequest request)
         {
             string Password = Common.EncryptText(dto.Password);
             // 1. Fetch user by email
-            var user = await _unitOfWork.Repository<UserModel, long>().FirstOrDefaultAsync(u => u.Email == dto.Email && u.PasswordHash == Password);
+            var user = await _unitOfWork.Repository<UserModel, long>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password);
 
             if (user == null)
             {
@@ -39,17 +39,7 @@ namespace Services.AuthService
                     Message = "Invalid email or password."
                 };
             }
-
-            // 2. Verify password
-            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
-            if (result == PasswordVerificationResult.Failed)
-            {
-                return new HelpDeskLoginResponseDto
-                {
-                    Success = false,
-                    Message = "Invalid email or password."
-                };
-            }
+            //// 2. Verify password
             dto.Browser = Common.GetBrowserIpInformation(httpContext, request);
             var operatingSystem = Convert.ToString(httpContext.Request?.Headers["OperatingSystem"]);
             var Browser = dto.Browser.Item1.UA.ToString();
@@ -65,7 +55,7 @@ namespace Services.AuthService
             {
                 Success = true,
                 Message = "Login successful.",
-                Token = "TOKEN_PLACEHOLDER",
+                Token = token,
                 UserId = user.Id
             };
         }
@@ -77,7 +67,7 @@ namespace Services.AuthService
                 IpAddress = ip,
                 Browser = browser,
                 MachineUser = machine_user,
-                LoginTime = DateTime.Now,
+                LoginTime = DateTime.UtcNow,
             };
             await _unitOfWork.Repository<UserLoginModel, long>().AddAsync(userLoginObj);
             await _unitOfWork.CommitAsync();

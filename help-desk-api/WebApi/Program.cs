@@ -6,6 +6,7 @@ using Repository;
 using Repository.Db;
 using Repository.Seeds;
 using Services;
+using Services.AuthService;
 using Services.Implementations;
 using Services.Interfaces;
 using Utilities.Redis;
@@ -25,9 +26,11 @@ var env = builder.Environment;
 var appConfiguration = env.GetAppConfiguration();
 builder.Configuration.AddConfiguration(appConfiguration);
 var configuration = builder.Configuration; // after AddConfiguration(appConfiguration)
-builder.Services.Configure<AppSettings>(configuration.GetSection("AppProperties"));
-builder.Services.AddSingleton(resolver =>
-    resolver.GetRequiredService<IOptions<AppSettings>>().Value);
+// One-liner: bind AppProperties section into AppSettings and register as singleton
+builder.Services.AddSingleton(
+    builder.Configuration.GetSection("AppProperties").Get<AppSettings>()
+);
+
 
 builder.Services.AddDbContext<HelpDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -54,6 +57,8 @@ builder.Services.RegisterServices(
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
+builder.Services.AddScoped<IHelpDeskAuthService, HelpDeskAuthService>();
+
 // Registering HttpAccessor
 builder.Services.AddHttpContextAccessor();
 

@@ -8,10 +8,10 @@ namespace Repository.Seeds
     {
         public static async Task SeedDailyAvailabilityAsync(HelpDbContext context)
         {
-            if (!await context.Menus.AnyAsync())
+            if (!await context.Users.AnyAsync())
             {
-                await context.Menus.AddRangeAsync(DefaultMenus);
-                //await context.SaveChangesAsync();
+                await context.Users.AddRangeAsync(UserSeedData.Users);
+                await context.SaveChangesAsync();
             }
         }
     }

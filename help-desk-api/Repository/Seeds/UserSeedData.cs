@@ -1,9 +1,11 @@
 using Models.Entities.UserManagement; // Add this at the top of the file
 
-namespace Repository.Seeds;
-
-modelBuilder.Entity<UserModel>().HasData(
-
+namespace Repository.Seeds
+{
+    public static class UserSeedData
+    {
+        public static readonly UserModel[] Users =
+        {
 new UserModel
 {
     Id = 1,
@@ -21387,5 +21389,6 @@ new UserModel
     PasswordHash = "WJ!i5Ai9nJevXL8XslIUNQ==",
     IsActive = true,
     IsSuperAdmin = false
+}};
+    }
 }
-);

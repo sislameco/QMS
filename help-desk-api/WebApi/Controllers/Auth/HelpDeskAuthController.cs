@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/helpdesk")]
+    [Route("helpdesk")]
     public class HelpDeskAuthController : ControllerBase
     {
         private readonly IHelpDeskAuthService _authService;
