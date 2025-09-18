@@ -10,7 +10,6 @@ namespace Models.Entities.Org
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public CompanyStatus Status { get; set; }
         public CompanyScopeConfigModel ScopeConfig { get; set; }
         public ICollection<DepartmentModel> Departments { get; set; }
         public ICollection<UserCompanyModel> UserCompanies { get; set; }
