@@ -1,3 +1,4 @@
+using Models.Entities.Org;
 using Models.Entities.UserManagement; // Add this at the top of the file
 
 namespace Repository.Seeds
@@ -21390,5 +21391,16 @@ new UserModel
     IsActive = true,
     IsSuperAdmin = false
 }};
+    }
+
+    public static class CompanySeedData
+    {
+
+        public static readonly CompanyModel[] companies =
+    {
+        new CompanyModel { Name = "Qsmart", Description = "Updated Description" },
+        new CompanyModel { Name = "OMS", Description = "Updated OMS Description" },
+        new CompanyModel { Name = "Smart Lotto", Description = "Updated Smart Lotto Description" }
+    };
     }
 }
