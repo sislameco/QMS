@@ -5,7 +5,7 @@ using Models.Entities.UserManagement;
 
 namespace Models.Entities.Org
 {
-    [Table("Company", Schema = "Org")]
+    [Table("Companies", Schema = "Org")]
     public class CompanyModel : BaseEntity<long>
     {
         public string Name { get; set; }

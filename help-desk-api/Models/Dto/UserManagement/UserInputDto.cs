@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Models.Dto.User
+namespace Models.Dto.UserManagement
 {
     public class UserInputDto
     {

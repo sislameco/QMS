@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities.UserManagement;
-using Services.Interfaces;
+using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
 {

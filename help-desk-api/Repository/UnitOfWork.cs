@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Models.Entities;
 using Repository.Db;
+using Utils.LoginData;
 
 namespace Repository
 {
@@ -19,10 +20,11 @@ namespace Repository
         private readonly HelpDbContext _context;
         private readonly Dictionary<Type, object> _repositories = new();
         private IDbContextTransaction? _transaction;
-
-        public UnitOfWork(HelpDbContext context)
+        private readonly IUserInfos _userInfos;
+        public UnitOfWork(HelpDbContext context, IUserInfos userInfos)
         {
             _context = context;
+            _userInfos = userInfos;
         }
 
         public IGenericRepository<T, TId> Repository<T, TId>() where T : BaseEntity<TId>
@@ -31,7 +33,7 @@ namespace Repository
             if (_repositories.TryGetValue(type, out var repo))
                 return (IGenericRepository<T, TId>)repo;
 
-            var genericRepo = new GenericRepository<T, TId>(_context);
+            var genericRepo = new GenericRepository<T, TId>(_context, _userInfos);
             _repositories[type] = genericRepo;
             return genericRepo;
         }

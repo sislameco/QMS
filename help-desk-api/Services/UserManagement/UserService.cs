@@ -1,11 +1,18 @@
 using Models.Entities.UserManagement;
 using Repository;
-using Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Services.Implementations
+namespace Services.UserManagement
 {
+    public interface IUserService
+    {
+        Task<UserModel?> GetByIdAsync(long id);
+        Task<IEnumerable<UserModel>> GetAllAsync();
+        Task AddAsync(UserModel user);
+        Task UpdateAsync(UserModel user);
+        Task DeleteAsync(long id);
+    }
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;

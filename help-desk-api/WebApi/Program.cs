@@ -7,11 +7,11 @@ using Repository.Db;
 using Repository.Seeds;
 using Services;
 using Services.AuthService;
-using Services.Implementations;
-using Services.Interfaces;
+using Services.UserManagement;
 using Utilities.Redis;
 using Utils;
 using Utils.EmailUtil;
+using Utils.LoginData;
 using WebApi.Configuration;
 using WebApi.Extensions;
 using WebApi.Middlewares;
@@ -77,7 +77,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = redisConnectionString;
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();
-
+builder.Services.AddSingleton<IUserInfos, UserInfos>();
 // 🔄 Load origins from config
 var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
