@@ -13,6 +13,7 @@ namespace Models.AppSettings
         public static ELKConfiguration ELKConfiguration { get; set; }
         public static List<string> CorsOrigins { get; set; }
         public static JWT Jwt { get; set; }
+        public static BasicAuthCredential BasicAuthCredential { get; set; }
     }
     public class Redis
     {
@@ -31,4 +32,10 @@ namespace Models.AppSettings
         public string Audience { get; set; }
         public string ExpiryMinutes { get; set; }
     }
+    public class BasicAuthCredential
+    {
+        public string AccessKey { get; set; }
+        public string AccessSecret { get; set; }
+    }
+
 }

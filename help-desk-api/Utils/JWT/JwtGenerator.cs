@@ -31,8 +31,8 @@ namespace Utils
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
-                new Claim("firstName", userInfo.FirstName),
-                new Claim("userid", userInfo.Id.ToString()),
+                new Claim("FirstName", userInfo.FirstName),
+                new Claim("UserId", userInfo.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("IpAddress", ipAddress),
                 new Claim("LoginId", loginId.ToString())
