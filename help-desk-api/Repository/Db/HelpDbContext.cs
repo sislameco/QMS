@@ -14,6 +14,7 @@ namespace Repository.Db
     {
         public HelpDbContext(DbContextOptions<HelpDbContext> options) : base(options) { }
         public DbSet<UserModel> Users => Set<UserModel>();
+        public DbSet<UserLoginModel> UserLogins => Set<UserLoginModel>();
         public DbSet<RoleModel> Roles => Set<RoleModel>();
         public DbSet<MenuModel> Menus => Set<MenuModel>();
         public DbSet<UserRoleModel> UserRoles => Set<UserRoleModel>();

@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20250915093819_DatabaseStart")]
-    partial class DatabaseStart
+    [Migration("20250918140622_Company")]
+    partial class Company
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,11 +42,21 @@ namespace Repository.Migrations
                     b.Property<DateTime>("ChangedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("EntityId")
                         .HasColumnType("bigint");
@@ -57,9 +67,6 @@ namespace Repository.Migrations
                     b.Property<string>("IPAddress")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("NewValues")
                         .HasColumnType("text");
 
@@ -69,8 +76,17 @@ namespace Repository.Migrations
                     b.Property<string>("OldValues")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.Property<string>("UserAgent")
                         .HasColumnType("text");
@@ -85,6 +101,65 @@ namespace Repository.Migrations
                     b.ToTable("AuditLog", "log");
                 });
 
+            modelBuilder.Entity("Models.Entities.Audit.UserLoginModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Browser")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FkUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("LoginTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MachineUser")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserLogins", "log");
+                });
+
             modelBuilder.Entity("Models.Entities.Issue.LeadCustomerModel", b =>
                 {
                     b.Property<long>("Id")
@@ -93,8 +168,13 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
 
                     b.Property<string>("CustomerFirstName")
                         .HasColumnType("text");
@@ -102,14 +182,16 @@ namespace Repository.Migrations
                     b.Property<string>("CustomerLastName")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKCompanyId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("ProjectAddress")
                         .HasColumnType("text");
@@ -117,8 +199,17 @@ namespace Repository.Migrations
                     b.Property<string>("ProjectNumber")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -138,11 +229,21 @@ namespace Repository.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -156,14 +257,20 @@ namespace Repository.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -183,11 +290,21 @@ namespace Repository.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -201,14 +318,20 @@ namespace Repository.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -228,11 +351,21 @@ namespace Repository.Migrations
                     b.Property<string>("ContentType")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKTicketId")
                         .HasColumnType("bigint");
@@ -243,11 +376,17 @@ namespace Repository.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -267,17 +406,28 @@ namespace Repository.Migrations
                     b.Property<string>("CommentText")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("MentionUserIds")
                         .HasColumnType("text");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<long>("TicketId")
                         .HasColumnType("bigint");
@@ -285,8 +435,13 @@ namespace Repository.Migrations
                     b.Property<long?>("TicketModelId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -303,11 +458,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKDepartmentId")
                         .HasColumnType("bigint");
@@ -315,11 +480,17 @@ namespace Repository.Migrations
                     b.Property<long>("FKTicketId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -338,11 +509,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKLeadCustomerId")
                         .HasColumnType("bigint");
@@ -350,11 +531,17 @@ namespace Repository.Migrations
                     b.Property<long>("FKTicketId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -373,11 +560,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("ExternalKey")
                         .HasColumnType("text");
@@ -385,14 +582,20 @@ namespace Repository.Migrations
                     b.Property<long>("FKTicketId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -412,11 +615,21 @@ namespace Repository.Migrations
                     b.Property<long?>("AssignedUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -433,11 +646,12 @@ namespace Repository.Migrations
                     b.Property<long>("FKTicketTypeId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<long?>("ResolutionId")
                         .HasColumnType("bigint");
@@ -463,8 +677,13 @@ namespace Repository.Migrations
                     b.Property<string>("TicketNumber")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -483,14 +702,24 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
 
                     b.Property<int>("DefaultPriority")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -498,17 +727,23 @@ namespace Repository.Migrations
                     b.Property<long?>("FKAssignedUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -525,11 +760,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKTicketId")
                         .HasColumnType("bigint");
@@ -537,11 +782,17 @@ namespace Repository.Migrations
                     b.Property<long>("FKUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -566,23 +817,34 @@ namespace Repository.Migrations
                     b.Property<string>("CcList")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long?>("EmailConfigurationId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<string>("SubjectTemplate")
                         .HasColumnType("text");
@@ -593,8 +855,13 @@ namespace Repository.Migrations
                     b.Property<int>("Trigger")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -609,30 +876,43 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Company", "Org");
+                    b.ToTable("Companies", "Org");
                 });
 
             modelBuilder.Entity("Models.Entities.Org.CompanyScopeConfigModel", b =>
@@ -643,17 +923,24 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKCompanyId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("PrefixCAPA")
                         .HasColumnType("text");
@@ -664,8 +951,17 @@ namespace Repository.Migrations
                     b.Property<string>("PrefixTicket")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -683,11 +979,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -695,14 +1001,20 @@ namespace Repository.Migrations
                     b.Property<long>("FKCompanyId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -725,11 +1037,21 @@ namespace Repository.Migrations
                     b.Property<string>("BCC")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Host")
                         .HasColumnType("text");
@@ -740,14 +1062,15 @@ namespace Repository.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
                         .HasColumnType("text");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<string>("ReplyTo")
                         .HasColumnType("text");
@@ -758,8 +1081,13 @@ namespace Repository.Migrations
                     b.Property<string>("SecretKey")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.Property<string>("UserName")
                         .HasColumnType("text");
@@ -780,11 +1108,21 @@ namespace Repository.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text");
@@ -798,14 +1136,15 @@ namespace Repository.Migrations
                     b.Property<long?>("FKTicketId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("MaxRetryCount")
                         .HasColumnType("integer");
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<string>("Recipient")
                         .HasColumnType("text");
@@ -825,8 +1164,13 @@ namespace Repository.Migrations
                     b.Property<string>("Subject")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -845,11 +1189,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<int>("FKMenuActionId")
                         .HasColumnType("integer");
@@ -857,17 +1211,23 @@ namespace Repository.Migrations
                     b.Property<int>("FKMenuId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<int?>("MenuActionId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("MenuId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -886,11 +1246,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -898,14 +1268,20 @@ namespace Repository.Migrations
                     b.Property<string>("HttpVerb")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -920,11 +1296,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKMenuActionMapId")
                         .HasColumnType("bigint");
@@ -935,17 +1321,23 @@ namespace Repository.Migrations
                     b.Property<bool>("IsAllowed")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<long?>("MenuActionMapId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -964,11 +1356,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
@@ -979,14 +1381,15 @@ namespace Repository.Migrations
                     b.Property<string>("IconViewBox")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<string>("Route")
                         .HasColumnType("text");
@@ -994,8 +1397,13 @@ namespace Repository.Migrations
                     b.Property<int>("TemplateId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.Property<string>("Url")
                         .HasColumnType("text");
@@ -1022,23 +1430,39 @@ namespace Repository.Migrations
                     b.Property<bool>("CanView")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<int>("MenuId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -1057,23 +1481,48 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<string>("HomeUrl")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsSuperAdmin")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsSystemGenerated")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -1091,11 +1540,21 @@ namespace Repository.Migrations
                     b.Property<long?>("CompanyId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long>("FKCompanyId")
                         .HasColumnType("bigint");
@@ -1103,11 +1562,17 @@ namespace Repository.Migrations
                     b.Property<long>("FKUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
@@ -1129,11 +1594,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<long?>("DepartmentId")
                         .HasColumnType("bigint");
@@ -1144,11 +1619,17 @@ namespace Repository.Migrations
                     b.Property<long>("FKUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
@@ -1170,11 +1651,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -1186,9 +1677,6 @@ namespace Repository.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsSuperAdmin")
@@ -1203,12 +1691,24 @@ namespace Repository.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", "UserMgmt");
+                    b.ToTable("Users", "UserMgmt");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.UserRoleModel", b =>
@@ -1219,11 +1719,21 @@ namespace Repository.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
 
                     b.Property<int>("FKRoleId")
                         .HasColumnType("integer");
@@ -1231,14 +1741,20 @@ namespace Repository.Migrations
                     b.Property<long>("FKUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");

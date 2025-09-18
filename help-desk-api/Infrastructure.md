@@ -13,7 +13,7 @@
 ## 2. Naming Conventions
 
 - **Controllers**: Plural nouns, e.g., `UsersController`.
-- **Managers**: Singular noun with `Manager` suffix, e.g., `UserManager`.
+- **Services**: Singular noun with `Service` suffix, e.g., `UserService`.
 - **Unit of Work**: `IUnitOfWork` and `UnitOfWork`.
 - **Generic Repository**: `IGenericRepository<T, TId>` and `GenericRepository<T, TId>`.
 - **DTOs**: End with `InputDto`, `OutputDto`, or `Dto`.

@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Models.AppSettings;
 using Repository;
 using Repository.Db;
+using Repository.Repo.UserManagement;
 using Repository.Seeds;
 using Services;
-using Services.Implementations;
-using Services.Interfaces;
+using Services.AuthService;
+using Services.UserManagement;
 using Utilities.Redis;
 using Utils;
 using Utils.EmailUtil;
+using Utils.LoginData;
 using WebApi.Configuration;
 using WebApi.Extensions;
 using WebApi.Middlewares;
@@ -24,7 +27,11 @@ var env = builder.Environment;
 var appConfiguration = env.GetAppConfiguration();
 builder.Configuration.AddConfiguration(appConfiguration);
 var configuration = builder.Configuration; // after AddConfiguration(appConfiguration)
-builder.Services.Configure<AppSettings>(configuration.GetSection("AppProperties"));
+// One-liner: bind AppProperties section into AppSettings and register as singleton
+builder.Services.AddSingleton(
+    builder.Configuration.GetSection("AppProperties").Get<AppSettings>()
+);
+
 
 builder.Services.AddDbContext<HelpDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -50,6 +57,11 @@ builder.Services.RegisterServices(
 // Register Generic Repository + UnitOfWork
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
+
+builder.Services.AddAllServices(typeof(IPermissionService).Assembly);
+builder.Services.AddAllRepositories(typeof(IDashboardRepository).Assembly);
+
 
 // Registering HttpAccessor
 builder.Services.AddHttpContextAccessor();
@@ -65,10 +77,12 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 // Redis configuration
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = AppSettings.Redis.ConnectionString;
+    // Use configuration binding instead of static property
+    var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+    options.Configuration = redisConnectionString;
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();
-
+builder.Services.AddSingleton<IUserInfos, UserInfos>();
 // 🔄 Load origins from config
 var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")

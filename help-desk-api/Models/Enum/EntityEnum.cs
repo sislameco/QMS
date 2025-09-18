@@ -37,7 +37,7 @@ namespace Models.Enum
     /// </summary>
     public enum AuditActionType { Created = 1, Updated = 2, Deleted = 3, Viewed = 4, Restored = 5, StatusChanged = 6 }
 
-    public enum EnumEntityStatus
+    public enum EnumRStatus
     {
         Active = 1,
         Inactive = 2,

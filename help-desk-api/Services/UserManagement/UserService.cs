@@ -1,11 +1,20 @@
 using Models.Entities.UserManagement;
+using Models.Enum;
 using Repository;
-using Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Services.Implementations
+namespace Services.UserManagement
 {
+    public interface IUserService
+    {
+        Task<UserModel?> GetByIdAsync(long id);
+        Task<IEnumerable<UserModel>> GetAllAsync();
+        Task AddAsync(UserModel user);
+        Task UpdateAsync(UserModel user);
+        Task DeleteAsync(long id);
+        UserModel GetSystemUser();
+    }
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -38,19 +47,11 @@ namespace Services.Implementations
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<UserModel?> ValidateCredentialsAsync(string email, string password)
+        public UserModel GetSystemUser()
         {
-            var user = (await _unitOfWork.Repository<UserModel, long>()
-                .FindByConditionAsync(u => u.Email == email && u.IsActive))
-                .FirstOrDefault();
-
-            if (user == null) return null;
-
-            // Use a secure password hash comparison in production!
-            if (user.PasswordHash == password) // Replace with hash check
-                return user;
-
-            return null;
+           var result = _unitOfWork.Repository<UserModel, long>()
+                .FirstOrDefaultAsync(s=>  s.IsSuperAdmin == true  &&  s.RStatus == EnumRStatus.Active).Result;
+            return result;
         }
     }
 }

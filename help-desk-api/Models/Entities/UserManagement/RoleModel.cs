@@ -13,6 +13,9 @@ namespace Models.Entities.UserManagement
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string HomeUrl { get; set; }
+        public bool IsSuperAdmin { get; set; } = false;
+        public bool IsSystemGenerated { get; set; } = false;
         public ICollection<UserRoleModel> UserRoles { get; set; } = new List<UserRoleModel>();
         public ICollection<MenuActionRoleMappingModel> MenuActionRoleMappings { get; set; } = new List<MenuActionRoleMappingModel>();
     }

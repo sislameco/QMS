@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models.Entities;
+using Models.Enum;
 using Repository.Db;
 using System.Linq.Expressions;
+using Utils.LoginData;
 
 namespace Repository
 {
@@ -20,41 +22,43 @@ namespace Repository
         Task DeleteAsync(TId id);
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync();
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
     }
 
     public class GenericRepository<T, TId> : IGenericRepository<T, TId> where T : BaseEntity<TId>
     {
         protected readonly HelpDbContext _context;
         protected readonly DbSet<T> _dbSet;
-
-        public GenericRepository(HelpDbContext context)
+        protected readonly IUserInfos _userInfos;
+         public GenericRepository(HelpDbContext context, IUserInfos userInfos)
         {
+            _userInfos = userInfos;
             _context = context;
             _dbSet = _context.Set<T>();
         }
 
         public async Task<T?> GetByIdAsync(TId id) =>
-            await _dbSet.FirstOrDefaultAsync(e => e.Id!.Equals(id) && !e.IsDeleted);
+            await _dbSet.FirstOrDefaultAsync(e => e.Id!.Equals(id) && e.RStatus == EnumRStatus.Active);
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _dbSet.Where(e => !e.IsDeleted).ToListAsync();
+            return await _dbSet.Where(e => e.RStatus == EnumRStatus.Active).ToListAsync();
         }
 
         public async Task<List<TDto>> GetAllAsync<TDto>(Expression<Func<T, TDto>> selector)
         {
             return await _dbSet
-                .Where(e => !e.IsDeleted)
+                .Where(e => e.RStatus == EnumRStatus.Active)
                 .Select(selector)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> predicate) =>
-            await _dbSet.Where(predicate).Where(e => !e.IsDeleted).ToListAsync();
+            await _dbSet.Where(predicate).Where(e => e.RStatus == EnumRStatus.Active).ToListAsync();
 
         public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
         {
-            var query = _dbSet.Where(e => !e.IsDeleted);
+            var query = _dbSet.Where(e => e.RStatus == EnumRStatus.Active);
             var total = await query.CountAsync();
             var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             return (items, total);
@@ -62,33 +66,41 @@ namespace Repository
 
         public async Task AddAsync(T entity)
         {
-            entity.CreatedAt = DateTime.UtcNow;
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.RStatus = EnumRStatus.Active;
+            entity.CreatedBy = _userInfos.GetCurrentUserId();
             await _dbSet.AddAsync(entity);
         }
 
         public async Task AddAndSaveAsync(T entity)
         {
+            entity.CreatedDate = DateTime.UtcNow;
+            entity.RStatus = EnumRStatus.Active;
+            entity.CreatedBy = _userInfos.GetCurrentUserId();
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedDate = DateTime.UtcNow;
+            entity.UpdatedBy = _userInfos.GetCurrentUserId();
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
         }
 
         public void Update(T entity)
         {
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedDate = DateTime.UtcNow;
+            entity.UpdatedBy = _userInfos.GetCurrentUserId();
             _dbSet.Update(entity);
         }
 
         public async Task SoftDeleteAsync(T entity)
         {
-            entity.IsDeleted = true;
-            entity.DeletedAt = DateTime.UtcNow;
+            entity.RStatus = Models.Enum.EnumRStatus.Deleted;
+            entity.DeletedDate = DateTime.UtcNow;
+            entity.DeletedBy = _userInfos.GetCurrentUserId();
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
         }
@@ -103,9 +115,14 @@ namespace Repository
         }
 
         public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate) =>
-            await _dbSet.Where(e => !e.IsDeleted).AnyAsync(predicate);
+            await _dbSet.Where(e => e.RStatus == EnumRStatus.Active).AnyAsync(predicate);
 
         public async Task<int> CountAsync() =>
-            await _dbSet.CountAsync(e => !e.IsDeleted);
+            await _dbSet.CountAsync(e => e.RStatus == EnumRStatus.Active);
+
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).Where(e => e.RStatus == EnumRStatus.Active).FirstOrDefaultAsync();
+        }
     }
 }
