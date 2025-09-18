@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Models.AppSettings;
 using Repository;
 using Repository.Db;
+using Repository.Repo.UserManagement;
 using Repository.Seeds;
 using Services;
 using Services.AuthService;
@@ -57,9 +58,11 @@ builder.Services.RegisterServices(
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
-builder.Services.AddScoped<IHelpDeskAuthService, HelpDeskAuthService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IPermissionService, PermissionService>();
+
+builder.Services.AddAllServices(typeof(IPermissionService).Assembly);
+builder.Services.AddAllRepositories(typeof(IDashboardRepository).Assembly);
+
+
 // Registering HttpAccessor
 builder.Services.AddHttpContextAccessor();
 
