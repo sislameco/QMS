@@ -6,11 +6,11 @@ namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PermissionsController : ControllerBase
+    public class PermissionController : ControllerBase
     {
         private readonly IPermissionService _permissionService;
 
-        public PermissionsController(IPermissionService permissionService)
+        public PermissionController(IPermissionService permissionService)
         {
             _permissionService = permissionService;
         }
