@@ -14,7 +14,6 @@ namespace Models.Entities.UserManagement
         public required string Name { get; set; }
         public string? Url { get; set; }
         public int? ParentId { get; set; }
-        public int TemplateId { get; set; }
         public int DisplayOrder { get; set; }
         public string IconClass { get; set; } = null!;
         public string IconViewBox { get; set; } = null!;

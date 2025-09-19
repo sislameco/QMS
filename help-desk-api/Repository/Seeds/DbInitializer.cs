@@ -10,7 +10,7 @@ namespace Repository.Seeds
         {
             if (!await context.Users.AnyAsync())
             {
-                await context.Users.AddRangeAsync(UserSeedData.Users);
+                await context.Users.AddRangeAsync(SeedData.Users);
                 await context.SaveChangesAsync();
             }
             if(!await context.Companies.AnyAsync())

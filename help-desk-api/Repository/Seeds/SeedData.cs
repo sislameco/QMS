@@ -1,0 +1,133 @@
+using Models.Entities.Org;
+using Models.Entities.UserManagement;
+using Models.Enum; // Add this at the top of the file
+
+namespace Repository.Seeds
+{
+    public static class SeedData
+    {
+        public static readonly UserModel[] Users =
+        {
+            new UserModel
+            {
+                Id = 1,
+                FirstName = "System",
+                LastName = "User",
+                FullName = "System User",
+                UserName = "abc+essadmin",
+                Email = "abc+anupam.roy88@gmail.com",
+                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 77,
+                FirstName = "Brian",
+                LastName = "McLoughlin",
+                FullName = "Brian McLoughlin",
+                UserName = "bmcloughlin@churchfieldhomeservices.ie",
+                Email = "abcd+bmcloughlin@churchfieldhomeservices.ie",
+                PasswordHash = "92SHgNOWdyeSC5gLQpmYCw==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 78,
+                FirstName = "Emmanuel",
+                LastName = "Brobbey-Kyei",
+                FullName = "Emmanuel Brobbey-Kyei",
+                UserName = "manny@churchfieldhomeservices.ie",
+                Email = "abc+manny@churchfieldhomeservices.ie",
+                PasswordHash = "rAfMx53aQ|x7ynT0cvngHw==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 79,
+                FirstName = "Cian",
+                LastName = "OSullivan",
+                FullName = "Cian OSullivan",
+                UserName = "abc+cian.os@churchfieldhomeservices.ie",
+                Email = "abc+cian.os@churchfieldhomeservices.ie",
+                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 80,
+                FirstName = "Daniel",
+                LastName = "Ross",
+                FullName = "Daniel Ross",
+                UserName = "abc+dross@churchfieldhomeservices.ie",
+                Email = "abc+dross@churchfieldhomeservices.ie",
+                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 81,
+                FirstName = "Darragh",
+                LastName = "Walsh",
+                FullName = "Darragh Walsh",
+                UserName = "abc+dwalsh@churchfieldhomeservices.ie",
+                Email = "abc+dwalsh@churchfieldhomeservices.ie",
+                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 82,
+                FirstName = "Noel",
+                LastName = "Rowland",
+                FullName = "Noel Rowland",
+                UserName = "abc+noel@churchfieldhomeservices.ie",
+                Email = "abc+noel@churchfieldhomeservices.ie",
+                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+                RStatus = EnumRStatus.Active
+            },
+            new UserModel
+            {
+                Id = 83,
+                FirstName = "Khalid",
+                LastName = "Bin Awlad",
+                FullName = "Khalid Bin Awlad",
+                UserName = "khalid.awlad@efficientsoftwaresolutions.com",
+                Email = "abc+khalid.awlad@efficientsoftwaresolutions.com",
+                PasswordHash = "n|Kb6PwNwTfug2W9ZNGq7w==",
+                RStatus = EnumRStatus.Active
+            }
+        };
+    }
+
+    public static class CompanySeedData
+    {
+        public static readonly CompanyModel[] companies =
+        {
+            new CompanyModel { Name = "Qsmart", Description = "Updated Description", RStatus = EnumRStatus.Active },
+            new CompanyModel { Name = "OMS", Description = "Updated OMS Description", RStatus = EnumRStatus.Active },
+            new CompanyModel { Name = "Smart Lotto", Description = "Updated Smart Lotto Description", RStatus = EnumRStatus.Active }
+        };
+    }
+
+    public static class MenuSeedData
+    {
+        public static readonly MenuModel[] menus =
+        {
+            new MenuModel { Name = "DashBoard", ParentId = null, Url = "#", DisplayOrder = 1, IconClass = "#", IconViewBox = "#", RStatus = EnumRStatus.Active },
+            new MenuModel { Name = "User Management", ParentId = null, Url = "#", DisplayOrder = 2, IconClass = "#", IconViewBox = "#", RStatus = EnumRStatus.Active },
+            new MenuModel { Name = "Company", ParentId = null, Url = "#", DisplayOrder = 2, IconClass = "#", IconViewBox = "#", RStatus = EnumRStatus.Active }
+        };
+    }
+
+    public static class RoleSeedData
+    {
+        public static readonly RoleModel[] menus =
+        {
+            new RoleModel { Name = "Super Admin", Description = null, HomeUrl = "#", IsSuperAdmin = true, IsSystemGenerated = true, RStatus = EnumRStatus.Active },
+            new RoleModel { Name = "Supervisor", Description = "", HomeUrl = "#", IsSuperAdmin = false, IsSystemGenerated = true, RStatus = EnumRStatus.Active },
+            new RoleModel { Name = "Company Admin", Description = "", HomeUrl = "#", IsSuperAdmin = false, IsSystemGenerated = true, RStatus = EnumRStatus.Active },
+            new RoleModel { Name = "User", Description = "", HomeUrl = "#", IsSuperAdmin = false, IsSystemGenerated = true, RStatus = EnumRStatus.Active }
+        };
+    }
+}
+

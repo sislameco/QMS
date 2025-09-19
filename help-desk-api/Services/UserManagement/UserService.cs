@@ -1,8 +1,5 @@
 using Models.Entities.UserManagement;
-using Models.Enum;
 using Repository;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Services.UserManagement
 {
@@ -13,7 +10,6 @@ namespace Services.UserManagement
         Task AddAsync(UserModel user);
         Task UpdateAsync(UserModel user);
         Task DeleteAsync(long id);
-        UserModel GetSystemUser();
     }
     public class UserService : IUserService
     {
@@ -45,13 +41,6 @@ namespace Services.UserManagement
         {
             await _unitOfWork.Repository<UserModel, long>().DeleteAsync(id);
             await _unitOfWork.CommitAsync();
-        }
-
-        public UserModel GetSystemUser()
-        {
-           var result = _unitOfWork.Repository<UserModel, long>()
-                .FirstOrDefaultAsync(s=>  s.IsSuperAdmin == true  &&  s.RStatus == EnumRStatus.Active).Result;
-            return result;
         }
     }
 }

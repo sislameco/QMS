@@ -120,13 +120,13 @@ The Helpdesk has a setup section in the QMS Admin Panel for defining and managin
   - Change ticket type name.  
   - Set default departments (multi-select from company’s departments).  
   - Set default assigned user (single-select from company’s users).  
-  - Set default priority (single-select from P1–P4).  
+  - Set default priority (single-select from (Highest-Low).  
   - Configure SLA per priority level (time in hours, defined for each of the 4 priorities).  
   - Configure notifications for lifecycle events.  
 
 ### SLA per Priority  
 - SLA is entered in **hours**.  
-- SLA is configured separately for each priority (P1–P4).  
+- SLA is configured separately for each priority (Highest-Low).  
 - Due dates are automatically calculated = Created Date + SLA.  
 - Updating ticket priority recalculates the due date.  
 
@@ -212,7 +212,7 @@ For each ticket type, administrators can configure notifications:
   - Department (multi-select).  
   - Root cause & Resolution.  
   - Status (Open → Closed).  
-  - Priority (P1–P4).  
+  - Priority (Highest-Low).  
   - Attachments, comments (with tagging & notifications).  
   - Linked items (tickets, complaints, CAPA).  
   - Watch list & audit log.  
@@ -353,8 +353,8 @@ Represents a system user.
 - FirstName (string, required, max 100)  
 - LastName (string, required, max 100)  
 - Email (string, required, unique, max 200)  
+- UserName (string, required, unique, max 200)  
 - PasswordHash (string, required, max 500)  
-- IsActive (bool, default true)  
 - LastLoginDate (DateTime?)  
 
 **Relations**  
@@ -534,7 +534,7 @@ Represents a ticket type within the Helpdesk.
 - Name (string, required, max 100)  
 - Description (string, max 250, optional)  
 - IsEnabled (bool, default true)  
-- DefaultPriority (enum: P1, P2, P3, P4)  
+- DefaultPriority (enum: Highest, High, Medium, Low)  
 - DefaultAssignedUserId (int?, FK → User)  
 - DefaultDepartments (ICollection<TicketTypeDepartmentMap>)  
 
@@ -549,7 +549,7 @@ Represents a ticket type within the Helpdesk.
 ## SLAConfig : #BaseEntity  
 Defines SLA rules per priority level for a given ticket type.  
 - TicketTypeId (int, FK → TicketType)  
-- Priority (enum: P1, P2, P3, P4)  
+- Priority (enum: Highest, High, Medium, Low)  
 - DurationHours (int, required)  
 
 **Relations**  
@@ -632,7 +632,7 @@ Represents a scheduled notification that must be processed by a background worke
 - Name (string, required, max 100)
 - Description (string, max 250, optional)
 - IsEnabled (bool, default true)
-- DefaultPriority (enum: P1, P2, P3, P4)
+- DefaultPriority (enum: Highest, High, Medium, Low)
 - DefaultAssignedUserId (int?, FK → User)
 - DefaultDepartments (ICollection<TicketTypeDepartmentMap>)
 
@@ -732,7 +732,7 @@ Represents a scheduled notification that must be processed by a background worke
 - TicketTypeId (long, FK → TicketType, required)  
 - TicketCategory (enum: Ticket, CAPA, Goals, Complaints)  
 - Status (enum: Open, InProgress, Resolved, Closed, Reopen)  
-- Priority (enum: P1, P2, P3, P4)  
+- Priority (enum: enum: Highest, High, Medium, Low)  
 - AssignedUserId (long?, FK → User)  
 - RootCauseId (long?, FK → RootCause)  
 - ResolutionId (long?, FK → Resolution)  
