@@ -18,6 +18,16 @@ namespace Repository.Seeds
                 await context.Companies.AddRangeAsync(CompanySeedData.companies);
                 await context.SaveChangesAsync();
             }
+            if (!await context.Menus.AnyAsync())
+            {
+                await context.Menus.AddRangeAsync(MenuSeedData.menus);
+                await context.SaveChangesAsync();
+            }
+            if (!await context.Roles.AnyAsync())
+            {
+                await context.Roles.AddRangeAsync(RoleSeedData.menus);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

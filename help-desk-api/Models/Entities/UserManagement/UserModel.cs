@@ -16,7 +16,7 @@ namespace Models.Entities.UserManagement
         public string PasswordHash { get; set; } = string.Empty;
         public DateTime? LastLoginDate { get; set; }
         public ICollection<UserRoleModel> UserRoles { get; set; } = new List<UserRoleModel>();
-        public ICollection<UserCompanyModel> UserCompanies { get; set; } = new List<UserCompanyModel>();
-        public ICollection<UserDepartmentModel> UserDepartments { get; set; } = new List<UserDepartmentModel>();
+        public ICollection<RoleCompanyModel> UserCompanies { get; set; } = new List<RoleCompanyModel>();
+        public ICollection<RoleDepartmentModel> UserDepartments { get; set; } = new List<RoleDepartmentModel>();
     }
 }

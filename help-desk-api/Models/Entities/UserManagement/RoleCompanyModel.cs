@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("UserCompany", Schema = "UserMgmt")]
-    public class UserCompanyModel : BaseEntity<long>
+    [Table("RoleCompany", Schema = "UserMgmt")]
+    public class RoleCompanyModel : BaseEntity<long>
     {
-        public long FKUserId { get; set; }
-        public UserModel User { get; set; }
+        public long FKRoleId { get; set; }
+        public RoleModel Role { get; set; }
         public long FKCompanyId { get; set; }
         public CompanyModel Company { get; set; }
     }
