@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.Dto.UserManagement;
 using Services.UserManagement;
+using WebApi.Helper.Security;
 
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("api/[controller]")]
+    [CustomAuthorization]
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService _permissionService;

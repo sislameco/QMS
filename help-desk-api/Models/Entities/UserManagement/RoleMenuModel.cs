@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("RoleMenu", Schema = "account")]
+    [Table("RoleMenu", Schema = "UserMgmt")]
     public class RoleMenuModel: BaseEntity<int>
     {
         public int RoleId { get; set; }

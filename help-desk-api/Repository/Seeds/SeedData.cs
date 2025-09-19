@@ -119,12 +119,28 @@ namespace Repository.Seeds
     {
         public static readonly CompanyModel[] companies =
         {
-            new CompanyModel { Name = "Qsmart", Description = "Updated Description", RStatus = EnumRStatus.Active ,CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1},
-            new CompanyModel { Name = "OMS", Description = "Updated OMS Description", RStatus = EnumRStatus.Active,CreatedDate = DateTime.UtcNow,
+            new CompanyModel 
+            { 
+                Name = "Qsmart", 
+                Description = "Updated Description", 
+                RStatus = EnumRStatus.Active ,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new CompanyModel 
+            { 
+                Name = "OMS", 
+                Description = "Updated OMS Description", 
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1 },
-            new CompanyModel { Name = "Smart Lotto", Description = "Updated Smart Lotto Description", RStatus = EnumRStatus.Active,CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1 }
+            new CompanyModel 
+            { 
+                Name = "Smart Lotto", 
+                Description = "Updated Smart Lotto Description", 
+                RStatus = EnumRStatus.Active,CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1 
+            }
         };
     }
 
@@ -133,13 +149,41 @@ namespace Repository.Seeds
         public static readonly MenuModel[] menus =
         {
             new MenuModel 
-            { Name = "DashBoard", ParentId = null, Url = "#", DisplayOrder = 1, IconClass = "#", IconViewBox = "#", RStatus = EnumRStatus.Active,    CreatedDate = DateTime.UtcNow,
+            { 
+                Name = "DashBoard", 
+                ParentId = null, 
+                Url = "#", 
+                DisplayOrder = 1, 
+                IconClass = "#", 
+                IconViewBox = "#", 
+                RStatus = EnumRStatus.Active,    
+                CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1
             },
-            new MenuModel { Name = "User Management", ParentId = null, Url = "#", DisplayOrder = 2, IconClass = "#", IconViewBox = "#", RStatus = EnumRStatus.Active     ,CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1},
-            new MenuModel { Name = "Company", ParentId = null, Url = "#", DisplayOrder = 2, IconClass = "#", IconViewBox = "#", RStatus = EnumRStatus.Active ,CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1}
+            new MenuModel 
+            { 
+                Name = "User Management", 
+                ParentId = null, 
+                Url = "#", 
+                DisplayOrder = 2, 
+                IconClass = "#", 
+                IconViewBox = "#", 
+                RStatus = EnumRStatus.Active     ,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel 
+            { 
+                Name = "Company", 
+                ParentId = null, 
+                Url = "#", 
+                DisplayOrder = 2, 
+                IconClass = "#", 
+                IconViewBox = "#", 
+                RStatus = EnumRStatus.Active ,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            }
         };
     }
 
@@ -147,14 +191,94 @@ namespace Repository.Seeds
     {
         public static readonly RoleModel[] menus =
         {
-            new RoleModel { Name = "Super Admin", Description = null, HomeUrl = "#", IsSuperAdmin = true, IsSystemGenerated = true, RStatus = EnumRStatus.Active,CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1 },
-            new RoleModel { Name = "Supervisor", Description = "", HomeUrl = "#", IsSuperAdmin = false, IsSystemGenerated = true, RStatus = EnumRStatus.Active,CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1 },
-            new RoleModel { Name = "Company Admin", Description = "", HomeUrl = "#", IsSuperAdmin = false, IsSystemGenerated = true, RStatus = EnumRStatus.Active ,CreatedDate = DateTime.UtcNow,
+            new RoleModel 
+            { 
+                Name = "Super Admin", 
+                Description = null, 
+                HomeUrl = "#", 
+                IsSuperAdmin = true, 
+                IsSystemGenerated = true, 
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1 
+            },
+            new RoleModel 
+            { 
+                Name = "Supervisor", 
+                Description = "", 
+                HomeUrl = "#", 
+                IsSuperAdmin = false, 
+                IsSystemGenerated = true, 
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1 
+            },
+            new RoleModel 
+            { 
+                Name = "Company Admin", 
+                Description = "", 
+                HomeUrl = "#", 
+                IsSuperAdmin = false, 
+                IsSystemGenerated = true, 
+                RStatus = EnumRStatus.Active ,
+                CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1},
-            new RoleModel { Name = "User", Description = "", HomeUrl = "#", IsSuperAdmin = false, IsSystemGenerated = true, RStatus = EnumRStatus.Active,CreatedDate = DateTime.UtcNow,
+            new RoleModel { 
+                Name = "User", 
+                Description = "", 
+                HomeUrl = "#", 
+                IsSuperAdmin = false, 
+                IsSystemGenerated = true, 
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1 }
+        };
+    }
+
+    public static class MenuActionSeedData
+    {
+        public static readonly MenuActionModel[] menuActions =
+        {
+             new MenuActionModel
+            {
+                Id = 1,
+                Name = "View",
+                HttpVerb = "GET",
+                Description = "View resource",CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuActionModel
+            {
+                Id = 2,
+                Name = "Add",
+                HttpVerb = "POST",
+                Description = "Create new resource",CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuActionModel
+            {
+                Id = 3,
+                Name = "Edit",
+                HttpVerb = "PUT",
+                Description = "Update existing resource",CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuActionModel
+            {
+                Id = 4,
+                Name = "Delete",
+                HttpVerb = "DELETE",
+                Description = "Remove resource",CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuActionModel
+            {
+                Id = 5,
+                Name = "Patch",
+                HttpVerb = "PATCH",
+                Description = "Partially update resource",CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            }
         };
     }
 }

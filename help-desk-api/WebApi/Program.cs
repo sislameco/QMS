@@ -16,7 +16,9 @@ using Utils.EmailUtil;
 using Utils.LoginData;
 using WebApi.Configuration;
 using WebApi.Extensions;
+using WebApi.Helper;
 using WebApi.Middlewares;
+using WebApi.Services.Security;
 using WebApi.Transformers;
 
 
@@ -84,8 +86,12 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddSingleton<IUserInfos, UserInfos>();
-// 🔄 Load origins from config
-var allowedOrigins = builder.Configuration
+builder.Services.AddBearerHeader();
+
+builder.Services.AddMvc(options =>{options.Filters.Add<AuthFilter>();});
+
+    // 🔄 Load origins from config
+    var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
     .Get<string[]>();
 // 🔐 CORS Policy

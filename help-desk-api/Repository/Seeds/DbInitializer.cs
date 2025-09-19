@@ -28,6 +28,11 @@ namespace Repository.Seeds
                 await context.Roles.AddRangeAsync(RoleSeedData.menus);
                 await context.SaveChangesAsync();
             }
+            if (!await context.MenuActions.AnyAsync())
+            {
+                await context.MenuActions.AddRangeAsync(MenuActionSeedData.menuActions);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
