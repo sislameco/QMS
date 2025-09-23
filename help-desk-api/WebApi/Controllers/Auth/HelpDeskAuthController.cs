@@ -25,9 +25,9 @@ namespace WebApi.Controllers.Auth
         [Route("login")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(HelpDeskLoginResponseDto), 200)]
-        public async Task<IActionResult> Login([FromBody] HelpDeskLoginDto dto)
+        public async Task<IActionResult> Login(HelpDeskLoginDto data)
         {
-            var response = await _authService.LoginAsync(dto,HttpContext,Request);
+            var response = await _authService.LoginAsync(data, HttpContext,Request);
             return Ok(response);
         }
 

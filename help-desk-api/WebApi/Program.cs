@@ -87,24 +87,40 @@ builder.Services.AddStackExchangeRedisCache(options =>
 builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddSingleton<IUserInfos, UserInfos>();
 builder.Services.AddBearerHeader();
-
+var corsOrigins = builder.Configuration.GetSection("AppProperties:CorsOrigins").Get<string[]>();
 builder.Services.AddMvc(options =>{options.Filters.Add<AuthFilter>();});
 
-    // 🔄 Load origins from config
-    var allowedOrigins = builder.Configuration
+// ✅ Use the CORS policy
+
+
+// 🔄 Load origins from config
+var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
     .Get<string[]>();
-// 🔐 CORS Policy
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowFrontend",
-//        policy =>
-//        {
-//            policy.WithOrigins(allowedOrigins!)
-//                  .AllowAnyHeader()
-//                  .AllowAnyMethod();
-//        });
-//});
+
+// Add CORS policy using CorsOrigins from config
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AppCorsPolicy", policy =>
+    {
+        policy.WithOrigins(corsOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowAnyOrigin();
+    });
+});
+
+// 1. Add CORS service
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 // Building Web Application
 var app = builder.Build();
@@ -132,6 +148,8 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 }
+// ✅ Use the CORS policy
+app.UseCors("AllowAll");
 
 app.UseCors("AllowFrontend");
 

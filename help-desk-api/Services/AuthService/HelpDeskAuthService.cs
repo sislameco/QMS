@@ -57,11 +57,11 @@ namespace Services.AuthService
 
             var menus = await _menuRepository.GetPermittedActions(user.Id);
 
-            if (!menus.Any())
-                throw new BadRequestException("You have no permitted menus!");
+            //if (!menus.Any())
+            //    throw new BadRequestException("You have no permitted menus!");
 
             var menu_cache_key = $"{user.Id}";
-            AuthCacheUtil.SetPermittedMenu(menu_cache_key, menus);
+            //AuthCacheUtil.SetPermittedMenu(menu_cache_key, menus);
 
             //// 3. Verify password
             dto.Browser = Common.GetBrowserIpInformation(httpContext, request);
@@ -72,14 +72,30 @@ namespace Services.AuthService
             var loginId = await SaveUserLogin(user.Id, UserHostAddress, Browser, machine_user);
 
             string token="";
-            if (user!=null)
+            string refreshToken = "";
+
+            int tokenValidaty = 480; //minutes;
+            int refreshTokenValidity = 1;
+
+            if (operatingSystem == "android" || operatingSystem == "ios")
+            {
+                tokenValidaty = 365 * 24 * 60; //minutes
+                refreshTokenValidity = tokenValidaty * 2;//days
+            }
+            if (user != null)
+            {
                 token = _jwtGenerator.GenerateJWT(user, UserHostAddress, loginId);
+                refreshToken = await CreateRefreshToken(user.Id, UserHostAddress, loginId, refreshTokenValidity);
+            }
+
             // 4. Return success response with token placeholder
             return new HelpDeskLoginResponseDto
             {
                 Success = true,
                 Message = "Login successful.",
                 Token = token,
+                RefreshToken = refreshToken,
+                IsPasswordChange = true,
                 UserId = user.Id
             };
         }
