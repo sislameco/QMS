@@ -354,7 +354,7 @@ namespace Repository.Seeds
 
     public static class MenuActionMapModelSeedData
     {
-        public static readonly MenuActionMapModel[] menuActions =
+        public static readonly MenuActionMapModel[] menuActionMaps =
         {
             new MenuActionMapModel
             {

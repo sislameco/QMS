@@ -33,6 +33,11 @@ namespace Repository.Seeds
                 await context.MenuActions.AddRangeAsync(MenuActionSeedData.menuActions);
                 await context.SaveChangesAsync();
             }
+            if (!await context.MenuActionRoleMappings.AnyAsync())
+            {
+                await context.MenuActionMaps.AddRangeAsync(MenuActionMapModelSeedData.menuActionMaps);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
