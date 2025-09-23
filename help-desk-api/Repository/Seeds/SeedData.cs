@@ -351,5 +351,117 @@ namespace Repository.Seeds
             }
         };
     }
+
+    public static class MenuActionMapModelSeedData
+    {
+        public static readonly MenuActionMapModel[] menuActions =
+        {
+            new MenuActionMapModel
+            {
+                FKMenuId = 4, 
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1 
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 4,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 2 
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 4, 
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 3 
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 4,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 4 
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 4,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5 
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 5,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 5,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 2
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 5,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 3
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 5,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 4
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 5,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5
+            },
+             new MenuActionMapModel
+            {
+                FKMenuId = 6,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 6,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 2
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 6,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 3
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 6,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 4
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 6,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5
+            }
+        };
+    }
 }
 
