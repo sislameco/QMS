@@ -11,6 +11,6 @@ namespace Models.Entities.Org
         public long FKCompanyId { get; set; }
         [ForeignKey("FKCompanyId")]
         public CompanyModel Company { get; set; }
-        public ICollection<RoleDepartmentModel> UserDepartments { get; set; }
+        public ICollection<UserDepartmentModel> UserDepartments { get; set; }
     }
 }

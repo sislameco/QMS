@@ -15,15 +15,16 @@ namespace Repository.Db
         public HelpDbContext(DbContextOptions<HelpDbContext> options) : base(options) { }
         public DbSet<UserModel> Users => Set<UserModel>();
         public DbSet<UserLoginModel> UserLogins => Set<UserLoginModel>();
+        public DbSet<RefreshTokenModel> RefreshTokens => Set<RefreshTokenModel>();
         public DbSet<RoleModel> Roles => Set<RoleModel>();
         public DbSet<MenuModel> Menus => Set<MenuModel>();
         public DbSet<UserRoleModel> UserRoles => Set<UserRoleModel>();
         public DbSet<MenuActionModel> MenuActions => Set<MenuActionModel>();
         public DbSet<MenuActionMapModel> MenuActionMaps => Set<MenuActionMapModel>();
         public DbSet<MenuActionRoleMappingModel> MenuActionRoleMappings => Set<MenuActionRoleMappingModel>();
+        public DbSet<AssociateActionRouteModel> AssociateActionRoutes => Set<AssociateActionRouteModel>();
         public DbSet<RoleMenuModel> RoleMenus => Set<RoleMenuModel>();
-        public DbSet<RoleCompanyModel> RoleCompanies => Set<RoleCompanyModel>();
-        public DbSet<RoleDepartmentModel> RoleDepartments => Set<RoleDepartmentModel>();
+        public DbSet<UserDepartmentModel> UserDepartments => Set<UserDepartmentModel>();
         public DbSet<AuditLogModel> AuditLogs => Set<AuditLogModel>();
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();
         public DbSet<CompanyScopeConfigModel> CompanyScopeConfigs => Set<CompanyScopeConfigModel>();

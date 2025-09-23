@@ -7,8 +7,10 @@ namespace Models.Entities.UserManagement
     public class RoleMenuModel: BaseEntity<int>
     {
         public int RoleId { get; set; }
+        [ForeignKey("RoleId")]
         public RoleModel Role { get; set; } = default!;
 
+        [ForeignKey("MenuId")]
         public int MenuId { get; set; }
         public MenuModel Menu { get; set; } = default!;
 

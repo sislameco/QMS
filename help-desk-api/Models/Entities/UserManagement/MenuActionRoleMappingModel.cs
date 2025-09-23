@@ -7,8 +7,10 @@ namespace Models.Entities.UserManagement
     public class MenuActionRoleMappingModel : BaseEntity<long>
     {
         public int FKRoleId { get; set; }
+        [ForeignKey("FKRoleId")]
         public RoleModel Role { get; set; }
         public long FKMenuActionMapId { get; set; }
+        [ForeignKey("FKMenuActionMapId")]
         public MenuActionMapModel MenuActionMap { get; set; }
         public bool IsAllowed { get; set; }
     }

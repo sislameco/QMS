@@ -30,5 +30,13 @@ namespace WebApi.Controllers.Auth
             var response = await _authService.LoginAsync(dto,HttpContext,Request);
             return Ok(response);
         }
+
+
+        [HttpGet]
+        [Route("sign-out")]
+        public async Task<IActionResult> SignOut()
+        {
+            return Ok(_authService.SignOut());
+        }
     }
 }

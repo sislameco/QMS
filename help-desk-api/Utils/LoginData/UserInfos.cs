@@ -10,14 +10,20 @@ namespace Utils.LoginData
     public interface IUserInfos
     {
         int GetCurrentUserId();
+        void SetUserId(int userId);
     }
     public class UserInfos : IUserInfos
     {
         private readonly IHttpContextAccessor _accessor;
+        private static int _userId = 0;
         public UserInfos(IHttpContextAccessor accessor)
         {
             _accessor = accessor;
 
+        }
+        public void SetUserId(int userId)
+        {
+            _userId = userId;
         }
         public int GetCurrentUserId()
         {

@@ -4,12 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("RoleDepartment", Schema = "UserMgmt")]
-    public class RoleDepartmentModel : BaseEntity<long>
+    [Table("UserDepartments", Schema = "UserMgmt")]
+    public class UserDepartmentModel : BaseEntity<long>
     {
-        public long FKRoleId { get; set; }
-        public RoleModel Role { get; set; }
+        public long FkCompanyId { get; set; }
+        [ForeignKey("FkCompanyId")]
+        public CompanyModel Company { get; set; }
+        public long FkUserId { get; set; }
+        [ForeignKey("FkUserId")]
+        public UserModel Role { get; set; }
         public long FKDepartmentId { get; set; }
+        [ForeignKey("FKDepartmentId")]
         public DepartmentModel Department { get; set; }
     }
 }

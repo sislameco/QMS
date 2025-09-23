@@ -1,6 +1,11 @@
-﻿using Models.Dto.UserManagement;
+﻿using Models.Dto.Menus;
+using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Repository;
+using Repository.Repo.Permission;
+using Utilities.Redis;
+using Utils.Exceptions;
+using Utils.LoginData;
 
 namespace Services.UserManagement
 {
@@ -9,14 +14,18 @@ namespace Services.UserManagement
         Task<bool> AssignRolesAsync(UserRoleAssignDto request);
         Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(long userId);
         Task<bool> RemoveUserRolesAsync(long userId, List<long> roleIds);
+        Task<UserMenus> GetUserMenus();
     }
     public class PermissionService : IPermissionService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public PermissionService(IUnitOfWork unitOfWork)
+        private readonly IMenuRepository _menuRepository;
+        private readonly  IUserInfos _user;
+        public PermissionService(IUnitOfWork unitOfWork, IMenuRepository menuRepository, IUserInfos user)
         {
             _unitOfWork = unitOfWork;
+            _menuRepository = menuRepository;
+            _user = user;
         }
 
         public async Task<bool> AssignRolesAsync(UserRoleAssignDto request)
@@ -77,6 +86,26 @@ namespace Services.UserManagement
 
             await _unitOfWork.CommitAsync();
             return true;
+        }
+
+        public async Task<UserMenus> GetUserMenus()
+        {
+            int userId = _user.GetCurrentUserId();
+            if (userId < 1)
+                throw new BadRequestException("Invalid User Id!");
+
+            UserMenus userMenus = AuthCacheUtil.GetPermittedUserResources(userId);
+
+            if (userMenus != null)
+                return userMenus;
+
+            // get permitted menu, user info and powerBi data
+           // userMenus = await GetUserResource(userId, templateId);
+
+            // Set new Cache
+            AuthCacheUtil.SetPermittedUserResources(userId, userMenus);
+
+            return userMenus;
         }
     }
 

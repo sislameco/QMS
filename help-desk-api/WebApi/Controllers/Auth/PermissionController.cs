@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.Menus;
 using Models.Dto.UserManagement;
 using Services.UserManagement;
 using WebApi.Helper.Security;
@@ -38,6 +39,15 @@ namespace WebApi.Controllers.Auth
             await _permissionService.RemoveUserRolesAsync(userId, roleIds);
             return Ok(new { Message = "Roles removed successfully" });
         }
+
+        [HttpGet]
+        [Route("get-menus-user-info")]
+        [ProducesResponseType(typeof(PermittedMenuDto), 200)]
+        public async Task<IActionResult> PermittedMenus()
+        {
+            return Ok(await _permissionService.GetUserMenus());
+        }
+
     }
 
 }

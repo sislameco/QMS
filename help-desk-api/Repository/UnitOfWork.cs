@@ -9,6 +9,7 @@ namespace Repository
     {
         IGenericRepository<T, TId> Repository<T, TId>()
             where T : BaseEntity<TId>;
+        IGenericNonBaseRepository<T, TId> WithOutRepository<T, TId>() where T : class;
         Task<int> CommitAsync();
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();
@@ -34,6 +35,17 @@ namespace Repository
                 return (IGenericRepository<T, TId>)repo;
 
             var genericRepo = new GenericRepository<T, TId>(_context, _userInfos);
+            _repositories[type] = genericRepo;
+            return genericRepo;
+        }
+
+        public IGenericNonBaseRepository<T, TId> WithOutRepository<T, TId>() where T : class
+        {
+            var type = typeof(T);
+            if (_repositories.TryGetValue(type, out var repo))
+                return (IGenericNonBaseRepository<T, TId>)repo;
+
+            var genericRepo = new GenericNonBaseRepository<T, TId>(_context);
             _repositories[type] = genericRepo;
             return genericRepo;
         }
