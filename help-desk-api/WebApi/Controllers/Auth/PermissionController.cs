@@ -8,7 +8,7 @@ using WebApi.Helper.Security;
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("permission")]
     [CustomAuthorization]
     public class PermissionController : ControllerBase
     {
@@ -26,7 +26,8 @@ namespace WebApi.Controllers.Auth
             return Ok(result);
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet()]
+        [AllowAnonymous]
         public async Task<IActionResult> GetRoles(long userId)
         {
             var result = await _permissionService.GetUserRolesAsync(userId);
@@ -41,11 +42,13 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpGet]
-        [Route("get-menus-user-info")]
+        [Route("get-menus")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(PermittedMenuDto), 200)]
         public async Task<IActionResult> PermittedMenus()
         {
-            return Ok(await _permissionService.GetUserMenus());
+           // return Ok(await _permissionService.GetUserMenus());
+            return Ok(await _permissionService.GetUserMenus(77));
         }
 
     }

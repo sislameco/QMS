@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("user")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -15,9 +17,10 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserModel>>> GetAll()
+        [AllowAnonymous]
+        public async Task<ActionResult> GetAll([FromForm] UserFilterDto input)
         {
-            var users = await _userService.GetAllAsync();
+            var users = await _userService.GetAllAsync(input);
             return Ok(users);
         }
 

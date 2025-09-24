@@ -1,20 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models.Dto.Dashboard;
 using Models.Dto.Menus;
 using Repository.Db;
-using Repository.Repo.UserManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Repository.Repo.Permission
 {
     public interface IMenuRepository
     {
-        Task<List<PermittedActionsOutputDto>> GetPermittedActions(long userId);
+        Task<List<PerMenuDto>> GetPermittedActions(long userId);
     }
+
     public class MenuRepository : IMenuRepository
     {
         private readonly HelpDbContext _dbContext;
@@ -23,71 +18,62 @@ namespace Repository.Repo.Permission
         {
             _dbContext = dbContext;
         }
-        public async Task<List<PermittedActionsOutputDto>> GetPermittedActions(long userId)
+
+        public async Task<List<PerMenuDto>> GetPermittedActions(long userId)
         {
+            var flatMenus =
+                (from m in _dbContext.Menus
+                 where m.ParentId == null
+                 select new UserMenuDto
+                 {
+                     Id = m.Id,
+                     MenuName = m.Name ?? "",
+                     Route = m.Route,
+                     ParentId = m.ParentId,
+                     DisplayOrder = m.DisplayOrder,
+                     Icon = m.IconClass
+                 })
+                .Union
+                (from m in _dbContext.Menus
+                 join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
+                 select new UserMenuDto
+                 {
+                     Id = m.Id,
+                     MenuName = m.Name,
+                     Route = m.Route,
+                     ParentId = m.ParentId,
+                     DisplayOrder = m.DisplayOrder,
+                     Icon = m.IconClass
+                 })
+                .Distinct()
+                .OrderBy(x => x.DisplayOrder)
+                .ToList();
 
-            // First part: with AssociateActionRoutes
-            // Fix for CS1941: The type of one of the expressions in the join clause is incorrect.
-            // The join clause: join route in _dbContext.AssociateActionRoutes on map.Id equals route.FkMenuActionMapId
-            // Problem: map.Id is long, route.FkMenuActionMapId is int? (nullable int).
-            // Solution: Cast map.Id to int and handle nullable route.FkMenuActionMapId.
+            var menuTree = flatMenus
+    .Where(m => m.ParentId == null) // top-level menus
+    .Select(m => new PerMenuDto
+    {
+        Id = m.Id,
+        MenuName = m.MenuName,
+        Route = m.Route,
+        DisplayOrder = m.DisplayOrder,
+        Icon = m.Icon,
+        SubMenus = flatMenus
+            .Where(sm => sm.ParentId == m.Id)
+            .OrderBy(sm => sm.DisplayOrder)
+            .ToList().Select(sm => new MenuBasicDto
+            {
+                Id = sm.Id,
+                MenuName = sm.MenuName,
+                Route = sm.Route,
+                DisplayOrder = sm.DisplayOrder,
+                Icon = sm.Icon
+            }).ToList()
+    })
+    .OrderBy(m => m.DisplayOrder)
+    .ToList();
+            return menuTree;
 
-            var query1 = from menu in _dbContext.Menus
-                         join map in _dbContext.MenuActionMaps on menu.Id equals map.FKMenuId into gj1
-                         from map in gj1.DefaultIfEmpty()
-                         join route in _dbContext.AssociateActionRoutes on (int?)map.Id equals route.FkMenuActionMapId
-                         join action in _dbContext.MenuActions on map.FKMenuActionId equals action.Id into gj2
-                         from action in gj2.DefaultIfEmpty()
-                         join userRole in _dbContext.MenuActionRoleMappings on map.Id equals userRole.FKMenuActionMapId into gj3
-                         from userRole in gj3.DefaultIfEmpty()
-                         join role in _dbContext.UserRoles on userRole.FKRoleId equals role.Id into gj4
-                         from role in gj4.DefaultIfEmpty()
-                         join roleMap in _dbContext.UserRoles on role.Id equals roleMap.FKRoleId into gj5
-                         from roleMap in gj5.DefaultIfEmpty()
-                         where roleMap.FKUserId == userId
-                         select new PermittedActionsOutputDto
-                         {
-                             UserId = userId,
-                             MenuId = menu.Id,
-                             MapId = map.Id,
-                             MenuName = menu.Name,
-                             ApiUrl = route.ApiUrl,
-                             SystemMenuName = menu.Name,
-                             HttpVerb = route.HttpVerb
-                         };
-
-            // Second part: directly from MenuActionMap
-            var query2 = from menu in _dbContext.Menus
-                         join map in _dbContext.MenuActionMaps on menu.Id equals map.FKMenuId into gj1
-                         from map in gj1.DefaultIfEmpty()
-                         join action in _dbContext.MenuActions on map.FKMenuActionId equals action.Id into gj2
-                         from action in gj2.DefaultIfEmpty()
-                         join userRole in _dbContext.MenuActionRoleMappings on map.Id equals userRole.FKMenuActionMapId into gj3
-                         from userRole in gj3.DefaultIfEmpty()
-                         join role in _dbContext.UserRoles on userRole.FKRoleId equals role.Id into gj4
-                         from role in gj4.DefaultIfEmpty()
-                         join roleMap in _dbContext.UserRoles on role.Id equals roleMap.FKRoleId into gj5
-                         from roleMap in gj5.DefaultIfEmpty()
-                         where roleMap.FKUserId == userId
-                         select new PermittedActionsOutputDto
-                         {
-                             UserId = userId,
-                             MenuId = menu.Id,
-                             MapId = map.Id,
-                             MenuName = menu.Name,
-                             ApiUrl = map.ApiUrl,
-                             SystemMenuName = menu.Name,
-                             HttpVerb = action.HttpVerb
-                         };
-
-            // Combine with Union
-            var result = await query1
-                .Union(query2)
-                .OrderBy(x => x.MenuId)
-                .ToListAsync();
-
-            return result;
         }
-
     }
 }

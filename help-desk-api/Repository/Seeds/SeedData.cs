@@ -156,7 +156,8 @@ namespace Repository.Seeds
                 ParentId = null,
                 Url = "#",
                 DisplayOrder = 1,
-                IconClass = "#",
+                Route = "/",
+                IconClass = "svg-menu-home",
                 IconViewBox = "#",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
@@ -188,9 +189,10 @@ namespace Repository.Seeds
             },
             new MenuModel
             {
-                Name = "Users && Department Permissions",
+                Name = "Users",
                 ParentId = 2,
                 Url = "#",
+                Route = "/pages/user-management/users/list",
                 DisplayOrder = 1,
                 IconClass = "#",
                 IconViewBox = "#",
@@ -200,9 +202,10 @@ namespace Repository.Seeds
             },
             new MenuModel
             {
-                Name = "Roles & Permissions",
+                Name = "Roles",
                 ParentId = 2,
                 Url = "#",
+                Route = "/pages/user-management/roles",
                 DisplayOrder = 2,
                 IconClass = "#",
                 IconViewBox = "#",

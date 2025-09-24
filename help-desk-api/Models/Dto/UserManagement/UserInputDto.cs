@@ -1,3 +1,4 @@
+using Models.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models.Dto.UserManagement
@@ -22,5 +23,16 @@ namespace Models.Dto.UserManagement
         [Required]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = string.Empty;
+    }
+
+    public class UserOutPutDto
+    {
+
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Roles { get; set; } = string.Empty;
+        public EnumRStatus Status { get; set; }
+        public string Departments { get; set; } = string.Empty;
     }
 }

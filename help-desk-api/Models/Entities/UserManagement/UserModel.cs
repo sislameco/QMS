@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using Models.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.UserManagement
 {
@@ -13,6 +10,7 @@ namespace Models.Entities.UserManagement
         public string FullName { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public DateTime LastLoginDate { get; set; }
         public DateTime LastPasswordChange { get; set; }

@@ -14,7 +14,7 @@ namespace Services.UserManagement
         Task<bool> AssignRolesAsync(UserRoleAssignDto request);
         Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(long userId);
         Task<bool> RemoveUserRolesAsync(long userId, List<long> roleIds);
-        Task<UserMenus> GetUserMenus();
+        Task<List<PerMenuDto>> GetUserMenus(int userId);
     }
     public class PermissionService : IPermissionService
     {
@@ -106,6 +106,11 @@ namespace Services.UserManagement
             AuthCacheUtil.SetPermittedUserResources(userId, userMenus);
 
             return userMenus;
+        }
+        public async Task<List<PerMenuDto>> GetUserMenus(int userId)
+        {
+            var menus = await _menuRepository.GetPermittedActions(userId);
+            return menus;
         }
     }
 

@@ -13,12 +13,16 @@ namespace Repository.Db
     public class HelpDbContext : DbContext
     {
         public HelpDbContext(DbContextOptions<HelpDbContext> options) : base(options) { }
+
         public DbSet<UserModel> Users => Set<UserModel>();
+        public DbSet<RoleModel> Roles => Set<RoleModel>();
+        public DbSet<UserRoleModel> UserRoles => Set<UserRoleModel>();
+
         public DbSet<UserLoginModel> UserLogins => Set<UserLoginModel>();
         public DbSet<RefreshTokenModel> RefreshTokens => Set<RefreshTokenModel>();
-        public DbSet<RoleModel> Roles => Set<RoleModel>();
+
         public DbSet<MenuModel> Menus => Set<MenuModel>();
-        public DbSet<UserRoleModel> UserRoles => Set<UserRoleModel>();
+
         public DbSet<MenuActionModel> MenuActions => Set<MenuActionModel>();
         public DbSet<MenuActionMapModel> MenuActionMaps => Set<MenuActionMapModel>();
         public DbSet<MenuActionRoleMappingModel> MenuActionRoleMappings => Set<MenuActionRoleMappingModel>();

@@ -143,7 +143,7 @@ namespace Services.AuthService
             if (menus.Count == 0)
                 throw new SessionExpiredException("Invalid token request!");
 
-            AuthCacheUtil.SetPermittedMenu($"{userInfo.Id}", menus);
+          //  AuthCacheUtil.SetPermittedMenu($"{userInfo.Id}", menus);
 
             var refreshToken = await CreateRefreshToken(userInfo.Id, ip, currentToken.FkLoginId);
             DeleteRefreshToken(currentToken);
