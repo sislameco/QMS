@@ -15,12 +15,5 @@ namespace WebApi.Controllers.UserManagement
         {
             _roleService = roleService;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Create([FromBody] RoleInputDto dto)
-        {
-            await _roleService.GetAll(dto);
-            return Ok();
-        }
     }
 }

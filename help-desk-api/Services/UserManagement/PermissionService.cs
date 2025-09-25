@@ -109,7 +109,7 @@ namespace Services.UserManagement
         }
         public async Task<List<PerMenuDto>> GetUserMenus(int userId)
         {
-            var menus = await _menuRepository.GetPermittedActions(userId);
+            var menus = await _menuRepository.GetUserPermittedMenusAsync(userId);
             return menus;
         }
     }

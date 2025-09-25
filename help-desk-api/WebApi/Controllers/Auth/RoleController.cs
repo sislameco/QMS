@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.Dto.UserManagement;
 using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("permission")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
@@ -13,6 +14,21 @@ namespace WebApi.Controllers.Auth
         public RoleController(IRoleService roleService)
         {
             _roleService = roleService;
+        }
+
+        [HttpGet("menu")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMenuAccess(int roleId = 1)
+        {
+            
+            return Ok(await _roleService.GetMenuAccess(roleId));
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<IActionResult> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> FKMenuActionIds)
+        {
+            return Ok(await _roleService.SetMenuPermission(roleId, FKMenuActionIds));
         }
 
         [HttpPost]

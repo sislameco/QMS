@@ -55,7 +55,7 @@ namespace Services.AuthService
             if (user.LastPasswordChange.AddDays(90) <= DateTime.UtcNow)
                 return new HelpDeskLoginResponseDto { IsPasswordChange = false, UserId = user.Id };
 
-            var menus = await _menuRepository.GetPermittedActions(user.Id);
+            var menus = await _menuRepository.GetUserPermittedMenusAsync(user.Id);
 
             //if (!menus.Any())
             //    throw new BadRequestException("You have no permitted menus!");
@@ -138,7 +138,7 @@ namespace Services.AuthService
 
             /* Getting permitted menus again to update Redis cache 
              */
-            var menus = await _menuRepository.GetPermittedActions(userInfo.Id);
+            var menus = await _menuRepository.GetUserPermittedMenusAsync(userInfo.Id);
 
             if (menus.Count == 0)
                 throw new SessionExpiredException("Invalid token request!");
