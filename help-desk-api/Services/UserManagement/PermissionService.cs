@@ -1,6 +1,7 @@
 ﻿using Models.Dto.Menus;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
+using Models.Enum;
 using Repository;
 using Repository.Repo.Permission;
 using Utilities.Redis;
@@ -15,6 +16,8 @@ namespace Services.UserManagement
         Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(long userId);
         Task<bool> RemoveUserRolesAsync(long userId, List<long> roleIds);
         Task<List<PerMenuDto>> GetUserMenus(int userId);
+        Task<MenuResourceDto> GetMenuAccess(int roleId);
+        Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus);
     }
     public class PermissionService : IPermissionService
     {
@@ -111,6 +114,70 @@ namespace Services.UserManagement
         {
             var menus = await _menuRepository.GetUserPermittedMenusAsync(userId);
             return menus;
+        }
+
+        public async Task<MenuResourceDto> GetMenuAccess(int roleId)
+        {
+            // Validate input
+            if (roleId <= 0)
+                throw new ArgumentException("Invalid roleId provided", nameof(roleId));
+
+            // Run both queries in parallel for better performance
+            var actionsTask = _unitOfWork.Repository<MenuActionModel, int>().GetAllAsync();
+            var menusTask = _menuRepository.GetRolePermittedMenusAsync(roleId);
+
+            await Task.WhenAll(actionsTask, menusTask);
+
+            // Ensure results are not null
+            var actions = actionsTask.Result ?? new List<MenuActionModel>();
+            var menus = menusTask.Result ?? new List<MenuAccessDto>();
+
+            // Map to DTO and return
+            return new MenuResourceDto
+            {
+                Actions = actions
+                    .Select(s => new ManuActionDto
+                    {
+                        Id = s.Id,
+                        HttpVerb = s.HttpVerb
+                    })
+                    .ToList(),
+
+                Menus = menus
+            };
+        }
+        public async Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus)
+        {
+            // Remove existing permissions for the role
+            var existingMappings = await _unitOfWork.Repository<MenuActionRoleMappingModel, long>()
+                .FindByConditionAsync(s => s.FKRoleId == roleId && s.RStatus == EnumRStatus.Active);
+            existingMappings.ToList();
+
+            foreach (var menu in menus)
+            {
+                var existingMapping = existingMappings.FirstOrDefault(s => s.FKMenuActionMapId == menu.FKMenuActionId);
+                if (existingMapping != null)
+                {
+                    existingMapping.IsAllowed = menu.IsAllowed;
+                    existingMapping.UpdatedBy = _userInfos.GetCurrentUserId();
+                    existingMapping.UpdatedDate = DateTime.UtcNow;
+                    await _unitOfWork.Repository<MenuActionRoleMappingModel, long>().UpdateAsync(existingMapping);
+                }
+                if (existingMapping == null)
+                {
+                    var newMapping = new MenuActionRoleMappingModel
+                    {
+                        FKRoleId = roleId,
+                        FKMenuActionMapId = menu.FKMenuActionId,
+                        IsAllowed = menu.IsAllowed,
+                        CreatedBy = _userInfos.GetCurrentUserId(),
+                        CreatedDate = DateTime.UtcNow
+                    };
+                    await _unitOfWork.Repository<MenuActionRoleMappingModel, long>().AddAsync(newMapping);
+                }
+            }
+            await _unitOfWork.CommitAsync();
+            return true;
         }
     }
 

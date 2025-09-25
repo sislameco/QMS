@@ -16,20 +16,7 @@ namespace WebApi.Controllers.Auth
             _roleService = roleService;
         }
 
-        [HttpGet("menu")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetMenuAccess(int roleId = 1)
-        {
-            
-            return Ok(await _roleService.GetMenuAccess(roleId));
-        }
 
-        [HttpPut]
-        [AllowAnonymous]
-        public async Task<IActionResult> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> FKMenuActionIds)
-        {
-            return Ok(await _roleService.SetMenuPermission(roleId, FKMenuActionIds));
-        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RoleInputDto dto)
