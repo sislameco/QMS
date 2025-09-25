@@ -32,14 +32,14 @@ namespace WebApi.Controllers.Auth
         public async Task<IActionResult> GetMenuAccess(int roleId = 1)
         {
 
-            return Ok(await _roleService.GetMenuAccess(roleId));
+            return Ok(await _permissionService.GetMenuAccess(roleId));
         }
 
         [HttpPut]
         [AllowAnonymous]
         public async Task<IActionResult> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> FKMenuActionIds)
         {
-            return Ok(await _roleService.SetMenuPermission(roleId, FKMenuActionIds));
+            return Ok(await _permissionService.SetMenuPermission(roleId, FKMenuActionIds));
         }
 
         [HttpGet()]

@@ -24,11 +24,13 @@ namespace Services.UserManagement
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMenuRepository _menuRepository;
         private readonly  IUserInfos _user;
-        public PermissionService(IUnitOfWork unitOfWork, IMenuRepository menuRepository, IUserInfos user)
+        private readonly IUserInfos _userInfos;
+        public PermissionService(IUnitOfWork unitOfWork, IMenuRepository menuRepository, IUserInfos user, IUserInfos userInfos)
         {
             _unitOfWork = unitOfWork;
             _menuRepository = menuRepository;
             _user = user;
+            _userInfos = userInfos;
         }
 
         public async Task<bool> AssignRolesAsync(UserRoleAssignDto request)
