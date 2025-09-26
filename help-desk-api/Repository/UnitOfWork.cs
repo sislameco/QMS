@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Models.Entities;
 using Repository.Db;
+using Repository.Repo.Pagination;
 using Utils.LoginData;
 
 namespace Repository
@@ -14,6 +15,7 @@ namespace Repository
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();
+        ICommonRepository CommonRepository { get; }
     }
 
     public class UnitOfWork : IUnitOfWork
@@ -22,10 +24,12 @@ namespace Repository
         private readonly Dictionary<Type, object> _repositories = new();
         private IDbContextTransaction? _transaction;
         private readonly IUserInfos _userInfos;
-        public UnitOfWork(HelpDbContext context, IUserInfos userInfos)
+        public ICommonRepository CommonRepository { get; }
+        public UnitOfWork(HelpDbContext context, IUserInfos userInfos, ICommonRepository commonRepository)
         {
             _context = context;
             _userInfos = userInfos;
+            CommonRepository = commonRepository;
         }
 
         public IGenericRepository<T, TId> Repository<T, TId>() where T : BaseEntity<TId>

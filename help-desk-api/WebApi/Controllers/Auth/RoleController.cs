@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
 using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("permission")]
+    [Route("role")]
+    [AllowAnonymous]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
@@ -16,6 +18,11 @@ namespace WebApi.Controllers.Auth
             _roleService = roleService;
         }
 
+        [HttpGet("all")]
+        public async Task<PaginationResponse<RoleWithUsersDto>> GetRoles()
+        {
+            return await _roleService.GetRolesWithUsersAsync();
+        }
 
 
         [HttpPost]

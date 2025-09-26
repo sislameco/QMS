@@ -189,6 +189,30 @@ namespace Repository.Seeds
             },
             new MenuModel
             {
+                Name = "RBAC",
+                ParentId = null,
+                Url = "#",
+                DisplayOrder = 4,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+             new MenuModel
+            {
+                Name = "Ticket Center",
+                ParentId = 4,
+                Url = "#",
+                DisplayOrder = 1,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel
+            {
                 Name = "Users",
                 ParentId = 2,
                 Url = "#",
@@ -460,6 +484,44 @@ namespace Repository.Seeds
             new MenuActionMapModel
             {
                 FKMenuId = 6,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5
+            }
+
+            ,
+
+                new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 2
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 3
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 4
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 5

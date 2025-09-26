@@ -52,8 +52,8 @@ namespace Services.AuthService
             }
 
             // 2. Check if password change is required
-            if (user.LastPasswordChange.AddDays(90) <= DateTime.UtcNow)
-                return new HelpDeskLoginResponseDto { IsPasswordChange = false, UserId = user.Id };
+            //if (user.LastPasswordChange.AddDays(90) <= DateTime.UtcNow)
+            //    return new HelpDeskLoginResponseDto { IsPasswordChange = false, UserId = user.Id };
 
             var menus = await _menuRepository.GetUserPermittedMenusAsync(user.Id);
 

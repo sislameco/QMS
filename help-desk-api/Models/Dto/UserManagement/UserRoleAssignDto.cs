@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Models.Dto.UserManagement
 {
+    public class RoleWithUsersDto
+    {
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
+        public string Users { get; set; }
+    }
     public class UserRoleAssignDto
     {
         public int UserId { get; set; }

@@ -1,3 +1,4 @@
+using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Models.Enum;
@@ -8,6 +9,7 @@ namespace Services.UserManagement
 {
     public interface IRoleService
     {
+        Task<PaginationResponse<RoleWithUsersDto>> GetRolesWithUsersAsync();
         Task CreateRole(RoleInputDto role);
         Task UpdateRole(RoleUpdateInputDto role);
         Task DeleteRole(int roleId);
@@ -16,14 +18,15 @@ namespace Services.UserManagement
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserInfos _userInfos;
-        private readonly IMenuRepository _menuRepository;
         public RoleService(IUnitOfWork unitOfWork, IUserInfos userInfos, IMenuRepository menuRepository)
         {
             _unitOfWork = unitOfWork;
             _userInfos = userInfos;
-            _menuRepository = menuRepository;
         }
-
+        public async Task<PaginationResponse<RoleWithUsersDto>> GetRolesWithUsersAsync()
+        {
+            return await _unitOfWork.CommonRepository.GetRolesWithUsersAsync();
+        }
         public async Task CreateRole(RoleInputDto role)
         {
             var newRole = new RoleModel
