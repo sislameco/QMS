@@ -5,9 +5,10 @@ namespace Models.Dto.UserManagement
         public int Id { get; set; }
         public string HttpVerb { get; set; }
     }
-    public class ManuWishActionPermissionDto: ManuActionDto
+    public class ManuWishActionPermissionDto : ManuActionDto
     {
         public bool IsPermitted { get; set; }
+        public long FkMenuActionMapId { get; set; }
     }
     public class MenuAccessBasicDto
     {
@@ -15,7 +16,7 @@ namespace Models.Dto.UserManagement
         public int MenuId { get; set; }
         public int? ParentId { get; set; }
     }
-    public class MenuAccessDto: MenuAccessBasicDto
+    public class MenuAccessDto : MenuAccessBasicDto
     {
 
         public List<ManuWishActionPermissionDto> Actions { get; set; } = new List<ManuWishActionPermissionDto>();
@@ -24,10 +25,11 @@ namespace Models.Dto.UserManagement
     public class RoleSetWithMenuActoinDto
     {
         public bool IsAllowed { get; set; }
-        public long FKMenuActionId { get; set; }
+        public long FkMenuActionMapId { get; set; }
     }
     public class MenuResourceDto
     {
+        public RoleDetail Role { get; set; }
         public List<ManuActionDto> Actions { get; set; } = new List<ManuActionDto>();
         public List<MenuAccessDto> Menus { get; set; } = new List<MenuAccessDto>();
     }

@@ -121,22 +121,18 @@ namespace Services.UserManagement
         public async Task<MenuResourceDto> GetMenuAccess(int roleId)
         {
             // Validate input
-            if (roleId <= 0)
+            if (roleId < 0)
                 throw new ArgumentException("Invalid roleId provided", nameof(roleId));
 
             // Run both queries in parallel for better performance
-            var actionsTask = _unitOfWork.Repository<MenuActionModel, int>().GetAllAsync();
-            var menusTask = _menuRepository.GetRolePermittedMenusAsync(roleId);
 
-            await Task.WhenAll(actionsTask, menusTask);
-
-            // Ensure results are not null
-            var actions = actionsTask.Result ?? new List<MenuActionModel>();
-            var menus = menusTask.Result ?? new List<MenuAccessDto>();
-
+            var role = await _unitOfWork.Repository<RoleModel, int>().FirstOrDefaultAsync(s => s.Id == roleId);
+            var actions = await _unitOfWork.Repository<MenuActionModel, int>().GetAllAsync();
+            var menus = await _menuRepository.GetRolePermittedMenusAsync(roleId);
             // Map to DTO and return
             return new MenuResourceDto
             {
+                Role = role == null ? new RoleDetail() : new RoleDetail { Name = role.Name, Description = role.Description },
                 Actions = actions
                     .Select(s => new ManuActionDto
                     {
@@ -157,7 +153,7 @@ namespace Services.UserManagement
 
             foreach (var menu in menus)
             {
-                var existingMapping = existingMappings.FirstOrDefault(s => s.FKMenuActionMapId == menu.FKMenuActionId);
+                var existingMapping = existingMappings.FirstOrDefault(s => s.FKMenuActionMapId == menu.FkMenuActionMapId);
                 if (existingMapping != null)
                 {
                     existingMapping.IsAllowed = menu.IsAllowed;
@@ -170,7 +166,7 @@ namespace Services.UserManagement
                     var newMapping = new MenuActionRoleMappingModel
                     {
                         FKRoleId = roleId,
-                        FKMenuActionMapId = menu.FKMenuActionId,
+                        FKMenuActionMapId = menu.FkMenuActionMapId,
                         IsAllowed = menu.IsAllowed,
                         CreatedBy = _userInfos.GetCurrentUserId(),
                         CreatedDate = DateTime.UtcNow

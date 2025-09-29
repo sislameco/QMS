@@ -33,10 +33,12 @@ namespace Services.UserManagement
             {
                 Name = role.Name,
                 Description = role.Description,
+                IsSystemGenerated = false,
                 CreatedBy = _userInfos.GetCurrentUserId(),
                 CreatedDate = DateTime.UtcNow
             };
             await _unitOfWork.Repository<RoleModel, int>().AddAsync(newRole);
+            await _unitOfWork.CommitAsync();
 
             await SetMenuPermission(newRole.Id, role.FKMenuActionIds);
             await _unitOfWork.CommitAsync();
@@ -78,7 +80,7 @@ namespace Services.UserManagement
 
             foreach (var menu in menus)
             {
-                var existingMapping = existingMappings.FirstOrDefault(s => s.FKMenuActionMapId == menu.FKMenuActionId);
+                var existingMapping = existingMappings.FirstOrDefault(s => s.FKMenuActionMapId == menu.FkMenuActionMapId);
                 if (existingMapping != null)
                 {
                     existingMapping.IsAllowed = menu.IsAllowed;
@@ -91,7 +93,7 @@ namespace Services.UserManagement
                     var newMapping = new MenuActionRoleMappingModel
                     {
                         FKRoleId = roleId,
-                        FKMenuActionMapId = menu.FKMenuActionId,
+                        FKMenuActionMapId = menu.FkMenuActionMapId,
                         IsAllowed = menu.IsAllowed,
                         CreatedBy = _userInfos.GetCurrentUserId(),
                         CreatedDate = DateTime.UtcNow

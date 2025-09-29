@@ -12,5 +12,10 @@ namespace Models.Dto.UserManagement
         [Required]
         public List<RoleSetWithMenuActoinDto> FKMenuActionIds { get; set; } 
 
-    }       
+    }    
+    public class RoleDetail
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
 }

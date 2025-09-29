@@ -32,8 +32,8 @@ namespace WebApi.Controllers.Auth
             return Ok();
         }
 
-        [HttpPut("role-id")]
-        public async Task<IActionResult> Update([FromBody] RoleInputDto input, int roleId)
+        [HttpPut("{roleId}")]
+        public async Task<IActionResult> Update(int roleId,[FromBody] RoleInputDto input)
         {
             await _roleService.UpdateRole(roleId,input);
             return Ok();
