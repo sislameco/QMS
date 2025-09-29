@@ -26,16 +26,16 @@ namespace WebApi.Controllers.Auth
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RoleInputDto dto)
+        public async Task<IActionResult> Create([FromBody] RoleInputDto input)
         {
-            await _roleService.CreateRole(dto);
+            await _roleService.CreateRole(input);
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RoleUpdateInputDto dto)
+        [HttpPut("role-id")]
+        public async Task<IActionResult> Update([FromBody] RoleInputDto input, int roleId)
         {
-            await _roleService.UpdateRole(dto);
+            await _roleService.UpdateRole(roleId,input);
             return Ok();
         }
 

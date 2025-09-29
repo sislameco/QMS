@@ -9,13 +9,8 @@ namespace Models.Dto.UserManagement
 
         [Required]
         public string Description { get; set; } = string.Empty;
+        [Required]
+        public List<RoleSetWithMenuActoinDto> FKMenuActionIds { get; set; } 
 
-        public string HomeUrl { get; set; } = string.Empty;
-    }
-    public class RoleUpdateInputDto : RoleInputDto
-    {
-
-        public int Id { get; set; }
-    }
-       
+    }       
 }
