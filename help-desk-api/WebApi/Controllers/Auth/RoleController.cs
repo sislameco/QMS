@@ -23,22 +23,18 @@ namespace WebApi.Controllers.Auth
         {
             return await _roleService.GetRolesWithUsersAsync();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RoleInputDto input)
         {
             await _roleService.CreateRole(input);
             return Ok();
         }
-
         [HttpPut("{roleId}")]
         public async Task<IActionResult> Update(int roleId,[FromBody] RoleInputDto input)
         {
             await _roleService.UpdateRole(roleId,input);
             return Ok();
         }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

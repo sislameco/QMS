@@ -1,4 +1,3 @@
-using Models.Entities;
 using Models.Entities.Org;
 using System.ComponentModel.DataAnnotations.Schema;
 

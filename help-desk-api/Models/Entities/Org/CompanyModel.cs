@@ -8,6 +8,9 @@ namespace Models.Entities.Org
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string AccessKey { get; set; }
+        public string SecrateKey { get; set;}
+        public string PrefixTicket { get; set; }
         public ICollection<CompanyScopeConfigModel> ScopeConfig { get; set; }
         public ICollection<DepartmentModel> Departments { get; set; }
     }
