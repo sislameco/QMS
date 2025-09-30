@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Issue
 {
     [Table("Resolution", Schema = "issue")]
-    public class ResolutionModel : BaseEntity<long>
+    public class ResolutionModel : BaseEntity<int>
     {
-        public long FKCompanyId { get; set; }
+        public int FKCompanyId { get; set; }
         [ForeignKey("FKCompanyId")]
         public CompanyModel Company { get; set; }
         public string Name { get; set; }

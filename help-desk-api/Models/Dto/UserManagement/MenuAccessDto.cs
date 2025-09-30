@@ -8,7 +8,7 @@ namespace Models.Dto.UserManagement
     public class ManuWishActionPermissionDto : ManuActionDto
     {
         public bool IsPermitted { get; set; }
-        public long FkMenuActionMapId { get; set; }
+        public int FkMenuActionMapId { get; set; }
     }
     public class MenuAccessBasicDto
     {
@@ -25,7 +25,7 @@ namespace Models.Dto.UserManagement
     public class RoleSetWithMenuActoinDto
     {
         public bool IsAllowed { get; set; }
-        public long FkMenuActionMapId { get; set; }
+        public int FkMenuActionMapId { get; set; }
     }
     public class MenuResourceDto
     {

@@ -5,15 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Setup
 {
     [Table("NotificationSchedule", Schema = "setup")]
-    public class NotificationScheduleModel : BaseEntity<long>
+    public class NotificationScheduleModel : BaseEntity<int>
     {
-        public long FKNotificationConfigId { get; set; }
-        public long? FKTicketId { get; set; }
+        public int FKNotificationConfigId { get; set; }
+        public int? FKTicketId { get; set; }
         public string Recipient { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
         public NotificationType NotificationType { get; set; }
-        public long? FKEmailConfigurationId { get; set; }
+        public int? FKEmailConfigurationId { get; set; }
 
         public DateTime ScheduledTime { get; set; }
         public DateTime? SentTime { get; set; }
