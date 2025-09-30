@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.UserManagement
 {
     [Table("MenuActionMap", Schema = "UserMgmt")]
-    public class MenuActionMapModel : BaseEntity<long>
+    public class MenuActionMapModel : BaseEntity<int>
     {
         public int FKMenuId { get; set; }
         [ForeignKey("FKMenuId")]

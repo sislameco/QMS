@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Issue
 {
     [Table("TicketDepartmentMap", Schema = "issue")]
-    public class TicketDepartmentMapModel : BaseEntity<long>
+    public class TicketDepartmentMapModel : BaseEntity<int>
     {
-        public long FKTicketId { get; set; }
-        public long FKDepartmentId { get; set; }
+        public int FKTicketId { get; set; }
+        public int FKDepartmentId { get; set; }
 
         [ForeignKey("FKTicketId")]
         public TicketModel Ticket { get; set; }

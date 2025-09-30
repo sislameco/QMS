@@ -6,10 +6,10 @@ using Models.Enum;
 namespace Models.Entities.Audit
 {
     [Table("AuditLog", Schema = "log")]
-    public class AuditLogModel : BaseEntity<long>
+    public class AuditLogModel : BaseEntity<int>
     {
         public string EntityName { get; set; } // e.g., Ticket, Complaint, CAPA, User
-        public long EntityId { get; set; } // PK of the entity being changed
+        public int EntityId { get; set; } // PK of the entity being changed
         public AuditActionType ActionType { get; set; } // Created, Updated, etc.
         public string OldValues { get; set; } // JSON before change
         public string NewValues { get; set; } // JSON after change

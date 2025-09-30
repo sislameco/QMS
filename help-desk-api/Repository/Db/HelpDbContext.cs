@@ -30,7 +30,6 @@ namespace Repository.Db
         public DbSet<UserDepartmentModel> UserDepartments => Set<UserDepartmentModel>();
         public DbSet<AuditLogModel> AuditLogs => Set<AuditLogModel>();
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();
-        public DbSet<CompanyScopeConfigModel> CompanyScopeConfigs => Set<CompanyScopeConfigModel>();
         public DbSet<DepartmentModel> Departments => Set<DepartmentModel>();
         public DbSet<EmailConfigurationModel> EmailConfigurations => Set<EmailConfigurationModel>();
         public DbSet<NotificationScheduleModel> NotificationSchedules => Set<NotificationScheduleModel>();

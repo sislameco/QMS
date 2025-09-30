@@ -3,7 +3,7 @@
 namespace Models.Entities.UserManagement
 {
     [Table("Users", Schema = "UserMgmt")]
-    public class UserModel : BaseEntity<long>
+    public class UserModel : BaseEntity<int>
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
