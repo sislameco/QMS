@@ -380,31 +380,14 @@ Represents a company/tenant within the QMS.
 - Name (string, required, max 200)  
 - Description (string, max 500)  
 - Status (enum: Active, Inactive)  
-
+- PrefixTicket
+- LastTicketNumber 
 **Relations**  
-- One `Company` → One `CompanyScopeConfig`  
 - One `Company` → Many `Department`  
 - One `Company` → Many `UserCompany`  
-- One `Company` → Many `Ticket` / `CustomerComplaint` / `CAPA`  
-
+- 
 ---
 
-## CompanyScopeConfig : #BaseEntity  
-Represents company-level scoping and numbering rules.  
-- CompanyId (long, FK → Company)  
-- PrefixTicket (string, max 10)  
-- PrefixComplaint (string, max 10)  
-- PrefixCAPA (string, max 10)  
-- SLASettings (ICollection<SLAConfigModel>)  
-- NotificationSettings (ICollection<NotificationModel>)  
-- RootCauseOptions (ICollection<RootCauseModel>)  
-- ResolutionOptions (ICollection<ResolutionModel>)  
-
-**Relations**  
-- One `CompanyScopeConfig` → One `Company`  
-- One `CompanyScopeConfig` → Many SLA/Notification/RootCause/Resolution definitions  
-
----
 
 ## Department:#BaseEntity    
 Represents a department within a company.  
