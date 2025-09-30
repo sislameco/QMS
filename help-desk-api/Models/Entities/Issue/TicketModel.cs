@@ -12,7 +12,7 @@ namespace Models.Entities.Issue
         public int SubmittedByUserId { get; set; }
         public int FKCompanyId { get; set; }
         public int FKTicketTypeId { get; set; }
-        public TicketCategory TicketCategory { get; set; }
+        public QMSType TicketCategory { get; set; }
         public TicketStatus Status { get; set; }
         public TicketPriority Priority { get; set; }
         public int? AssignedUserId { get; set; }

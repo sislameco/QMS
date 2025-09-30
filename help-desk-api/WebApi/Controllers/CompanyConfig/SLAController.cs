@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Org;
-using Services.CompanyConfig;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Services.CompanyConfig;
 
 namespace WebApi.Controllers.CompanyConfig
 {
@@ -38,15 +38,15 @@ namespace WebApi.Controllers.CompanyConfig
 
         // Create SLA
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SLADto dto)
+        public async Task<IActionResult> Create([FromBody] SLAInputDto dto)
         {
             var created = await _slaService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return Ok(created);
         }
 
         // Update SLA
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] SLADto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] SLAInputDto dto)
         {
             var updated = await _slaService.UpdateAsync(id, dto);
             if (updated == null) return NotFound();

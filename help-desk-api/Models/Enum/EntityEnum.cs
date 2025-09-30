@@ -5,7 +5,7 @@ namespace Models.Enum
     /// <summary>
     /// Category of the ticket.
     /// </summary>
-    public enum TicketCategory { Ticket = 1, CAPA = 2, Goals = 3, Complaints = 4 }
+    public enum QMSType { Ticket = 1, CAPA = 2, Goals = 3, Complaints = 4 }
 
     /// <summary>
     /// Status of the ticket.
@@ -42,5 +42,16 @@ namespace Models.Enum
         Active = 1,
         Inactive = 2,
         Deleted = 3
+    }
+    /// <summary>
+    /// Time unit used for scheduling, due calculation.
+    /// </summary>
+    public enum EnumUnit
+    {
+        Minutes = 1,
+        Hours = 2,
+        Days = 3,
+        Weeks = 4,
+        Months = 5
     }
 }
