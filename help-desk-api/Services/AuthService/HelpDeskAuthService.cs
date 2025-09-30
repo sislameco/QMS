@@ -40,7 +40,7 @@ namespace Services.AuthService
         {
             string Password = Common.EncryptText(dto.Password);
             // 1. Fetch user by email
-            var user = await _unitOfWork.Repository<UserModel, long>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password);
+            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password);
 
             if (user == null)
             {
@@ -99,7 +99,7 @@ namespace Services.AuthService
                 UserId = user.Id
             };
         }
-        private async Task<long> SaveUserLogin(long userid, string ip, string browser, string machine_user)
+        private async Task<int> SaveUserLogin(int userid, string ip, string browser, string machine_user)
         {
             UserLoginModel userLoginObj = new UserLoginModel()
             {
@@ -109,7 +109,7 @@ namespace Services.AuthService
                 MachineUser = machine_user,
                 LoginTime = DateTime.UtcNow,
             };
-            await _unitOfWork.WithOutRepository<UserLoginModel,long>().AddAsync(userLoginObj);
+            await _unitOfWork.WithOutRepository<UserLoginModel, int>().AddAsync(userLoginObj);
             await _unitOfWork.CommitAsync();
             return userLoginObj.Id;
         }
@@ -128,7 +128,7 @@ namespace Services.AuthService
             if (currentToken == null)
                 throw new SessionExpiredException("Invalid token request!");
 
-            UserModel userInfo = await _unitOfWork.Repository<UserModel, long>().FirstOrDefaultAsync(s=> s.Id == currentToken.FkUserId && s.RStatus == EnumRStatus.Active);
+            UserModel userInfo = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(s=> s.Id == currentToken.FkUserId && s.RStatus == EnumRStatus.Active);
             if (userInfo == null)
                 throw new SessionExpiredException("Invalid token request!");
             /*
@@ -151,10 +151,10 @@ namespace Services.AuthService
         }
         public async Task<RefreshTokenModel> GetRefreshToken(string token, string userIp)
         {
-            return await _unitOfWork.WithOutRepository<RefreshTokenModel, long>()
+            return await _unitOfWork.WithOutRepository<RefreshTokenModel, int>()
                 .FirstOrDefaultAsync(rt => rt.Token == token && rt.UserIp == userIp);
         }
-        public async Task<string> CreateRefreshToken(long userId, string userIp, long loginId, int validaty = 1)
+        public async Task<string> CreateRefreshToken(int userId, string userIp, int loginId, int validaty = 1)
         {
             var token = new RefreshTokenModel
             {
@@ -165,18 +165,18 @@ namespace Services.AuthService
                 FkLoginId = loginId
             };
 
-            await _unitOfWork.WithOutRepository<RefreshTokenModel, long>().AddAsync(token);
+            await _unitOfWork.WithOutRepository<RefreshTokenModel, int>().AddAsync(token);
             await _unitOfWork.CommitAsync();
             return token.Token;
         }
         private UserModel GetUserInfoById(int userId)
         {
             // Fetch user by ID using the UnitOfWork's generic repository
-            return _unitOfWork.Repository<UserModel, long>().GetByIdAsync(userId).GetAwaiter().GetResult();
+            return _unitOfWork.Repository<UserModel, int>().GetByIdAsync(userId).GetAwaiter().GetResult();
         }
         public async void DeleteRefreshToken(RefreshTokenModel token)
         {
-            await _unitOfWork.WithOutRepository<RefreshTokenModel, long>().SoftDeleteAsync(token);
+            await _unitOfWork.WithOutRepository<RefreshTokenModel, int>().SoftDeleteAsync(token);
             await _unitOfWork.CommitAsync();
         }
     }

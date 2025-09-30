@@ -74,7 +74,7 @@ namespace Services.UserManagement
         private async Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus)
         {
             // Remove existing permissions for the role
-            var existingMappings = await _unitOfWork.Repository<MenuActionRoleMappingModel, long>()
+            var existingMappings = await _unitOfWork.Repository<MenuActionRoleMappingModel, int>()
                 .FindByConditionAsync(s => s.FKRoleId == roleId && s.RStatus == EnumRStatus.Active);
             existingMappings.ToList();
 
@@ -86,7 +86,7 @@ namespace Services.UserManagement
                     existingMapping.IsAllowed = menu.IsAllowed;
                     existingMapping.UpdatedBy = _userInfos.GetCurrentUserId();
                     existingMapping.UpdatedDate = DateTime.UtcNow;
-                    await _unitOfWork.Repository<MenuActionRoleMappingModel, long>().UpdateAsync(existingMapping);
+                    await _unitOfWork.Repository<MenuActionRoleMappingModel, int>().UpdateAsync(existingMapping);
                 }
                 if (existingMapping == null)
                 {
@@ -98,7 +98,7 @@ namespace Services.UserManagement
                         CreatedBy = _userInfos.GetCurrentUserId(),
                         CreatedDate = DateTime.UtcNow
                     };
-                    await _unitOfWork.Repository<MenuActionRoleMappingModel, long>().AddAsync(newMapping);
+                    await _unitOfWork.Repository<MenuActionRoleMappingModel, int>().AddAsync(newMapping);
                 }
             }
             return true;

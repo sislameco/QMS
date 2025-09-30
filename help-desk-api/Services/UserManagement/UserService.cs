@@ -9,11 +9,11 @@ namespace Services.UserManagement
 {
     public interface IUserService
     {
-        Task<UserModel?> GetByIdAsync(long id);
+        Task<UserModel?> GetByIdAsync(int id);
         Task<List<UserOutPutDto>> GetAllAsync(UserFilterDto inputDto);
         Task AddAsync(UserModel user);
         Task UpdateAsync(UserModel user);
-        Task DeleteAsync(long id);
+        Task DeleteAsync(int id);
         UserModel GetSystemUser();
     }
     public class UserService : IUserService
@@ -26,8 +26,8 @@ namespace Services.UserManagement
             _userMGtRepository = userMGtRepository;
         }
 
-        public async Task<UserModel?> GetByIdAsync(long id)
-            => await _unitOfWork.Repository<UserModel, long>().GetByIdAsync(id);
+        public async Task<UserModel?> GetByIdAsync(int id)
+            => await _unitOfWork.Repository<UserModel, int>().GetByIdAsync(id);
 
         public async Task<List<UserOutPutDto>> GetAllAsync(UserFilterDto inputDto)
         {
@@ -37,25 +37,25 @@ namespace Services.UserManagement
 
         public async Task AddAsync(UserModel user)
         {
-            await _unitOfWork.Repository<UserModel, long>().AddAsync(user);
+            await _unitOfWork.Repository<UserModel, int>().AddAsync(user);
             await _unitOfWork.CommitAsync();
         }
 
         public async Task UpdateAsync(UserModel user)
         {
-            await _unitOfWork.Repository<UserModel, long>().UpdateAsync(user);
+            await _unitOfWork.Repository<UserModel, int>().UpdateAsync(user);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(int id)
         {
-            await _unitOfWork.Repository<UserModel, long>().DeleteAsync(id);
+            await _unitOfWork.Repository<UserModel, int>().DeleteAsync(id);
             await _unitOfWork.CommitAsync();
         }
         public UserModel GetSystemUser()
         {
             // todo
-            var result = _unitOfWork.Repository<UserModel, long>()
+            var result = _unitOfWork.Repository<UserModel, int>()
                  .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active).Result;
             return result;
         }

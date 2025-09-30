@@ -13,8 +13,8 @@ namespace Services.UserManagement
     public interface IPermissionService
     {
         Task<bool> AssignRolesAsync(UserRoleAssignDto request);
-        Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(long userId);
-        Task<bool> RemoveUserRolesAsync(long userId, List<long> roleIds);
+        Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(int userId);
+        Task<bool> RemoveUserRolesAsync(int userId, List<int> roleIds);
         Task<List<PerMenuDto>> GetUserMenus(int userId);
         Task<MenuResourceDto> GetMenuAccess(int roleId);
         Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus);
@@ -35,10 +35,10 @@ namespace Services.UserManagement
 
         public async Task<bool> AssignRolesAsync(UserRoleAssignDto request)
         {
-            var user = await _unitOfWork.Repository<UserRoleModel, long>().FindByConditionAsync(s=> s.FKUserId == request.UserId);
+            var user = await _unitOfWork.Repository<UserRoleModel, int>().FindByConditionAsync(s=> s.FKUserId == request.UserId);
 
             // Remove existing roles
-            var removeRoles = await _unitOfWork.Repository<UserRoleModel, long>()
+            var removeRoles = await _unitOfWork.Repository<UserRoleModel, int>()
                 .FindByConditionAsync(x => x.FKUserId == request.UserId && !request.RoleIds.Contains(x.FKRoleId));
             removeRoles = removeRoles.ToList();
             if (removeRoles.Any())
@@ -47,7 +47,7 @@ namespace Services.UserManagement
                 {
                     if (role == null)
                         continue;
-                    await _unitOfWork.Repository<UserRoleModel, long>().DeleteAsync(role.Id);
+                    await _unitOfWork.Repository<UserRoleModel, int>().DeleteAsync(role.Id);
                 }
 
             }
@@ -55,7 +55,7 @@ namespace Services.UserManagement
             // Add new roles
             foreach (var roleId in request.RoleIds)
             {
-                await _unitOfWork.Repository<UserRoleModel, long>().AddAsync(new UserRoleModel
+                await _unitOfWork.Repository<UserRoleModel, int>().AddAsync(new UserRoleModel
                 {
                     FKUserId = request.UserId,
                     FKRoleId = roleId
@@ -67,9 +67,9 @@ namespace Services.UserManagement
             return true;
         }
 
-        public async Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(long userId)
+        public async Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(int userId)
         {
-            var roles = await _unitOfWork.Repository<UserRoleModel, long>()
+            var roles = await _unitOfWork.Repository<UserRoleModel, int>()
                 .FindByConditionAsync(x => x.FKUserId == userId);
             return new List<UserRolePermissionOutputDto>();
             //return new UserRolePermissionOutputDto
@@ -79,15 +79,15 @@ namespace Services.UserManagement
             //};
         }
 
-        public async Task<bool> RemoveUserRolesAsync(long userId, List<long> roleIds)
+        public async Task<bool> RemoveUserRolesAsync(int userId, List<int> roleIds)
         {
-            var rolesToRemoves = await _unitOfWork.Repository<UserRoleModel, long>()
+            var rolesToRemoves = await _unitOfWork.Repository<UserRoleModel, int>()
                 .FindByConditionAsync(x => x.FKUserId == userId && roleIds.Contains(x.FKRoleId));
 
             rolesToRemoves = rolesToRemoves.ToList();
 
             foreach (var role in rolesToRemoves)
-                await _unitOfWork.Repository<UserRoleModel, long>().DeleteAsync(role.Id);
+                await _unitOfWork.Repository<UserRoleModel, int>().DeleteAsync(role.Id);
 
             await _unitOfWork.CommitAsync();
             return true;
@@ -147,7 +147,7 @@ namespace Services.UserManagement
         public async Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus)
         {
             // Remove existing permissions for the role
-            var existingMappings = await _unitOfWork.Repository<MenuActionRoleMappingModel, long>()
+            var existingMappings = await _unitOfWork.Repository<MenuActionRoleMappingModel, int>()
                 .FindByConditionAsync(s => s.FKRoleId == roleId && s.RStatus == EnumRStatus.Active);
             existingMappings.ToList();
 
@@ -159,7 +159,7 @@ namespace Services.UserManagement
                     existingMapping.IsAllowed = menu.IsAllowed;
                     existingMapping.UpdatedBy = _userInfos.GetCurrentUserId();
                     existingMapping.UpdatedDate = DateTime.UtcNow;
-                    await _unitOfWork.Repository<MenuActionRoleMappingModel, long>().UpdateAsync(existingMapping);
+                    await _unitOfWork.Repository<MenuActionRoleMappingModel, int>().UpdateAsync(existingMapping);
                 }
                 if (existingMapping == null)
                 {
@@ -171,7 +171,7 @@ namespace Services.UserManagement
                         CreatedBy = _userInfos.GetCurrentUserId(),
                         CreatedDate = DateTime.UtcNow
                     };
-                    await _unitOfWork.Repository<MenuActionRoleMappingModel, long>().AddAsync(newMapping);
+                    await _unitOfWork.Repository<MenuActionRoleMappingModel, int>().AddAsync(newMapping);
                 }
             }
             await _unitOfWork.CommitAsync();

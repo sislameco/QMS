@@ -44,14 +44,14 @@ namespace WebApi.Controllers.Auth
 
         [HttpGet()]
         [AllowAnonymous]
-        public async Task<IActionResult> GetRoles(long userId)
+        public async Task<IActionResult> GetRoles(int userId)
         {
             var result = await _permissionService.GetUserRolesAsync(userId);
             return Ok(result);
         }
 
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> RemoveRoles(long userId, [FromBody] List<long> roleIds)
+        public async Task<IActionResult> RemoveRoles(int userId, [FromBody] List<int> roleIds)
         {
             await _permissionService.RemoveUserRolesAsync(userId, roleIds);
             return Ok(new { Message = "Roles removed successfully" });

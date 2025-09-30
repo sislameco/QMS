@@ -25,7 +25,7 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetById(long id)
+        public async Task<ActionResult<UserModel>> GetById(int id)
         {
             var user = await _userService.GetByIdAsync(id);
             if (user == null) return NotFound();
@@ -48,7 +48,7 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long id)
+        public async Task<ActionResult> Delete(int id)
         {
             await _userService.DeleteAsync(id);
             return NoContent();
