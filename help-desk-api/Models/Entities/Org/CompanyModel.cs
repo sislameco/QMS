@@ -10,7 +10,7 @@ namespace Models.Entities.Org
         public string ShortName { get; set; }
         public string Description { get; set; }
         public string AccessKey { get; set; }
-        public string SecrateKey { get; set;}
+        public string SecretKey { get; set;}
         public string PrefixTicket { get; set; }
         public int LastTicketNumber { get; set; }
         public ICollection<DepartmentModel> Departments { get; set; }
