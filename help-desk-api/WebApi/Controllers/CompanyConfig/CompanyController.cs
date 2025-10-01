@@ -5,7 +5,7 @@ using Services.Dashboard;
 using Services.Org;
 using System.Threading.Tasks;
 
-namespace WebApi.Controllers.CompanyConfig
+namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("company")]

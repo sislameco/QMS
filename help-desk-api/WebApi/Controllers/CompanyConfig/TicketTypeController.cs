@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Org;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Services.CompanyConfig;
+using Services.Org;
 
-namespace WebApi.Controllers.CompanyConfig
+namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("ticket-type")]

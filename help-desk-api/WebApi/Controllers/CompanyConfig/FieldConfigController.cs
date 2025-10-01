@@ -6,7 +6,7 @@ using Services.Org;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WebApi.Controllers.CompanyConfig
+namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("field")]

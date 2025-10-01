@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Services.Org;
 
-namespace WebApi.Controllers.CompanyConfig
+namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("sla")]
