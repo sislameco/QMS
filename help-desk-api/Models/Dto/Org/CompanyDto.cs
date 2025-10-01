@@ -10,5 +10,7 @@ namespace Models.Dto.Org
         public string SecretKey { get; set; }
         public string PrefixTicket { get; set; }
         public int LastTicketNumber { get; set; }
+        public string DepartmentEndPoint { get; set; }
+        public string UserEndPoint { get; set; }
     }
 }

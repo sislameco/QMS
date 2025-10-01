@@ -12,8 +12,8 @@ namespace Models.Entities.Org
     [Table("SLAConfiguration", Schema = "Org")]
     public class SLAConfigurationModel : BaseEntity<int>
     {
-        public QMSType Type { get; set; }
-        public TicketPriority Priority { get; set; }
+        public EnumQMSType Type { get; set; }
+        public EnumPriority Priority { get; set; }
         public int FKCompanyId { get; set; }
         [ForeignKey("FKCompanyId")]
         public CompanyModel Company { get; set; }

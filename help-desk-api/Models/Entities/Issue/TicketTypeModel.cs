@@ -11,7 +11,7 @@ namespace Models.Entities.Issue
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsEnabled { get; set; }
-        public TicketPriority DefaultPriority { get; set; }
+        public EnumPriority DefaultPriority { get; set; }
         public int? FKAssignedUserId { get; set; }
 
         [ForeignKey("FKAssignedUserId")]

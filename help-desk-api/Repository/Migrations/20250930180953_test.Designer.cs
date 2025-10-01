@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20250930124206_FirstMigrations")]
-    partial class FirstMigrations
+    [Migration("20250930180953_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -895,6 +895,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
+                    b.Property<string>("DepartmentEndPoint")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -924,6 +927,9 @@ namespace Repository.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(105);
+
+                    b.Property<string>("UserEndPoint")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -985,6 +991,64 @@ namespace Repository.Migrations
                     b.HasIndex("FKManagerId");
 
                     b.ToTable("Department", "Org");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.SLAConfigurationModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FKCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FKCompanyId");
+
+                    b.ToTable("SLAConfiguration", "Org");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.EmailConfigurationModel", b =>
@@ -1834,6 +1898,17 @@ namespace Repository.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.SLAConfigurationModel", b =>
+                {
+                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
+                        .WithMany()
+                        .HasForeignKey("FKCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.NotificationScheduleModel", b =>

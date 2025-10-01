@@ -8,7 +8,7 @@ using Services.CompanyConfig;
 namespace WebApi.Controllers.CompanyConfig
 {
     [ApiController]
-    [Route("company/sla")]
+    [Route("sla")]
     [AllowAnonymous]
     public class SLAController : ControllerBase
     {
