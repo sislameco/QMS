@@ -11,4 +11,13 @@ namespace Models.Enum
         QsmartAPI = 1,
         HRAPI = 2
     }
+    public enum CustomFieldType
+    {
+        TextInput = 1,
+        TextArea = 2,
+        Number = 3,
+        Date = 4,
+        DropdownList = 5,
+        FileUpload = 6
+    }
 }

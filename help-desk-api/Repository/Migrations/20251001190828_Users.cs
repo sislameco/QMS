@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class User : Migration
+    public partial class Users : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -686,6 +686,38 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomFields",
+                schema: "Org",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FkTicketTypeId = table.Column<int>(type: "integer", nullable: false),
+                    DisplayName = table.Column<string>(type: "text", nullable: true),
+                    DataType = table.Column<int>(type: "integer", nullable: false),
+                    OptionsJson = table.Column<string>(type: "text", nullable: true),
+                    IsRequired = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomFields_TicketType_FkTicketTypeId",
+                        column: x => x.FkTicketTypeId,
+                        principalSchema: "issue",
+                        principalTable: "TicketType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ticket",
                 schema: "issue",
                 columns: table => new
@@ -841,6 +873,43 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TicketCustomFields",
+                schema: "Org",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FkTicketId = table.Column<int>(type: "integer", nullable: false),
+                    TicketTypeCustomFieldId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketCustomFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketCustomFields_CustomFields_TicketTypeCustomFieldId",
+                        column: x => x.TicketTypeCustomFieldId,
+                        principalSchema: "Org",
+                        principalTable: "CustomFields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketCustomFields_Ticket_FkTicketId",
+                        column: x => x.FkTicketId,
+                        principalSchema: "issue",
+                        principalTable: "Ticket",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TicketDepartmentMap",
                 schema: "issue",
                 columns: table => new
@@ -990,6 +1059,12 @@ namespace Repository.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomFields_FkTicketTypeId",
+                schema: "Org",
+                table: "CustomFields",
+                column: "FkTicketTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Department_FKCompanyId",
                 schema: "Org",
                 table: "Department",
@@ -1084,6 +1159,18 @@ namespace Repository.Migrations
                 schema: "issue",
                 table: "TicketComment",
                 column: "TicketModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketCustomFields_FkTicketId",
+                schema: "Org",
+                table: "TicketCustomFields",
+                column: "FkTicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketCustomFields_TicketTypeCustomFieldId",
+                schema: "Org",
+                table: "TicketCustomFields",
+                column: "TicketTypeCustomFieldId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketDepartmentMap_FKDepartmentId",
@@ -1217,6 +1304,10 @@ namespace Repository.Migrations
                 schema: "issue");
 
             migrationBuilder.DropTable(
+                name: "TicketCustomFields",
+                schema: "Org");
+
+            migrationBuilder.DropTable(
                 name: "TicketDepartmentMap",
                 schema: "issue");
 
@@ -1251,6 +1342,10 @@ namespace Repository.Migrations
             migrationBuilder.DropTable(
                 name: "EmailConfiguration",
                 schema: "setup");
+
+            migrationBuilder.DropTable(
+                name: "CustomFields",
+                schema: "Org");
 
             migrationBuilder.DropTable(
                 name: "LeadCustomer",

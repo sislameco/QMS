@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Services.CompanyConfig
+namespace Services.Org
 {
-    public interface ITicketTypeService
+    public interface ISLAService
     {
         Task<IEnumerable<SLAInputDto>> GetAllAsync();
         Task<SLAInputDto?> GetByIdAsync(int id);
@@ -16,11 +16,11 @@ namespace Services.CompanyConfig
         Task<bool> DeleteAsync(int id);
     }
 
-    public class TicketTypeService : ITicketTypeService
+    public class SLAService : ISLAService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public TicketTypeService(IUnitOfWork unitOfWork)
+        public SLAService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20251001151814_User")]
-    partial class User
+    [Migration("20251001190828_Users")]
+    partial class Users
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -936,6 +936,64 @@ namespace Repository.Migrations
                     b.ToTable("Companies", "Org");
                 });
 
+            modelBuilder.Entity("Models.Entities.Org.CustomFieldModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int>("DataType")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FkTicketTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OptionsJson")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FkTicketTypeId");
+
+                    b.ToTable("CustomFields", "Org");
+                });
+
             modelBuilder.Entity("Models.Entities.Org.DepartmentModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1049,6 +1107,60 @@ namespace Repository.Migrations
                     b.HasIndex("FKCompanyId");
 
                     b.ToTable("SLAConfiguration", "Org");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FkTicketId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int>("TicketTypeCustomFieldId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FkTicketId");
+
+                    b.HasIndex("TicketTypeCustomFieldId");
+
+                    b.ToTable("TicketCustomFields", "Org");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.EmailConfigurationModel", b =>
@@ -1889,6 +2001,17 @@ namespace Repository.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Models.Entities.Org.CustomFieldModel", b =>
+                {
+                    b.HasOne("Models.Entities.Issue.TicketTypeModel", "TicketType")
+                        .WithMany()
+                        .HasForeignKey("FkTicketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TicketType");
+                });
+
             modelBuilder.Entity("Models.Entities.Org.DepartmentModel", b =>
                 {
                     b.HasOne("Models.Entities.Org.CompanyModel", "Company")
@@ -1917,6 +2040,25 @@ namespace Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>
+                {
+                    b.HasOne("Models.Entities.Issue.TicketModel", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("FkTicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Entities.Org.CustomFieldModel", "CustomField")
+                        .WithMany()
+                        .HasForeignKey("TicketTypeCustomFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomField");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.NotificationScheduleModel", b =>

@@ -6,8 +6,6 @@ using Models.Entities.Setup;
 using Models.Entities.Notification;
 using Models.Entities.Issue;
 
-
-
 namespace Repository.Db
 {
     public class HelpDbContext : DbContext
@@ -31,6 +29,8 @@ namespace Repository.Db
         public DbSet<AuditLogModel> AuditLogs => Set<AuditLogModel>();
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();
         public DbSet<SLAConfigurationModel> SLAs => Set<SLAConfigurationModel>();
+        public DbSet<CustomFieldModel> CustomFields { get; set; }
+        public DbSet<TicketCustomFieldValue> TicketCustomFields { get; set; }
         public DbSet<DepartmentModel> Departments => Set<DepartmentModel>();
         public DbSet<EmailConfigurationModel> EmailConfigurations => Set<EmailConfigurationModel>();
         public DbSet<NotificationScheduleModel> NotificationSchedules => Set<NotificationScheduleModel>();

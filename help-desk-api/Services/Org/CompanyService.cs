@@ -4,7 +4,7 @@ using Models.Enum;
 using Repository;
 using Utils.LoginData;
 
-namespace Services.Dashboard
+namespace Services.Org
 {
     public interface ICompanyService
     {

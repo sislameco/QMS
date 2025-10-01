@@ -8,7 +8,7 @@ using Services.CompanyConfig;
 namespace WebApi.Controllers.CompanyConfig
 {
     [ApiController]
-    [Route("sla")]
+    [Route("ticket-type")]
     [AllowAnonymous]
     public class TicketTypeController : ControllerBase
     {
