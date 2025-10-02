@@ -28,6 +28,7 @@ namespace Repository.Db
         public DbSet<UserDepartmentModel> UserDepartments => Set<UserDepartmentModel>();
         public DbSet<AuditLogModel> AuditLogs => Set<AuditLogModel>();
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();
+        public DbSet<CompanyDefineDataSourceModel> CompanyDefineDataSources => Set<CompanyDefineDataSourceModel>();
         public DbSet<SLAConfigurationModel> SLAs => Set<SLAConfigurationModel>();
         public DbSet<CustomFieldModel> CustomFields { get; set; }
         public DbSet<TicketCustomFieldValue> TicketCustomFields { get; set; }
