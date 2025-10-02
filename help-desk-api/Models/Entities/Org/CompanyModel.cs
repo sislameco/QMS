@@ -14,6 +14,7 @@ namespace Models.Entities.Org
         public string PrefixTicket { get; set; }
         public int LastTicketNumber { get; set; }
         public ICollection<DepartmentModel> Departments { get; set; }
+        public ICollection<CompanyDefineDataSourceModel> CompanyDefineData { get; set; }
     }
 
 }
