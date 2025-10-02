@@ -33,8 +33,6 @@ namespace Services.Org
                 AccessKey = c.AccessKey,
                 SecretKey = c.SecretKey,
                 PrefixTicket = c.PrefixTicket,
-                DepartmentEndPoint = c.DepartmentEndPoint,
-                UserEndPoint = c.UserEndPoint,
                 LastTicketNumber = c.LastTicketNumber
             }).ToList();
         }
@@ -49,8 +47,6 @@ namespace Services.Org
             company.Description = dto.Description;
             company.PrefixTicket = dto.PrefixTicket;
             company.LastTicketNumber = dto.LastTicketNumber;
-            company.DepartmentEndPoint = dto.UserEndPoint;
-            company.UserEndPoint = dto.UserEndPoint;
             await _unitOfWork.Repository<CompanyModel, int>().UpdateAsync(company);
             return await _unitOfWork.CommitAsync() > 0;
 

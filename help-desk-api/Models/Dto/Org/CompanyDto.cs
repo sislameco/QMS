@@ -10,7 +10,14 @@ namespace Models.Dto.Org
         public string SecretKey { get; set; }
         public string PrefixTicket { get; set; }
         public int LastTicketNumber { get; set; }
-        public string DepartmentEndPoint { get; set; }
-        public string UserEndPoint { get; set; }
+        List<CompanyDefineDataSourceDto> DefineDataSources { get; set; }
+    }
+    public class CompanyDefineDataSourceDto
+    {
+        public int Id { get; set; }
+        public string Source { get; set; }
+        public bool IsValidate { get; set; }
+        public bool IsSync { get; set; }
+        public string JsonData { get; set; }
     }
 }
