@@ -14,5 +14,6 @@ namespace Models.Entities.Notification
         public string BodyTemplate { get; set; }
         public string CcList { get; set; }
         public bool IsEnabled { get; set; }
+        public string[] Variables { get; set; }
     }
 }
