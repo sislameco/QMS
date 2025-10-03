@@ -241,21 +241,6 @@ namespace Services.Org
         {
             return await _commonRepository.GetDepartments(companyId, input);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private async Task<bool> SetMenuPermissionByDepartment(int departmentId, List<RoleSetWithMenuActoinDto> menus)
         {
             // Remove existing permissions for the role
