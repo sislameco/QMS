@@ -38,6 +38,11 @@ namespace Repository.Seeds
                 await context.MenuActionMaps.AddRangeAsync(MenuActionMapModelSeedData.menuActionMaps);
                 await context.SaveChangesAsync();
             }
+            if (!await context.CompanyDefineDataSources.AnyAsync())
+            {
+                await context.CompanyDefineDataSources.AddRangeAsync(CompanyDefineDataSourceSeedData.companyDefineDataSources);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

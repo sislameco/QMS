@@ -122,10 +122,12 @@ namespace Services.Org
             switch (type)
             {
                 case EnumDataSource.User:
-                    await SyncDepartments(id, companyId);
+                    isSync = await SyncDepartments(id, companyId);
+
                     break;
                 case EnumDataSource.Department:
-                    await SyncUsers(id, companyId);
+                    isSync = await SyncUsers(id, companyId);
+
                     break;
                 default:
                     throw new Exception("Invalid data source type");
@@ -158,7 +160,9 @@ namespace Services.Org
                             UserName = user.UserName,
                             FullName = $"{user.FirstName} {user.LastName}",
                             Phone = string.Empty,
-                            PasswordHash = string.Empty
+                            PasswordHash = string.Empty,
+                            IntegrationsPrimaryId = user.UserId,
+                            RStatus = EnumRStatus.Active,
                         };
                         await _unitOfWork.Repository<UserModel, int>().AddAsync(addUser);
                     }

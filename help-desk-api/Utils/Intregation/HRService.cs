@@ -24,14 +24,14 @@ namespace Utils.Intregation
 
         public async Task<List<DepartmentOutputDto>> GetDepartmentsAsync()
         {
-            var request = new DepartmentServiceRequest(HttpMethod.Post, "departments");
+            var request = new DepartmentServiceRequest(HttpMethod.Get, "api/company-data/department");
             try
             {
                 dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.HRAPI);
-                if (response?.data == null)
+                if (response == null)
                     throw new InvalidOperationException("No department data returned from HRAPI.");
 
-                var departmentsJson = JsonConvert.SerializeObject(response.data);
+                var departmentsJson = JsonConvert.SerializeObject(response);
                 var departments = JsonConvert.DeserializeObject<List<DepartmentOutputDto>>(departmentsJson);
 
                 return departments ?? new List<DepartmentOutputDto>();
@@ -45,14 +45,14 @@ namespace Utils.Intregation
 
         public async Task<List<UserWithEmployeeDto>> GetUsersAsync()
         {
-            var request = new DepartmentServiceRequest(HttpMethod.Post, "users");
+            var request = new DepartmentServiceRequest(HttpMethod.Get, "api/company-data/users");
             try
             {
                 dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.HRAPI);
-                if (response?.data == null)
+                if (response == null)
                     throw new InvalidOperationException("No user data returned from HRAPI.");
 
-                var usersJson = JsonConvert.SerializeObject(response.data);
+                var usersJson = JsonConvert.SerializeObject(response);
                 var users = JsonConvert.DeserializeObject<List<UserWithEmployeeDto>>(usersJson);
 
                 return users ?? new List<UserWithEmployeeDto>();

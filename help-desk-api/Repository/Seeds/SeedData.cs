@@ -122,20 +122,26 @@ namespace Repository.Seeds
             new CompanyModel
             {
                 Id=1,
-                Name = "Qsmart",
+                Name = "Churchfield Home Services",
+                ShortName = "CHS",
                 Description = "Updated Description",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                AccessKey = "CHS",
+                SecretKey = "CHS2024!" 
             },
             new CompanyModel
             {
                 Id=2,
                 Name = "OMS",
+                ShortName = "OMS",
                 Description = "Updated OMS Description",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                AccessKey = "OMS",
+                SecretKey = "OMS2024!"
             },
             new CompanyModel
             {
@@ -151,7 +157,7 @@ namespace Repository.Seeds
 
     public static class CompanyDefineDataSourceSeedData
     {
-        public static readonly CompanyDefineDataSourceModel[] companies =
+        public static readonly CompanyDefineDataSourceModel[] companyDefineDataSources =
         {
             new CompanyDefineDataSourceModel
     {

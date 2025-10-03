@@ -17,8 +17,7 @@ namespace Models.Entities.Issue
         [ForeignKey("FKAssignedUserId")]
         public UserModel User { get; set; }
         public int[] FkDepartmentIds { get; set; }
-        [ForeignKey("FkDepartmentIds")]
-        public DepartmentModel Department { get; set; }
+
     }
 
 

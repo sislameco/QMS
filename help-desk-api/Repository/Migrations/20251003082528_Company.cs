@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class Start : Migration
+    public partial class Company : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -244,9 +244,9 @@ namespace Repository.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FkCompanyId = table.Column<int>(type: "integer", nullable: false),
                     Source = table.Column<string>(type: "text", nullable: true),
-                    IsValidate = table.Column<bool>(type: "boolean", nullable: false),
                     IsSync = table.Column<bool>(type: "boolean", nullable: false),
-                    JsonData = table.Column<string>(type: "text", nullable: true)
+                    JsonData = table.Column<string>(type: "text", nullable: true),
+                    DataSourceType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -391,43 +391,6 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                schema: "UserMgmt",
-                columns: table => new
-                {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "text", nullable: true),
-                    LastName = table.Column<string>(type: "text", nullable: true),
-                    FullName = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    LastLoginDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastPasswordChange = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsReportingManager = table.Column<bool>(type: "boolean", nullable: false),
-                    FkCompanyId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Companies_FkCompanyId",
-                        column: x => x.FkCompanyId,
-                        principalSchema: "Org",
-                        principalTable: "Companies",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MenuActionMap",
                 schema: "UserMgmt",
                 columns: table => new
@@ -463,148 +426,6 @@ namespace Repository.Migrations
                         principalTable: "Menu",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AuditLog",
-                schema: "log",
-                columns: table => new
-                {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EntityName = table.Column<string>(type: "text", nullable: true),
-                    EntityId = table.Column<int>(type: "integer", nullable: false),
-                    ActionType = table.Column<int>(type: "integer", nullable: false),
-                    OldValues = table.Column<string>(type: "text", nullable: true),
-                    NewValues = table.Column<string>(type: "text", nullable: true),
-                    ChangedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ChangedBy = table.Column<int>(type: "integer", nullable: false),
-                    IPAddress = table.Column<string>(type: "text", nullable: true),
-                    UserAgent = table.Column<string>(type: "text", nullable: true),
-                    Notes = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AuditLog", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AuditLog_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "UserMgmt",
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Department",
-                schema: "Org",
-                columns: table => new
-                {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    FKManagerId = table.Column<int>(type: "integer", nullable: false),
-                    FKCompanyId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Department", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Department_Companies_FKCompanyId",
-                        column: x => x.FKCompanyId,
-                        principalSchema: "Org",
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Department_Users_FKManagerId",
-                        column: x => x.FKManagerId,
-                        principalSchema: "UserMgmt",
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TicketType",
-                schema: "issue",
-                columns: table => new
-                {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    DefaultPriority = table.Column<int>(type: "integer", nullable: false),
-                    FKAssignedUserId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TicketType", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TicketType_Users_FKAssignedUserId",
-                        column: x => x.FKAssignedUserId,
-                        principalSchema: "UserMgmt",
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRole",
-                schema: "UserMgmt",
-                columns: table => new
-                {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FKUserId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: true),
-                    FKRoleId = table.Column<int>(type: "integer", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRole_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "UserMgmt",
-                        principalTable: "Role",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserRole_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "UserMgmt",
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -673,8 +494,8 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDepartments",
-                schema: "UserMgmt",
+                name: "AuditLog",
+                schema: "log",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -686,34 +507,21 @@ namespace Repository.Migrations
                     DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FkCompanyId = table.Column<int>(type: "integer", nullable: false),
-                    FkUserId = table.Column<int>(type: "integer", nullable: false),
-                    FKDepartmentId = table.Column<int>(type: "integer", nullable: false)
+                    EntityName = table.Column<string>(type: "text", nullable: true),
+                    EntityId = table.Column<int>(type: "integer", nullable: false),
+                    ActionType = table.Column<int>(type: "integer", nullable: false),
+                    OldValues = table.Column<string>(type: "text", nullable: true),
+                    NewValues = table.Column<string>(type: "text", nullable: true),
+                    ChangedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<int>(type: "integer", nullable: false),
+                    IPAddress = table.Column<string>(type: "text", nullable: true),
+                    UserAgent = table.Column<string>(type: "text", nullable: true),
+                    Notes = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDepartments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserDepartments_Companies_FkCompanyId",
-                        column: x => x.FkCompanyId,
-                        principalSchema: "Org",
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserDepartments_Department_FKDepartmentId",
-                        column: x => x.FKDepartmentId,
-                        principalSchema: "Org",
-                        principalTable: "Department",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserDepartments_Users_FkUserId",
-                        column: x => x.FkUserId,
-                        principalSchema: "UserMgmt",
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_AuditLog", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -739,13 +547,144 @@ namespace Repository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomFields", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Department",
+                schema: "Org",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IntegrationsPrimaryId = table.Column<int>(type: "integer", nullable: true),
+                    FKManagerId = table.Column<int>(type: "integer", nullable: true),
+                    FKCompanyId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Department", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomFields_TicketType_FkTicketTypeId",
-                        column: x => x.FkTicketTypeId,
-                        principalSchema: "issue",
-                        principalTable: "TicketType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Department_Companies_FKCompanyId",
+                        column: x => x.FKCompanyId,
+                        principalSchema: "Org",
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "UserMgmt",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    FullName = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    LastLoginDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastPasswordChange = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsReportingManager = table.Column<bool>(type: "boolean", nullable: false),
+                    IntegrationsPrimaryId = table.Column<int>(type: "integer", nullable: true),
+                    FkCompanyId = table.Column<int>(type: "integer", nullable: true),
+                    FkDepartmentId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Department_FkDepartmentId",
+                        column: x => x.FkDepartmentId,
+                        principalSchema: "Org",
+                        principalTable: "Department",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketType",
+                schema: "issue",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    Priority = table.Column<int>(type: "integer", nullable: false),
+                    FKAssignedUserId = table.Column<int>(type: "integer", nullable: true),
+                    FkDepartmentIds = table.Column<int[]>(type: "integer[]", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketType", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketType_Users_FKAssignedUserId",
+                        column: x => x.FKAssignedUserId,
+                        principalSchema: "UserMgmt",
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                schema: "UserMgmt",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FKUserId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: true),
+                    FKRoleId = table.Column<int>(type: "integer", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRole_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "UserMgmt",
+                        principalTable: "Role",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserRole_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "UserMgmt",
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -1258,24 +1197,6 @@ namespace Repository.Migrations
                 column: "FKUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDepartments_FkCompanyId",
-                schema: "UserMgmt",
-                table: "UserDepartments",
-                column: "FkCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserDepartments_FKDepartmentId",
-                schema: "UserMgmt",
-                table: "UserDepartments",
-                column: "FKDepartmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserDepartments_FkUserId",
-                schema: "UserMgmt",
-                table: "UserDepartments",
-                column: "FkUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
                 schema: "UserMgmt",
                 table: "UserRole",
@@ -1288,15 +1209,48 @@ namespace Repository.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_FkCompanyId",
+                name: "IX_Users_FkDepartmentId",
                 schema: "UserMgmt",
                 table: "Users",
-                column: "FkCompanyId");
+                column: "FkDepartmentId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AuditLog_Users_UserId",
+                schema: "log",
+                table: "AuditLog",
+                column: "UserId",
+                principalSchema: "UserMgmt",
+                principalTable: "Users",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CustomFields_TicketType_FkTicketTypeId",
+                schema: "Org",
+                table: "CustomFields",
+                column: "FkTicketTypeId",
+                principalSchema: "issue",
+                principalTable: "TicketType",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Department_Users_FKManagerId",
+                schema: "Org",
+                table: "Department",
+                column: "FKManagerId",
+                principalSchema: "UserMgmt",
+                principalTable: "Users",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Department_Users_FKManagerId",
+                schema: "Org",
+                table: "Department");
+
             migrationBuilder.DropTable(
                 name: "AssociateActionRoutes");
 
@@ -1365,10 +1319,6 @@ namespace Repository.Migrations
                 schema: "issue");
 
             migrationBuilder.DropTable(
-                name: "UserDepartments",
-                schema: "UserMgmt");
-
-            migrationBuilder.DropTable(
                 name: "UserLogins",
                 schema: "log");
 
@@ -1397,10 +1347,6 @@ namespace Repository.Migrations
                 schema: "issue");
 
             migrationBuilder.DropTable(
-                name: "Department",
-                schema: "Org");
-
-            migrationBuilder.DropTable(
                 name: "Role",
                 schema: "UserMgmt");
 
@@ -1419,6 +1365,10 @@ namespace Repository.Migrations
             migrationBuilder.DropTable(
                 name: "Users",
                 schema: "UserMgmt");
+
+            migrationBuilder.DropTable(
+                name: "Department",
+                schema: "Org");
 
             migrationBuilder.DropTable(
                 name: "Companies",

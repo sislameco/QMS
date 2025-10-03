@@ -707,9 +707,6 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(103);
 
-                    b.Property<int>("DefaultPriority")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("integer")
                         .HasColumnOrder(106);
@@ -724,11 +721,17 @@ namespace Repository.Migrations
                     b.Property<int?>("FKAssignedUserId")
                         .HasColumnType("integer");
 
+                    b.PrimitiveCollection<int[]>("FkDepartmentIds")
+                        .HasColumnType("integer[]");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
@@ -884,6 +887,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(103);
 
+                    b.Property<int>("DataSourceType")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("integer")
                         .HasColumnOrder(106);
@@ -896,9 +902,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsSync")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsValidate")
                         .HasColumnType("boolean");
 
                     b.Property<string>("JsonData")
@@ -1073,10 +1076,13 @@ namespace Repository.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("FKCompanyId")
+                    b.Property<int?>("FKCompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("FKManagerId")
+                    b.Property<int?>("FKManagerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("IntegrationsPrimaryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -1708,62 +1714,6 @@ namespace Repository.Migrations
                     b.ToTable("Role", "UserMgmt");
                 });
 
-            modelBuilder.Entity("Models.Entities.UserManagement.UserDepartmentModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(102);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(103);
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(106);
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(107);
-
-                    b.Property<int>("FKDepartmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FkCompanyId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FkUserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RStatus")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(101);
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(104);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(105);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FKDepartmentId");
-
-                    b.HasIndex("FkCompanyId");
-
-                    b.HasIndex("FkUserId");
-
-                    b.ToTable("UserDepartments", "UserMgmt");
-                });
-
             modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1797,8 +1747,14 @@ namespace Repository.Migrations
                     b.Property<int?>("FkCompanyId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("FkDepartmentId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("FullName")
                         .HasColumnType("text");
+
+                    b.Property<int?>("IntegrationsPrimaryId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsReportingManager")
                         .HasColumnType("boolean");
@@ -1835,7 +1791,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FkCompanyId");
+                    b.HasIndex("FkDepartmentId");
 
                     b.ToTable("Users", "UserMgmt");
                 });
@@ -2079,15 +2035,11 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.Org.CompanyModel", "Company")
                         .WithMany("Departments")
-                        .HasForeignKey("FKCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FKCompanyId");
 
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("FKManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FKManagerId");
 
                     b.Navigation("Company");
 
@@ -2186,40 +2138,13 @@ namespace Repository.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Models.Entities.UserManagement.UserDepartmentModel", b =>
+            modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
                 {
                     b.HasOne("Models.Entities.Org.DepartmentModel", "Department")
                         .WithMany()
-                        .HasForeignKey("FKDepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
-                        .WithMany()
-                        .HasForeignKey("FkCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Entities.UserManagement.UserModel", "Role")
-                        .WithMany("UserDepartments")
-                        .HasForeignKey("FkUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
+                        .HasForeignKey("FkDepartmentId");
 
                     b.Navigation("Department");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
-                {
-                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
-                        .WithMany()
-                        .HasForeignKey("FkCompanyId");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.UserRoleModel", b =>
@@ -2288,8 +2213,6 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
                 {
-                    b.Navigation("UserDepartments");
-
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
