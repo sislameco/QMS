@@ -10,7 +10,7 @@ namespace Models.Dto.Org
         public string SecretKey { get; set; }
         public string PrefixTicket { get; set; }
         public int LastTicketNumber { get; set; }
-        List<CompanyDefineDataSourceDto> DefineDataSources { get; set; }
+        public List<CompanyDefineDataSourceDto> DefineDataSources { get; set; } = new List<CompanyDefineDataSourceDto>();
     }
     public class CompanyDefineDataSourceDto
     {

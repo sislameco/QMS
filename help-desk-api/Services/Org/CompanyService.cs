@@ -33,7 +33,15 @@ namespace Services.Org
                 AccessKey = c.AccessKey,
                 SecretKey = c.SecretKey,
                 PrefixTicket = c.PrefixTicket,
-                LastTicketNumber = c.LastTicketNumber
+                LastTicketNumber = c.LastTicketNumber,
+                DefineDataSources = c.CompanyDefineData.Where(s => s.RStatus == EnumRStatus.Active).Count()> 0?  c.CompanyDefineData.Where(s=> s.RStatus == EnumRStatus.Active).Select(s=> new CompanyDefineDataSourceDto
+                {
+                    Id = s.Id,
+                     IsSync = s.IsSync,
+                    IsValidate = s.IsValidate,
+                     JsonData = s.JsonData,
+                     Source = s.Source 
+                }).ToList(): new List<CompanyDefineDataSourceDto>()
             }).ToList();
         }
         public async Task<bool> UpdateCompanyAsync(int id, CompanyDto dto)
@@ -47,6 +55,34 @@ namespace Services.Org
             company.Description = dto.Description;
             company.PrefixTicket = dto.PrefixTicket;
             company.LastTicketNumber = dto.LastTicketNumber;
+
+            foreach(var defineData in dto.DefineDataSources)
+            {
+                if (defineData.Id == 0)
+                {
+                    CompanyDefineDataSourceModel companyDefineDataSource = new CompanyDefineDataSourceModel
+                    {
+                        FkCompanyId = dto.Id,
+                        IsSync = defineData.IsSync,
+                        IsValidate = defineData.IsValidate,
+                        JsonData = defineData.JsonData,
+                        Source = defineData.Source,
+                        RStatus = EnumRStatus.Active,
+                    };
+                    company.CompanyDefineData.Add(companyDefineDataSource);
+                }
+                else {
+                    CompanyDefineDataSourceModel upcompanyDefineDataSource = company.CompanyDefineData.FirstOrDefault(c => c.Id == defineData.Id) ?? null;
+                    if (upcompanyDefineDataSource != null)
+                    {
+                        upcompanyDefineDataSource.IsSync = defineData.IsSync;
+                        upcompanyDefineDataSource.IsValidate = defineData.IsValidate;
+                        upcompanyDefineDataSource.JsonData = defineData.JsonData;
+                        upcompanyDefineDataSource.Source = defineData.Source;
+                    }
+                    company.CompanyDefineData.Add(upcompanyDefineDataSource);
+                }
+            }
             await _unitOfWork.Repository<CompanyModel, int>().UpdateAsync(company);
             return await _unitOfWork.CommitAsync() > 0;
 
@@ -66,7 +102,16 @@ namespace Services.Org
                 AccessKey = entity.AccessKey,
                 SecretKey = entity.SecretKey,
                 PrefixTicket = entity.PrefixTicket,
-                LastTicketNumber = entity.LastTicketNumber
+                LastTicketNumber = entity.LastTicketNumber,
+                DefineDataSources = entity.CompanyDefineData.Where(s => s.RStatus == EnumRStatus.Active).Select(s => new CompanyDefineDataSourceDto
+                {
+                    Id = s.Id,
+                    IsSync = s.IsSync,
+                    IsValidate = s.IsValidate,
+                    JsonData = s.JsonData,
+                    Source = s.Source
+                }).ToList()
+
             };
         }
     }
