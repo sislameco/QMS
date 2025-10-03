@@ -24,6 +24,8 @@ namespace Repository.Db
         public DbSet<MenuActionModel> MenuActions => Set<MenuActionModel>();
         public DbSet<MenuActionMapModel> MenuActionMaps => Set<MenuActionMapModel>();
         public DbSet<MenuActionRoleMappingModel> MenuActionRoleMappings => Set<MenuActionRoleMappingModel>();
+        public DbSet<MenuActionDepartmentMappingModel> MenuActionDepartmentMapping => Set<MenuActionDepartmentMappingModel>();
+        
         public DbSet<AssociateActionRouteModel> AssociateActionRoutes => Set<AssociateActionRouteModel>();
         public DbSet<AuditLogModel> AuditLogs => Set<AuditLogModel>();
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();

@@ -907,7 +907,7 @@ namespace Repository.Migrations
                     b.Property<bool>("IsSync")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("JsonData")
+                    b.Property<string>("JSonData")
                         .HasColumnType("text");
 
                     b.Property<int>("RStatus")

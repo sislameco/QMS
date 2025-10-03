@@ -1,8 +1,13 @@
-﻿using Models.Dto.Org;
+﻿using Models.Dto.Intregation;
+using Models.Dto.Menus;
+using Models.Dto.Org;
+using Models.Dto.Pagination;
+using Models.Dto.UserManagement;
 using Models.Entities.Org;
 using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
+using Repository.Repo.Pagination;
 using Utils.Intregation;
 using Utils.LoginData;
 
@@ -14,20 +19,31 @@ namespace Services.Org
         Task<List<CompanyDto>> GetActiveCompaniesAsync();
         Task<CompanyDto> GetCompany(int id);
         Task<bool> Sync(int id, int companyId, EnumDataSource type);
+
+
+        #region Departments
+        Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input);
+        #endregion
     }
     public class CompanyService : ICompanyService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHRService _hRService;
-        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService)
+        private readonly ICommonRepository _commonRepository;
+        private readonly IUserInfos _userInfos;
+        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos)
         {
             _unitOfWork = unitOfWork;
             _hRService = hRService;
+            _commonRepository = commonRepository;
+            _userInfos = userInfos;
         }
         public async Task<List<CompanyDto>> GetActiveCompaniesAsync()
         {
             var companies = await _unitOfWork.Repository<CompanyModel, int>()
                 .FindByConditionAsync(c => c.RStatus == EnumRStatus.Active);
+            var companyDefinSources = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>()
+                .FindByConditionAsync(c => c.RStatus == EnumRStatus.Active && companies.Select(s => s.Id).Contains(c.FkCompanyId));
             return companies.Select(c => new CompanyDto
             {
                 Id = c.Id,
@@ -38,11 +54,11 @@ namespace Services.Org
                 SecretKey = c.SecretKey,
                 PrefixTicket = c.PrefixTicket,
                 LastTicketNumber = c.LastTicketNumber,
-                DefineDataSources = c.CompanyDefineData.Where(s => s.RStatus == EnumRStatus.Active).Count() > 0 ? c.CompanyDefineData.Where(s => s.RStatus == EnumRStatus.Active).Select(s => new CompanyDefineDataSourceDto
+                DefineDataSources = companyDefinSources.Where(s => s.RStatus == EnumRStatus.Active && s.FkCompanyId == c.Id).Count() > 0 ? c.CompanyDefineData.Where(s => s.RStatus == EnumRStatus.Active).Select(s => new CompanyDefineDataSourceDto
                 {
                     Id = s.Id,
                     IsSync = s.IsSync,
-                    JsonData = s.JsonData,
+                    JSonData = s.JsonData,
                     Source = s.Source
                 }).ToList() : new List<CompanyDefineDataSourceDto>()
             }).ToList();
@@ -67,7 +83,7 @@ namespace Services.Org
                     {
                         FkCompanyId = dto.Id,
                         IsSync = defineData.IsSync,
-                        JsonData = defineData.JsonData,
+                        JsonData = defineData.JSonData,
                         Source = defineData.Source,
                         RStatus = EnumRStatus.Active,
                     };
@@ -79,7 +95,7 @@ namespace Services.Org
                     if (upcompanyDefineDataSource != null)
                     {
                         upcompanyDefineDataSource.IsSync = defineData.IsSync;
-                        upcompanyDefineDataSource.JsonData = defineData.JsonData;
+                        upcompanyDefineDataSource.JsonData = defineData.JSonData;
                         upcompanyDefineDataSource.Source = defineData.Source;
                     }
                     company.CompanyDefineData.Add(upcompanyDefineDataSource);
@@ -94,7 +110,8 @@ namespace Services.Org
             var repo = _unitOfWork.Repository<CompanyModel, int>();
             var entity = await repo.GetByIdAsync(id);
             if (entity == null) return null;
-
+            var companyDefinSources = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>()
+    .FindByConditionAsync(c => c.RStatus == EnumRStatus.Active && c.FkCompanyId == entity.Id);
             return new CompanyDto
             {
                 Id = entity.Id,
@@ -105,11 +122,12 @@ namespace Services.Org
                 SecretKey = entity.SecretKey,
                 PrefixTicket = entity.PrefixTicket,
                 LastTicketNumber = entity.LastTicketNumber,
-                DefineDataSources = entity.CompanyDefineData.Where(s => s.RStatus == EnumRStatus.Active).Select(s => new CompanyDefineDataSourceDto
+                DefineDataSources = companyDefinSources.Where(s => s.RStatus == EnumRStatus.Active).Select(s => new CompanyDefineDataSourceDto
                 {
                     Id = s.Id,
                     IsSync = s.IsSync,
-                    JsonData = s.JsonData,
+                    Type = s.DataSourceType,
+                    JSonData = s.JsonData,
                     Source = s.Source
                 }).ToList()
 
@@ -122,11 +140,11 @@ namespace Services.Org
             switch (type)
             {
                 case EnumDataSource.User:
-                    isSync = await SyncDepartments(id, companyId);
+                    isSync = await SyncUsers(id, companyId);
 
                     break;
                 case EnumDataSource.Department:
-                    isSync = await SyncUsers(id, companyId);
+                    isSync = await SyncDepartments(id, companyId);
 
                     break;
                 default:
@@ -218,5 +236,58 @@ namespace Services.Org
 
 
         }
+        #region Departments
+        public async Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input)
+        {
+            return await _commonRepository.GetDepartments(companyId, input);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private async Task<bool> SetMenuPermissionByDepartment(int departmentId, List<RoleSetWithMenuActoinDto> menus)
+        {
+            // Remove existing permissions for the role
+            var existingMappings = await _unitOfWork.Repository<MenuActionDepartmentMappingModel, int>()
+                .FindByConditionAsync(s => s.FkDepartmentId == departmentId && s.RStatus == EnumRStatus.Active);
+            existingMappings.ToList();
+
+            foreach (var menu in menus)
+            {
+                var existingMapping = existingMappings.FirstOrDefault(s => s.FKMenuActionMapId == menu.FkMenuActionMapId);
+                if (existingMapping != null)
+                {
+                    existingMapping.IsAllowed = menu.IsAllowed;
+                    existingMapping.UpdatedBy = _userInfos.GetCurrentUserId();
+                    existingMapping.UpdatedDate = DateTime.UtcNow;
+                    await _unitOfWork.Repository<MenuActionDepartmentMappingModel, int>().UpdateAsync(existingMapping);
+                }
+                if (existingMapping == null)
+                {
+                    var newMapping = new MenuActionDepartmentMappingModel
+                    {
+                        FkDepartmentId = departmentId,
+                        FKMenuActionMapId = menu.FkMenuActionMapId,
+                        IsAllowed = menu.IsAllowed,
+                        CreatedBy = _userInfos.GetCurrentUserId(),
+                        CreatedDate = DateTime.UtcNow
+                    };
+                    await _unitOfWork.Repository<MenuActionDepartmentMappingModel, int>().AddAsync(newMapping);
+                }
+            }
+            return true;
+        }
+        #endregion
     }
 }

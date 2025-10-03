@@ -1,3 +1,5 @@
+using Models.Enum;
+
 namespace Models.Dto.Org
 {
     public class CompanyDto
@@ -16,8 +18,12 @@ namespace Models.Dto.Org
     {
         public int Id { get; set; }
         public string Source { get; set; }
-        public bool IsValidate { get; set; }
         public bool IsSync { get; set; }
-        public string JsonData { get; set; }
+        public string JSonData { get; set; }
+        public EnumDataSource Type { get; set; }
     }
+
+
+
+
 }
