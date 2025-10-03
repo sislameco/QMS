@@ -149,6 +149,37 @@ namespace Repository.Seeds
         };
     }
 
+    public static class CompanyDefineDataSourceSeedData
+    {
+        public static readonly CompanyDefineDataSourceModel[] companies =
+        {
+            new CompanyDefineDataSourceModel
+    {
+        Id = 1,
+        FkCompanyId = 1,
+        Source = "api/company-data/users",
+        IsSync = false,
+        JsonData = null,
+        CreatedDate = DateTime.UtcNow,
+        CreatedBy = 1,
+        RStatus = EnumRStatus.Active,
+        DataSourceType = EnumDataSource.User
+    },
+    new CompanyDefineDataSourceModel
+    {
+        Id = 2,
+        FkCompanyId = 2,
+        Source = "api/company-data/department",
+        IsSync = false,
+        JsonData = null,
+        CreatedDate = DateTime.UtcNow,
+        CreatedBy = 1,
+        RStatus = EnumRStatus.Active,
+          DataSourceType = EnumDataSource.Department
+    }
+        };
+    }
+
     public static class MenuSeedData
     {
         public static readonly MenuModel[] menus =

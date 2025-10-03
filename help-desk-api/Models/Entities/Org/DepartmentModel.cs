@@ -8,8 +8,9 @@ namespace Models.Entities.Org
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int FKManagerId { get; set; }
-        public int FKCompanyId { get; set; }
+        public int? IntegrationsPrimaryId { get; set; }
+        public int? FKManagerId { get; set; }
+        public int? FKCompanyId { get; set; }
         [ForeignKey("FKCompanyId")]
         public CompanyModel Company { get; set; }
         [ForeignKey("FKManagerId")]

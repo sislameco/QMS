@@ -10,10 +10,10 @@ namespace Models.Entities.Org
     {
         public int FkCompanyId { get; set; }
         public string Source { get; set; }
-        public bool IsValidate { get; set; }
         public bool IsSync { get; set; }
         public string JsonData { get; set; }
         [ForeignKey("FkCompanyId")]
         public CompanyModel Company { get; set; }
+        public EnumDataSource DataSourceType { get; set; }
     }
 }

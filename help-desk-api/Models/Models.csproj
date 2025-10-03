@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Remove="Entities\UserManagement\RoleMenuModel.cs" />
+    <Compile Remove="Entities\UserManagement\UserDepartmentModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="UAParser" Version="3.1.47" />

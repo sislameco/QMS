@@ -16,10 +16,12 @@ namespace Models.Entities.UserManagement
         public DateTime LastLoginDate { get; set; }
         public DateTime LastPasswordChange { get; set; }
         public bool IsReportingManager { get; set; }
+        public int? IntegrationsPrimaryId { get; set; }
         public int? FkCompanyId { get; set; }
         [ForeignKey("FkCompanyId")]
-        public CompanyModel Company { get; set; }
+        public int? FkDepartmentId { get; set; }
+        [ForeignKey("FkDepartmentId")]
+        public DepartmentModel Department { get; set; }
         public ICollection<UserRoleModel> UserRoles { get; set; } = new List<UserRoleModel>();
-        public ICollection<UserDepartmentModel> UserDepartments { get; set; } = new List<UserDepartmentModel>();
     }
 }

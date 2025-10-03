@@ -20,4 +20,12 @@ namespace Models.Enum
         DropdownList = 5,
         FileUpload = 6
     }
+    public enum EnumDataSource
+    {
+        Department = 1,
+        User = 2,
+        Project = 3,
+        Customer = 4,
+        Scheme = 5,
+    }
 }
