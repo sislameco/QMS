@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Org;
+using Models.Enum;
 using Services.Dashboard;
 using Services.Org;
 using System.Threading.Tasks;
@@ -34,6 +35,12 @@ namespace WebApi.Controllers.Org
         public async Task<IActionResult> GetCompany(int id)
         {
             return Ok(await _companyService.GetCompany(id));
+        }
+        [HttpPost("sync")]
+        public async Task<IActionResult> Sync( int id,  int companyId,  EnumDataSource type)
+        {
+            var result = await _companyService.Sync(id, companyId, type);
+            return Ok(result);
         }
     }
 }

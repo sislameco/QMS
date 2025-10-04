@@ -14,6 +14,8 @@ namespace Models.AppSettings
         public static List<string> CorsOrigins { get; set; }
         public static JWT Jwt { get; set; }
         public static BasicAuthCredential BasicAuthCredential { get; set; }
+        public static ApiConf QsmartAPI { get; set; }
+        public static ApiConf HRAPI { get; set; }
     }
     public class Redis
     {
@@ -36,6 +38,12 @@ namespace Models.AppSettings
     {
         public string AccessKey { get; set; }
         public string AccessSecret { get; set; }
+    }
+    public class ApiConf
+    {
+        public string AuthorizationKey { get; set; }
+        public string Company { get; set; }
+        public string BaseUrl { get; set; }
     }
 
 }

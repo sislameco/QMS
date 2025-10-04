@@ -14,7 +14,7 @@ namespace Models.Entities.UserManagement
     {
         // Static property to hold current user id (set from HttpContext in your service/repository)
         public static int CurrentUserId { get; set; }
-        public long? FkMenuActionMapId { get; set; }
+        public int? FkMenuActionMapId { get; set; }
         [ForeignKey("FkMenuActionMapId")]
         public MenuActionMapModel MenuActionMap { get; set; }
         [MaxLength(200)]

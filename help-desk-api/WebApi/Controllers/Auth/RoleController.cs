@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
 using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("role")]
+    [AllowAnonymous]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
@@ -15,20 +18,23 @@ namespace WebApi.Controllers.Auth
             _roleService = roleService;
         }
 
+        [HttpGet("all")]
+        public async Task<PaginationResponse<RoleWithUsersDto>> GetRoles()
+        {
+            return await _roleService.GetRolesWithUsersAsync();
+        }
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] RoleInputDto dto)
+        public async Task<IActionResult> Create([FromBody] RoleInputDto input)
         {
-            await _roleService.CreateRole(dto);
+            await _roleService.CreateRole(input);
             return Ok();
         }
-
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] RoleUpdateInputDto dto)
+        [HttpPut("{roleId}")]
+        public async Task<IActionResult> Update(int roleId,[FromBody] RoleInputDto input)
         {
-            await _roleService.UpdateRole(dto);
+            await _roleService.UpdateRole(roleId,input);
             return Ok();
         }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

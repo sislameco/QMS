@@ -22,7 +22,7 @@ namespace Models.Dto.Menus
     }
     public class UserMenus
     {
-        public List<PermittedMenuDto> PermittedMenus { get; set; }
+        public List<PerMenuDto> PermittedMenus { get; set; }
         public UserInfo UserInfo { get; set; }
         public List<PermittedActionsOutputDto> PermittedActions { get; set; }
     }
@@ -36,7 +36,7 @@ namespace Models.Dto.Menus
         public string UserName { get; set; }
         public string ImagePath { get; set; }
         public int RoleId { get; set; }
-        public long CompanyId { get; set; }
+        public int CompanyId { get; set; }
  
     }
     public class UserBiReportDto
@@ -52,11 +52,28 @@ namespace Models.Dto.Menus
         public int ProfileType { get; set; }
         public string ProfilePicture { get; set; }
     }
+    public class MenuBasicDto {
+        public int Id { get; set; }
+        public string MenuName { get; set; }
+        public string Icon { get; set; }
+        public string Route { get; set; }
+        public int DisplayOrder { get; set; }
+    }
+    public class UserMenuDto: MenuBasicDto
+    {
+        public int? ParentId { get; set; }
+    }
+
+    public class PerMenuDto: MenuBasicDto
+    {
+       public List<MenuBasicDto> SubMenus { get; set; }
+    }
+
     public class PermittedActionsOutputDto
     {
-        public long UserId { get; set; }
+        public int UserId { get; set; }
         public int MenuId { get; set; }
-        public long MapId { get; set; }
+        public int MapId { get; set; }
         public string MenuName { get; set; }
         public string SystemMenuName { get; set; }
         public string HttpVerb { get; set; }

@@ -13,6 +13,8 @@ using Utilities.Redis;
 using Utils;
 using Utils.Auth;
 using Utils.EmailUtil;
+using Utils.Intregation;
+using Utils.Intregation.API;
 using Utils.LoginData;
 using WebApi.Configuration;
 using WebApi.Extensions;
@@ -61,7 +63,9 @@ builder.Services.RegisterServices(
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
-
+builder.Services.AddScoped<IHRService, HRService>();
+builder.Services.AddScoped<IQsClient, QsClient>();
+builder.Services.AddScoped<HttpClient, HttpClient>();
 builder.Services.AddAllServices(typeof(IPermissionService).Assembly);
 builder.Services.AddAllRepositories(typeof(IDashboardRepository).Assembly);
 

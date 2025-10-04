@@ -8,7 +8,7 @@ using WebApi.Helper.Security;
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("permission")]
     [CustomAuthorization]
     public class PermissionController : ControllerBase
     {
@@ -26,26 +26,45 @@ namespace WebApi.Controllers.Auth
             return Ok(result);
         }
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetRoles(long userId)
+
+        [HttpGet("menu")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMenuAccess(int roleId = 1)
+        {
+
+            return Ok(await _permissionService.GetMenuAccess(roleId));
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<IActionResult> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> FKMenuActionIds)
+        {
+            return Ok(await _permissionService.SetMenuPermission(roleId, FKMenuActionIds));
+        }
+
+        [HttpGet()]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetRoles(int userId)
         {
             var result = await _permissionService.GetUserRolesAsync(userId);
             return Ok(result);
         }
 
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> RemoveRoles(long userId, [FromBody] List<long> roleIds)
+        public async Task<IActionResult> RemoveRoles(int userId, [FromBody] List<int> roleIds)
         {
             await _permissionService.RemoveUserRolesAsync(userId, roleIds);
             return Ok(new { Message = "Roles removed successfully" });
         }
 
         [HttpGet]
-        [Route("get-menus-user-info")]
+        [Route("get-menus")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(PermittedMenuDto), 200)]
         public async Task<IActionResult> PermittedMenus()
         {
-            return Ok(await _permissionService.GetUserMenus());
+           // return Ok(await _permissionService.GetUserMenus());
+            return Ok(await _permissionService.GetUserMenus(77));
         }
 
     }

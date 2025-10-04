@@ -12,7 +12,7 @@ namespace Services.Dashboard
 {
     public interface IDashboardService
     {
-        public Task<TicketOutPutDto> GetTicketSummary();
+        public Task<DashboardResponseDto> GetDashboard();
     }
     public class DashboardService : IDashboardService
     {
@@ -21,9 +21,9 @@ namespace Services.Dashboard
         {
             _dashboardRepository = dashboardRepository;
         }
-        public async Task<TicketOutPutDto> GetTicketSummary()
+        public async Task<DashboardResponseDto> GetDashboard()
         {
-            return await _dashboardRepository.GetTicketSummary();
+            return  await _dashboardRepository.GetDashboard();
         }
     }
 }

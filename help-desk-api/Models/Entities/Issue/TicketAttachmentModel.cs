@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Issue
 {
     [Table("TicketAttachment", Schema = "issue")]
-    public class TicketAttachmentModel : BaseEntity<long>
+    public class TicketAttachmentModel : BaseEntity<int>
     {
-        public long FKTicketId { get; set; }
+        public int FKTicketId { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
         public string ContentType { get; set; }

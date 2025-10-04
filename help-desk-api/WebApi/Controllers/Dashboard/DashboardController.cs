@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Dashboard;
 using Services.Dashboard;
 
@@ -13,10 +14,11 @@ namespace WebApi.Controllers.Dashboard
         {
             _dashboardService = dashboardService;
         }
-        [HttpGet("ticket")]
-        public async Task<ActionResult<TicketOutPutDto>> GetTicketSummary()
+        [HttpGet("user-data")]
+        [AllowAnonymous]
+        public async Task<ActionResult<DashboardResponseDto>> GetDashboard()
         {
-            var result = await _dashboardService.GetTicketSummary();
+            var result = await _dashboardService.GetDashboard();
             return Ok(result);
         }
     }

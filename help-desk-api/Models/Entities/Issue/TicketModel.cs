@@ -4,32 +4,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Issue
 {
     [Table("Ticket", Schema = "issue")]
-    public class TicketModel : BaseEntity<long>
+    public class TicketModel : BaseEntity<int>
     {
         public string TicketNumber { get; set; }
         public string Subject { get; set; }
         public string Description { get; set; }
-        public long SubmittedByUserId { get; set; }
-        public long FKCompanyId { get; set; }
-        public long FKTicketTypeId { get; set; }
-        public TicketCategory TicketCategory { get; set; }
-        public TicketStatus Status { get; set; }
-        public TicketPriority Priority { get; set; }
-        public long? AssignedUserId { get; set; }
-        public long? RootCauseId { get; set; }
-        public long? ResolutionId { get; set; }
+        public int SubmittedByUserId { get; set; }
+        public int FKCompanyId { get; set; }
+        public int FKTicketTypeId { get; set; }
+        public EnumQMSType TicketCategory { get; set; }
+        public EnumTicketStatus Status { get; set; }
+        public EnumPriority Priority { get; set; }
+        public int? AssignedUserId { get; set; }
+        public int? RootCauseId { get; set; }
+        public int? ResolutionId { get; set; }
         public string EstimatedTime { get; set; }
         public DateTime? DueDate { get; set; }
         public DateTime? ResolvedAt { get; set; }
-
-
         [ForeignKey("FKCompanyId")]
         public TicketModel Ticket { get; set; }
-
         [ForeignKey("FKTicketTypeId")]
         public TicketTypeModel TicketType { get; set; }
-
-
         public ICollection<TicketAttachmentModel> Attachments { get; set; }
         public ICollection<TicketCommentModel> Comments { get; set; }
         public ICollection<TicketWatchListModel> WatchList { get; set; }

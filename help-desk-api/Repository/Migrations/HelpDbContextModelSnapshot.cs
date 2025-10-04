@@ -24,11 +24,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Audit.AuditLogModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ActionType")
                         .HasColumnType("integer");
@@ -55,8 +55,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("EntityId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("EntityId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("EntityName")
                         .HasColumnType("text");
@@ -88,8 +88,8 @@ namespace Repository.Migrations
                     b.Property<string>("UserAgent")
                         .HasColumnType("text");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -100,20 +100,20 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Audit.RefreshTokenModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("FkLoginId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FkLoginId")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("FkUserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FkUserId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Token")
                         .HasColumnType("text");
@@ -128,11 +128,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Audit.UserLoginModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Browser")
                         .HasMaxLength(250)
@@ -159,11 +159,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.LeadCustomerModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -187,8 +187,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKCompanyId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKCompanyId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ProjectAddress")
                         .HasColumnType("text");
@@ -217,11 +217,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.ResolutionModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .HasColumnType("text");
@@ -248,8 +248,8 @@ namespace Repository.Migrations
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
 
-                    b.Property<long>("FKCompanyId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKCompanyId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -278,11 +278,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.RootCauseModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .HasColumnType("text");
@@ -309,8 +309,8 @@ namespace Repository.Migrations
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
 
-                    b.Property<long>("FKCompanyId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKCompanyId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -339,11 +339,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketAttachmentModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContentType")
                         .HasColumnType("text");
@@ -364,8 +364,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKTicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKTicketId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("FileName")
                         .HasColumnType("text");
@@ -394,11 +394,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketCommentModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CommentText")
                         .HasColumnType("text");
@@ -426,11 +426,11 @@ namespace Repository.Migrations
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
 
-                    b.Property<long>("TicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("TicketId")
+                        .HasColumnType("integer");
 
-                    b.Property<long?>("TicketModelId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("TicketModelId")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
@@ -449,11 +449,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketDepartmentMapModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -471,11 +471,11 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKDepartmentId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKDepartmentId")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("FKTicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKTicketId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
@@ -500,11 +500,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketLeadCustomerMapModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -522,11 +522,11 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKLeadCustomerId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKLeadCustomerId")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("FKTicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKTicketId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
@@ -551,11 +551,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketLinkModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -576,8 +576,8 @@ namespace Repository.Migrations
                     b.Property<string>("ExternalKey")
                         .HasColumnType("text");
 
-                    b.Property<long>("FKTicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKTicketId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
@@ -603,14 +603,14 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<long?>("AssignedUserId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -637,11 +637,11 @@ namespace Repository.Migrations
                     b.Property<string>("EstimatedTime")
                         .HasColumnType("text");
 
-                    b.Property<long>("FKCompanyId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKCompanyId")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("FKTicketTypeId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKTicketTypeId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
@@ -650,14 +650,14 @@ namespace Repository.Migrations
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
 
-                    b.Property<long?>("ResolutionId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ResolutionId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ResolvedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("RootCauseId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("RootCauseId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -665,8 +665,8 @@ namespace Repository.Migrations
                     b.Property<string>("Subject")
                         .HasColumnType("text");
 
-                    b.Property<long>("SubmittedByUserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("SubmittedByUserId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TicketCategory")
                         .HasColumnType("integer");
@@ -693,11 +693,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketTypeModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -706,9 +706,6 @@ namespace Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(103);
-
-                    b.Property<int>("DefaultPriority")
-                        .HasColumnType("integer");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("integer")
@@ -721,14 +718,20 @@ namespace Repository.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<long?>("FKAssignedUserId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("FKAssignedUserId")
+                        .HasColumnType("integer");
+
+                    b.PrimitiveCollection<int[]>("FkDepartmentIds")
+                        .HasColumnType("integer[]");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
@@ -751,11 +754,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketWatchListModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -773,11 +776,11 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKTicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKTicketId")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("FKUserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKUserId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
@@ -802,11 +805,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Notification.NotificationTemplateModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BodyTemplate")
                         .HasColumnType("text");
@@ -830,8 +833,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long?>("EmailConfigurationId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("EmailConfigurationId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
@@ -846,8 +849,8 @@ namespace Repository.Migrations
                     b.Property<string>("SubjectTemplate")
                         .HasColumnType("text");
 
-                    b.Property<long>("TicketTypeId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("TicketTypeId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Trigger")
                         .HasColumnType("integer");
@@ -860,18 +863,82 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(105);
 
+                    b.PrimitiveCollection<string[]>("Variables")
+                        .HasColumnType("text[]");
+
                     b.HasKey("Id");
 
                     b.ToTable("NotificationTemplate", "notification");
                 });
 
+            modelBuilder.Entity("Models.Entities.Org.CompanyDefineDataSourceModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int>("DataSourceType")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FkCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsSync")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("JSonData")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<string>("Source")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FkCompanyId");
+
+                    b.ToTable("CompanyDefineDataSources", "Org");
+                });
+
             modelBuilder.Entity("Models.Entities.Org.CompanyModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccessKey")
+                        .HasColumnType("text");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -892,12 +959,24 @@ namespace Repository.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<int>("LastTicketNumber")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PrefixTicket")
                         .HasColumnType("text");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
+
+                    b.Property<string>("SecretKey")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("text");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
@@ -912,13 +991,13 @@ namespace Repository.Migrations
                     b.ToTable("Companies", "Org");
                 });
 
-            modelBuilder.Entity("Models.Entities.Org.CompanyScopeConfigModel", b =>
+            modelBuilder.Entity("Models.Entities.Org.CustomFieldModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -928,6 +1007,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(103);
 
+                    b.Property<int>("DataType")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("integer")
                         .HasColumnOrder(106);
@@ -936,16 +1018,16 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKCompanyId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PrefixCAPA")
+                    b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("PrefixComplaint")
-                        .HasColumnType("text");
+                    b.Property<int>("FkTicketTypeId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("PrefixTicket")
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OptionsJson")
                         .HasColumnType("text");
 
                     b.Property<int>("RStatus")
@@ -962,18 +1044,18 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FKCompanyId");
+                    b.HasIndex("FkTicketTypeId");
 
-                    b.ToTable("CompanyScopeConfig", "Org");
+                    b.ToTable("CustomFields", "Org");
                 });
 
             modelBuilder.Entity("Models.Entities.Org.DepartmentModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -994,8 +1076,14 @@ namespace Repository.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<long>("FKCompanyId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("FKCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FKManagerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("IntegrationsPrimaryId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -1016,16 +1104,130 @@ namespace Repository.Migrations
 
                     b.HasIndex("FKCompanyId");
 
+                    b.HasIndex("FKManagerId");
+
                     b.ToTable("Department", "Org");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.SLAConfigurationModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FKCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FKCompanyId");
+
+                    b.ToTable("SLAConfiguration", "Org");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FkTicketId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int>("TicketTypeCustomFieldId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FkTicketId");
+
+                    b.HasIndex("TicketTypeCustomFieldId");
+
+                    b.ToTable("TicketCustomFields", "Org");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.EmailConfigurationModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccessKey")
                         .HasColumnType("text");
@@ -1095,11 +1297,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Setup.NotificationScheduleModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Body")
                         .HasColumnType("text");
@@ -1123,14 +1325,14 @@ namespace Repository.Migrations
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text");
 
-                    b.Property<long?>("FKEmailConfigurationId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("FKEmailConfigurationId")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("FKNotificationConfigId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKNotificationConfigId")
+                        .HasColumnType("integer");
 
-                    b.Property<long?>("FKTicketId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("FKTicketId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("MaxRetryCount")
                         .HasColumnType("integer");
@@ -1205,8 +1407,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long?>("FkMenuActionMapId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("FkMenuActionMapId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("HttpVerb")
                         .HasMaxLength(20)
@@ -1233,11 +1435,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionMapModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApiUrl")
                         .HasMaxLength(200)
@@ -1342,11 +1544,11 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionRoleMappingModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -1364,8 +1566,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
-                    b.Property<long>("FKMenuActionMapId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKMenuActionMapId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("FKRoleId")
                         .HasColumnType("integer");
@@ -1456,66 +1658,6 @@ namespace Repository.Migrations
                     b.ToTable("Menu", "UserMgmt");
                 });
 
-            modelBuilder.Entity("Models.Entities.UserManagement.RoleMenuModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("CanDelete")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("CanEdit")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("CanView")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(102);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(103);
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(106);
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(107);
-
-                    b.Property<int>("MenuId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RStatus")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(101);
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(104);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(105);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleMenu", "UserMgmt");
-                });
-
             modelBuilder.Entity("Models.Entities.UserManagement.RoleModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1572,69 +1714,13 @@ namespace Repository.Migrations
                     b.ToTable("Role", "UserMgmt");
                 });
 
-            modelBuilder.Entity("Models.Entities.UserManagement.UserDepartmentModel", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(102);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(103);
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(106);
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(107);
-
-                    b.Property<long>("FKDepartmentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("FkCompanyId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("FkUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("RStatus")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(101);
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(104);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(105);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FKDepartmentId");
-
-                    b.HasIndex("FkCompanyId");
-
-                    b.HasIndex("FkUserId");
-
-                    b.ToTable("UserDepartments", "UserMgmt");
-                });
-
             modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -1658,8 +1744,20 @@ namespace Repository.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
+                    b.Property<int?>("FkCompanyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FkDepartmentId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("FullName")
                         .HasColumnType("text");
+
+                    b.Property<int?>("IntegrationsPrimaryId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsReportingManager")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastLoginDate")
                         .HasColumnType("timestamp with time zone");
@@ -1671,6 +1769,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("text");
 
                     b.Property<int>("RStatus")
@@ -1690,16 +1791,18 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FkDepartmentId");
+
                     b.ToTable("Users", "UserMgmt");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.UserRoleModel", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer")
@@ -1720,8 +1823,8 @@ namespace Repository.Migrations
                     b.Property<int>("FKRoleId")
                         .HasColumnType("integer");
 
-                    b.Property<long>("FKUserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FKUserId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
@@ -1738,8 +1841,8 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(105);
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1906,10 +2009,47 @@ namespace Repository.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Models.Entities.Org.CompanyScopeConfigModel", b =>
+            modelBuilder.Entity("Models.Entities.Org.CompanyDefineDataSourceModel", b =>
                 {
                     b.HasOne("Models.Entities.Org.CompanyModel", "Company")
-                        .WithMany("ScopeConfig")
+                        .WithMany("CompanyDefineData")
+                        .HasForeignKey("FkCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.CustomFieldModel", b =>
+                {
+                    b.HasOne("Models.Entities.Issue.TicketTypeModel", "TicketType")
+                        .WithMany()
+                        .HasForeignKey("FkTicketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TicketType");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.DepartmentModel", b =>
+                {
+                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
+                        .WithMany("Departments")
+                        .HasForeignKey("FKCompanyId");
+
+                    b.HasOne("Models.Entities.UserManagement.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("FKManagerId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Models.Entities.Org.SLAConfigurationModel", b =>
+                {
+                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
+                        .WithMany()
                         .HasForeignKey("FKCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1917,15 +2057,23 @@ namespace Repository.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Models.Entities.Org.DepartmentModel", b =>
+            modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>
                 {
-                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
-                        .WithMany("Departments")
-                        .HasForeignKey("FKCompanyId")
+                    b.HasOne("Models.Entities.Issue.TicketModel", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("FkTicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Company");
+                    b.HasOne("Models.Entities.Org.CustomFieldModel", "CustomField")
+                        .WithMany()
+                        .HasForeignKey("TicketTypeCustomFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomField");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.NotificationScheduleModel", b =>
@@ -1990,50 +2138,13 @@ namespace Repository.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Models.Entities.UserManagement.RoleMenuModel", b =>
-                {
-                    b.HasOne("Models.Entities.UserManagement.MenuModel", "Menu")
-                        .WithMany()
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Entities.UserManagement.RoleModel", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Models.Entities.UserManagement.UserDepartmentModel", b =>
+            modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
                 {
                     b.HasOne("Models.Entities.Org.DepartmentModel", "Department")
-                        .WithMany("UserDepartments")
-                        .HasForeignKey("FKDepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Entities.Org.CompanyModel", "Company")
                         .WithMany()
-                        .HasForeignKey("FkCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Entities.UserManagement.UserModel", "Role")
-                        .WithMany("UserDepartments")
-                        .HasForeignKey("FkUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
+                        .HasForeignKey("FkDepartmentId");
 
                     b.Navigation("Department");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.UserRoleModel", b =>
@@ -2068,14 +2179,9 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Org.CompanyModel", b =>
                 {
+                    b.Navigation("CompanyDefineData");
+
                     b.Navigation("Departments");
-
-                    b.Navigation("ScopeConfig");
-                });
-
-            modelBuilder.Entity("Models.Entities.Org.DepartmentModel", b =>
-                {
-                    b.Navigation("UserDepartments");
                 });
 
             modelBuilder.Entity("Models.Entities.Setup.EmailConfigurationModel", b =>
@@ -2107,8 +2213,6 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.UserManagement.UserModel", b =>
                 {
-                    b.Navigation("UserDepartments");
-
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

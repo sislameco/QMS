@@ -5,17 +5,17 @@ namespace Models.Enum
     /// <summary>
     /// Category of the ticket.
     /// </summary>
-    public enum TicketCategory { Ticket = 1, CAPA = 2, Goals = 3, Complaints = 4 }
+    public enum EnumQMSType { Ticket = 1, CAPA = 2, Goals = 3, Complaints = 4 }
 
     /// <summary>
     /// Status of the ticket.
     /// </summary>
-    public enum TicketStatus { Open = 1, InProgress = 2, Resolved = 3, Closed = 4 }
+    public enum EnumTicketStatus { Open = 1, InProgress = 2, Resolved = 3, Closed = 4 }
 
     /// <summary>
     /// Priority of the ticket.
     /// </summary>
-    public enum TicketPriority { Highest = 1, High = 2, Medium = 3, Low = 4 }
+    public enum EnumPriority { Highest = 1, High = 2, Medium = 3, Low = 4 }
 
     /// <summary>
     /// Type of notification channel.
@@ -42,5 +42,16 @@ namespace Models.Enum
         Active = 1,
         Inactive = 2,
         Deleted = 3
+    }
+    /// <summary>
+    /// Time unit used for scheduling, due calculation.
+    /// </summary>
+    public enum EnumUnit
+    {
+        Minutes = 1,
+        Hours = 2,
+        Days = 3,
+        Weeks = 4,
+        Months = 5
     }
 }

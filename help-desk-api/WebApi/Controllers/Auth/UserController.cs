@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("user")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -15,14 +17,15 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserModel>>> GetAll()
+        [AllowAnonymous]
+        public async Task<ActionResult> GetAll([FromForm] UserFilterDto input)
         {
-            var users = await _userService.GetAllAsync();
+            var users = await _userService.GetAllAsync(input);
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetById(long id)
+        public async Task<ActionResult<UserModel>> GetById(int id)
         {
             var user = await _userService.GetByIdAsync(id);
             if (user == null) return NotFound();
@@ -45,7 +48,7 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long id)
+        public async Task<ActionResult> Delete(int id)
         {
             await _userService.DeleteAsync(id);
             return NoContent();

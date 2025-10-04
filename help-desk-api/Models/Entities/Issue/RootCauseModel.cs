@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Issue
 {
     [Table("RootCause", Schema = "issue")]
-    public class RootCauseModel : BaseEntity<long>
+    public class RootCauseModel : BaseEntity<int>
     {
-        public long FKCompanyId { get; set; }
+        public int FKCompanyId { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }

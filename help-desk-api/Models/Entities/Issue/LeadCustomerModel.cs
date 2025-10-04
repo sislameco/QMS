@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Models.Entities.Issue
 {
     [Table("LeadCustomer", Schema = "issue")]
-    public class LeadCustomerModel : BaseEntity<long>
+    public class LeadCustomerModel : BaseEntity<int>
     {
-        public long FKCompanyId { get; set; }
+        public int FKCompanyId { get; set; }
         [ForeignKey("FKCompanyId")]
         public CompanyModel Company { get; set; }
         public string ProjectNumber { get; set; }

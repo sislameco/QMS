@@ -8,22 +8,22 @@ namespace Repository.Seeds
     {
         public static readonly UserModel[] Users =
         {
+            //new UserModel
+            //{
+            //    Id = 1,
+            //    FirstName = "System",
+            //    LastName = "User",
+            //    FullName = "System User",
+            //    UserName = "abc+essadmin",
+            //    Email = "abc+anupam.roy88@gmail.com",
+            //    PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //},
             new UserModel
             {
-                Id = 1,
-                FirstName = "System",
-                LastName = "User",
-                FullName = "System User",
-                UserName = "abc+essadmin",
-                Email = "abc+anupam.roy88@gmail.com",
-                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new UserModel
-            {
-                Id = 77,
+                Id = -1,
                 FirstName = "Brian",
                 LastName = "McLoughlin",
                 FullName = "Brian McLoughlin",
@@ -34,84 +34,84 @@ namespace Repository.Seeds
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1
             },
-            new UserModel
-            {
-                Id = 78,
-                FirstName = "Emmanuel",
-                LastName = "Brobbey-Kyei",
-                FullName = "Emmanuel Brobbey-Kyei",
-                UserName = "manny@churchfieldhomeservices.ie",
-                Email = "abc+manny@churchfieldhomeservices.ie",
-                PasswordHash = "rAfMx53aQ|x7ynT0cvngHw==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new UserModel
-            {
-                Id = 79,
-                FirstName = "Cian",
-                LastName = "OSullivan",
-                FullName = "Cian OSullivan",
-                UserName = "abc+cian.os@churchfieldhomeservices.ie",
-                Email = "abc+cian.os@churchfieldhomeservices.ie",
-                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new UserModel
-            {
-                Id = 80,
-                FirstName = "Daniel",
-                LastName = "Ross",
-                FullName = "Daniel Ross",
-                UserName = "abc+dross@churchfieldhomeservices.ie",
-                Email = "abc+dross@churchfieldhomeservices.ie",
-                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new UserModel
-            {
-                Id = 81,
-                FirstName = "Darragh",
-                LastName = "Walsh",
-                FullName = "Darragh Walsh",
-                UserName = "abc+dwalsh@churchfieldhomeservices.ie",
-                Email = "abc+dwalsh@churchfieldhomeservices.ie",
-                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new UserModel
-            {
-                Id = 82,
-                FirstName = "Noel",
-                LastName = "Rowland",
-                FullName = "Noel Rowland",
-                UserName = "abc+noel@churchfieldhomeservices.ie",
-                Email = "abc+noel@churchfieldhomeservices.ie",
-                PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new UserModel
-            {
-                Id = 83,
-                FirstName = "Khalid",
-                LastName = "Bin Awlad",
-                FullName = "Khalid Bin Awlad",
-                UserName = "khalid.awlad@efficientsoftwaresolutions.com",
-                Email = "abc+khalid.awlad@efficientsoftwaresolutions.com",
-                PasswordHash = "n|Kb6PwNwTfug2W9ZNGq7w==",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            }
+            //new UserModel
+            //{
+            //    Id = 78,
+            //    FirstName = "Emmanuel",
+            //    LastName = "Brobbey-Kyei",
+            //    FullName = "Emmanuel Brobbey-Kyei",
+            //    UserName = "manny@churchfieldhomeservices.ie",
+            //    Email = "abc+manny@churchfieldhomeservices.ie",
+            //    PasswordHash = "rAfMx53aQ|x7ynT0cvngHw==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //},
+            //new UserModel
+            //{
+            //    Id = 79,
+            //    FirstName = "Cian",
+            //    LastName = "OSullivan",
+            //    FullName = "Cian OSullivan",
+            //    UserName = "abc+cian.os@churchfieldhomeservices.ie",
+            //    Email = "abc+cian.os@churchfieldhomeservices.ie",
+            //    PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //},
+            //new UserModel
+            //{
+            //    Id = 80,
+            //    FirstName = "Daniel",
+            //    LastName = "Ross",
+            //    FullName = "Daniel Ross",
+            //    UserName = "abc+dross@churchfieldhomeservices.ie",
+            //    Email = "abc+dross@churchfieldhomeservices.ie",
+            //    PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //},
+            //new UserModel
+            //{
+            //    Id = 81,
+            //    FirstName = "Darragh",
+            //    LastName = "Walsh",
+            //    FullName = "Darragh Walsh",
+            //    UserName = "abc+dwalsh@churchfieldhomeservices.ie",
+            //    Email = "abc+dwalsh@churchfieldhomeservices.ie",
+            //    PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //},
+            //new UserModel
+            //{
+            //    Id = 82,
+            //    FirstName = "Noel",
+            //    LastName = "Rowland",
+            //    FullName = "Noel Rowland",
+            //    UserName = "abc+noel@churchfieldhomeservices.ie",
+            //    Email = "abc+noel@churchfieldhomeservices.ie",
+            //    PasswordHash = "2t4fql|8Vh9YWwSVHUipYQ==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //},
+            //new UserModel
+            //{
+            //    Id = 83,
+            //    FirstName = "Khalid",
+            //    LastName = "Bin Awlad",
+            //    FullName = "Khalid Bin Awlad",
+            //    UserName = "khalid.awlad@efficientsoftwaresolutions.com",
+            //    Email = "abc+khalid.awlad@efficientsoftwaresolutions.com",
+            //    PasswordHash = "n|Kb6PwNwTfug2W9ZNGq7w==",
+            //    RStatus = EnumRStatus.Active,
+            //    CreatedDate = DateTime.UtcNow,
+            //    CreatedBy = 1
+            //}
         };
     }
 
@@ -121,28 +121,68 @@ namespace Repository.Seeds
         {
             new CompanyModel
             {
-                Name = "Qsmart",
+                Id=1,
+                Name = "Churchfield Home Services",
+                ShortName = "CHS",
                 Description = "Updated Description",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                AccessKey = "CHS",
+                SecretKey = "CHS2024!" 
             },
             new CompanyModel
             {
+                Id=2,
                 Name = "OMS",
+                ShortName = "OMS",
                 Description = "Updated OMS Description",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                AccessKey = "OMS",
+                SecretKey = "OMS2024!"
             },
             new CompanyModel
             {
+                Id=3,
                 Name = "Smart Lotto",
                 Description = "Updated Smart Lotto Description",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1
             }
+        };
+    }
+
+    public static class CompanyDefineDataSourceSeedData
+    {
+        public static readonly CompanyDefineDataSourceModel[] companyDefineDataSources =
+        {
+            new CompanyDefineDataSourceModel
+    {
+        Id = 1,
+        FkCompanyId = 1,
+        Source = "api/company-data/users",
+        IsSync = false,
+        JsonData = null,
+        CreatedDate = DateTime.UtcNow,
+        CreatedBy = 1,
+        RStatus = EnumRStatus.Active,
+        DataSourceType = EnumDataSource.User
+    },
+    new CompanyDefineDataSourceModel
+    {
+        Id = 2,
+        FkCompanyId = 2,
+        Source = "api/company-data/department",
+        IsSync = false,
+        JsonData = null,
+        CreatedDate = DateTime.UtcNow,
+        CreatedBy = 1,
+        RStatus = EnumRStatus.Active,
+          DataSourceType = EnumDataSource.Department
+    }
         };
     }
 
@@ -156,7 +196,8 @@ namespace Repository.Seeds
                 ParentId = null,
                 Url = "#",
                 DisplayOrder = 1,
-                IconClass = "#",
+                Route = "/",
+                IconClass = "svg-menu-home",
                 IconViewBox = "#",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
@@ -188,8 +229,20 @@ namespace Repository.Seeds
             },
             new MenuModel
             {
-                Name = "Users && Department Permissions",
-                ParentId = 2,
+                Name = "RBAC",
+                ParentId = null,
+                Url = "#",
+                DisplayOrder = 4,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+             new MenuModel
+            {
+                Name = "Ticket Center",
+                ParentId = 4,
                 Url = "#",
                 DisplayOrder = 1,
                 IconClass = "#",
@@ -200,9 +253,23 @@ namespace Repository.Seeds
             },
             new MenuModel
             {
-                Name = "Roles & Permissions",
+                Name = "Users",
                 ParentId = 2,
                 Url = "#",
+                Route = "/pages/user-management/users/list",
+                DisplayOrder = 1,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel
+            {
+                Name = "Roles",
+                ParentId = 2,
+                Url = "#",
+                Route = "/pages/user-management/roles",
                 DisplayOrder = 2,
                 IconClass = "#",
                 IconViewBox = "#",
@@ -311,7 +378,8 @@ namespace Repository.Seeds
                 HttpVerb = "GET",
                 Description = "View resource",
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionModel
             {
@@ -320,7 +388,8 @@ namespace Repository.Seeds
                 HttpVerb = "POST",
                 Description = "Create new resource",
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionModel
             {
@@ -329,7 +398,8 @@ namespace Repository.Seeds
                 HttpVerb = "PUT",
                 Description = "Update existing resource",
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionModel
             {
@@ -338,7 +408,8 @@ namespace Repository.Seeds
                 HttpVerb = "DELETE",
                 Description = "Remove resource",
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionModel
             {
@@ -347,7 +418,8 @@ namespace Repository.Seeds
                 HttpVerb = "PATCH",
                 Description = "Partially update resource",
                 CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
+                CreatedBy = 1,
+                 RStatus = EnumRStatus.Active,
             }
         };
     }
@@ -358,108 +430,166 @@ namespace Repository.Seeds
         {
             new MenuActionMapModel
             {
-                FKMenuId = 4, 
+                FKMenuId = 4,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 1 
+                FKMenuActionId = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 4,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 2 
-            },
-            new MenuActionMapModel
-            {
-                FKMenuId = 4, 
-                ApiUrl = "#",
-                RoutePath = "#",
-                FKMenuActionId = 3 
+                FKMenuActionId = 2 ,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 4,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 4 
+                FKMenuActionId = 3 ,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 4,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 5 
+                FKMenuActionId = 4 ,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 4,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5 ,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 5,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 1
+                FKMenuActionId = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 5,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 2
+                FKMenuActionId = 2,
+                 RStatus = EnumRStatus.Active
             },
             new MenuActionMapModel
             {
                 FKMenuId = 5,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 3
+                FKMenuActionId = 3,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 5,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 4
+                FKMenuActionId = 4,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 5,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 5
+                FKMenuActionId = 5,
+                 RStatus = EnumRStatus.Active,
             },
              new MenuActionMapModel
             {
                 FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 1
+                FKMenuActionId = 1,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 2
+                FKMenuActionId = 2,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 3
+                FKMenuActionId = 3,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 4
+                FKMenuActionId = 4,
+                 RStatus = EnumRStatus.Active,
             },
             new MenuActionMapModel
             {
                 FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
-                FKMenuActionId = 5
+                FKMenuActionId = 5,
+                 RStatus = EnumRStatus.Active
+            }
+
+            ,
+
+                new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 2,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 3,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 4,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 7,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5,
+                 RStatus = EnumRStatus.Active
             }
         };
     }
