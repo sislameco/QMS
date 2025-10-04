@@ -30,5 +30,12 @@ namespace WebApi.Controllers.Org
                 return Ok();
             return BadRequest("Update failed");
         }
+        // generate department get by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDepartmentById(int id)
+        {
+            var department = await _companyService.GetDepartmentById(id);
+            return Ok(department);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Repository.Repo.Permission
     {
         Task<List<PerMenuDto>> GetUserPermittedMenusAsync(long userId);
         Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId);
+        Task<List<MenuAccessDto>> GetDepartmentPermittedMenusAsync(int departementId);
     }
 
     public class MenuRepository : IMenuRepository
@@ -130,5 +131,41 @@ namespace Repository.Repo.Permission
         }
 
         #endregion
+
+
+
+        public async Task<List<MenuAccessDto>> GetDepartmentPermittedMenusAsync(int departementId)
+        {
+            var flatList = await (
+                from menu in _dbContext.Menus
+                join action in _dbContext.MenuActionMaps on menu.Id equals action.FKMenuId into mapAction
+                from action in mapAction.DefaultIfEmpty()
+                join ac in _dbContext.MenuActions on action.FKMenuActionId equals ac.Id into actionDetails
+                from ac in actionDetails.DefaultIfEmpty()
+                join map in _dbContext.MenuActionDepartmentMapping
+                    on action.Id equals map.FKMenuActionMapId into actionMapJoin
+                from map in actionMapJoin.DefaultIfEmpty()
+                where (map != null && map.FkDepartmentId == departementId) || map == null
+                group new { ac, map, action } by new { menu.Id, menu.Name, menu.ParentId } into g
+                select new MenuAccessDto
+                {
+                    MenuId = g.Key.Id,
+                    Menu = g.Key.Name,
+                    ParentId = g.Key.ParentId,
+                    Actions = g
+                        .Where(x => x.ac != null)
+                        .Select(x => new ManuWishActionPermissionDto
+                        {
+                            Id = x.ac.Id,
+                            HttpVerb = x.ac.HttpVerb ?? string.Empty,
+                            IsPermitted = x.map != null && x.map.IsAllowed,
+                            FkMenuActionMapId = x.action.Id
+                        })
+                        .ToList()
+                }
+            ).ToListAsync();
+
+            return BuildRoleMenuTree(flatList);
+        }
     }
 }

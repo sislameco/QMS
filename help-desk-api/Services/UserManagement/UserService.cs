@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Models.Dto.GlobalDto;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Models.Enum;
@@ -15,6 +16,7 @@ namespace Services.UserManagement
         Task UpdateAsync(UserModel user);
         Task DeleteAsync(int id);
         UserModel GetSystemUser();
+        Task<List<UserDropdownDto>> GetUserSelectedList(int companyId);
     }
     public class UserService : IUserService
     {
@@ -58,6 +60,12 @@ namespace Services.UserManagement
             var result = _unitOfWork.Repository<UserModel, int>()
                  .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active).Result;
             return result;
+        }
+
+        public  async Task<List<UserDropdownDto>> GetUserSelectedList(int companyId)
+        {
+            var data = await _unitOfWork.Repository<UserModel,int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active);
+            return data.Select(s=> new UserDropdownDto { Id = s.Id, FullName = s.FullName}).ToList();
         }
     }
 }

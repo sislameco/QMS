@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.GlobalDto;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
+using Models.Enum;
 using Services.UserManagement;
 
 namespace WebApi.Controllers.Auth
@@ -53,5 +55,17 @@ namespace WebApi.Controllers.Auth
             await _userService.DeleteAsync(id);
             return NoContent();
         }
+        // generate user dropdown endpoint 
+        /// <summary>
+        /// Returns a list of users for dropdowns (Id & FullName only).
+        /// </summary>
+        [HttpGet("dropdown")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<UserDropdownDto>>> GetUserDropdown(int companyId)
+        {
+            var users = await _userService.GetUserSelectedList(companyId);
+            return Ok(users);
+        }
+
     }
 }

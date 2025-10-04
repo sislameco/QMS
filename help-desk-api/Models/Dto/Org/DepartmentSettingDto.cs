@@ -24,6 +24,15 @@ namespace Models.Dto.Org
         public EnumRStatus Status { get; set; }
         public int TotalUsers { get; set; }
     }
+    public class DepartmentSetupOutputDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int ManagerId { get; set; }
+        public EnumRStatus Status { get; set; }
+        public List<MenuAccessDto> menus { get; set; }
+    }
     public class DepartmentUpdateDto
     {
         public int Id { get; set; }

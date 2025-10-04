@@ -1,4 +1,5 @@
-﻿using Models.Dto.Intregation;
+﻿using Amazon.SimpleEmailV2.Model;
+using Models.Dto.Intregation;
 using Models.Dto.Menus;
 using Models.Dto.Org;
 using Models.Dto.Pagination;
@@ -8,6 +9,7 @@ using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
 using Repository.Repo.Pagination;
+using Repository.Repo.Permission;
 using Utils.Intregation;
 using Utils.LoginData;
 
@@ -24,6 +26,7 @@ namespace Services.Org
         #region Departments
         Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input);
         Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto);
+        public Task<DepartmentSetupOutputDto> GetDepartmentById(int id);
         #endregion
     }
     public class CompanyService : ICompanyService
@@ -32,12 +35,14 @@ namespace Services.Org
         private readonly IHRService _hRService;
         private readonly ICommonRepository _commonRepository;
         private readonly IUserInfos _userInfos;
-        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos)
+        private readonly IMenuRepository _menuRepository;
+        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos, IMenuRepository menuRepository)
         {
             _unitOfWork = unitOfWork;
             _hRService = hRService;
             _commonRepository = commonRepository;
             _userInfos = userInfos;
+            _menuRepository = menuRepository;
         }
         public async Task<List<CompanyDto>> GetActiveCompaniesAsync()
         {
@@ -238,6 +243,26 @@ namespace Services.Org
 
         }
         #region Departments
+
+        public async Task<DepartmentSetupOutputDto> GetDepartmentById(int id)
+        {
+            var department = await _unitOfWork.Repository<DepartmentModel, int>().GetByIdAsync(id);
+            if (department == null)
+            {
+                throw new BadRequestException($"Department with ID {id} not found.");
+            }
+
+            var departmentSetup = new DepartmentSetupOutputDto
+            {
+                Id = department.Id,
+                Name = department.Name,
+                Description = department.Description,
+                ManagerId = department.FKManagerId??0,
+                Status = department.RStatus,
+                menus = await _menuRepository.GetDepartmentPermittedMenusAsync(id)
+            };
+            return departmentSetup;
+        }
         public async Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input)
         {
             return await _commonRepository.GetDepartments(companyId, input);
