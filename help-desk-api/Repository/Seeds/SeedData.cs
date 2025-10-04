@@ -174,14 +174,14 @@ namespace Repository.Seeds
     new CompanyDefineDataSourceModel
     {
         Id = 2,
-        FkCompanyId = 2,
+        FkCompanyId = 1,
         Source = "api/company-data/department",
         IsSync = false,
         JsonData = null,
         CreatedDate = DateTime.UtcNow,
         CreatedBy = 1,
         RStatus = EnumRStatus.Active,
-          DataSourceType = EnumDataSource.Department
+        DataSourceType = EnumDataSource.Department
     }
         };
     }
@@ -281,7 +281,7 @@ namespace Repository.Seeds
             {
                 Name = "Company Config",
                 ParentId = 3,
-                Url = "#",
+                Url = "/pages/company-configuration/list",
                 DisplayOrder = 1,
                 IconClass = "#",
                 IconViewBox = "#",
@@ -293,7 +293,7 @@ namespace Repository.Seeds
             {
                 Name = "Issue Prefix",
                 ParentId = 3,
-                Url = "#",
+                Url = "pages/tickets",
                 DisplayOrder = 2,
                 IconClass = "#",
                 IconViewBox = "#",

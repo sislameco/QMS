@@ -1,4 +1,5 @@
 ﻿using Models.Dto.GlobalDto;
+using Models.Dto.UserManagement;
 using Models.Enum;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,13 @@ namespace Models.Dto.Org
         public string ManagerEmail { get; set; }
         public EnumRStatus Status { get; set; }
         public int TotalUsers { get; set; }
+    }
+    public class DepartmentUpdateDto
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public int ManagerId { get; set; }
+        public EnumRStatus Status { get; set; }
+        public List<RoleSetWithMenuActoinDto> FKMenuActionIds { get; set; }
     }
 }

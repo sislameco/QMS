@@ -23,6 +23,7 @@ namespace Services.Org
 
         #region Departments
         Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input);
+        Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto);
         #endregion
     }
     public class CompanyService : ICompanyService
@@ -273,6 +274,29 @@ namespace Services.Org
             }
             return true;
         }
-        #endregion
+
+        public async Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto)
+        {
+            try
+            {
+                var data = await _unitOfWork.Repository<DepartmentModel, int>().FirstOrDefaultAsync(s => s.Id == dto.Id);
+                if (data == null)
+                    throw new Exception("Department not found");
+                data.Description = dto.Description;
+                data.FKManagerId = dto.ManagerId;
+                await _unitOfWork.Repository<DepartmentModel, int>().UpdateAsync(data);
+                if (dto.FKMenuActionIds != null && dto.FKMenuActionIds.Count > 0)
+                {
+                    await SetMenuPermissionByDepartment(dto.Id, dto.FKMenuActionIds);
+                }
+                await _unitOfWork.CommitAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error updating department: " + ex.Message);
+            }
+            #endregion
+        }
     }
 }

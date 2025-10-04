@@ -9,7 +9,7 @@ namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("permission")]
-    [CustomAuthorization]
+    [AllowAnonymous]
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService _permissionService;

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class Company : Migration
+    public partial class Start : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -581,6 +581,43 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MenuActionDepartmentMapping",
+                schema: "UserMgmt",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FkDepartmentId = table.Column<int>(type: "integer", nullable: false),
+                    FKMenuActionMapId = table.Column<int>(type: "integer", nullable: false),
+                    IsAllowed = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuActionDepartmentMapping", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MenuActionDepartmentMapping_Department_FkDepartmentId",
+                        column: x => x.FkDepartmentId,
+                        principalSchema: "Org",
+                        principalTable: "Department",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MenuActionDepartmentMapping_MenuActionMap_FKMenuActionMapId",
+                        column: x => x.FKMenuActionMapId,
+                        principalSchema: "UserMgmt",
+                        principalTable: "MenuActionMap",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 schema: "UserMgmt",
                 columns: table => new
@@ -1059,6 +1096,18 @@ namespace Repository.Migrations
                 column: "FKCompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MenuActionDepartmentMapping_FkDepartmentId",
+                schema: "UserMgmt",
+                table: "MenuActionDepartmentMapping",
+                column: "FkDepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuActionDepartmentMapping_FKMenuActionMapId",
+                schema: "UserMgmt",
+                table: "MenuActionDepartmentMapping",
+                column: "FKMenuActionMapId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MenuActionMap_FKMenuActionId",
                 schema: "UserMgmt",
                 table: "MenuActionMap",
@@ -1261,6 +1310,10 @@ namespace Repository.Migrations
             migrationBuilder.DropTable(
                 name: "CompanyDefineDataSources",
                 schema: "Org");
+
+            migrationBuilder.DropTable(
+                name: "MenuActionDepartmentMapping",
+                schema: "UserMgmt");
 
             migrationBuilder.DropTable(
                 name: "MenuActionRoleMapping",

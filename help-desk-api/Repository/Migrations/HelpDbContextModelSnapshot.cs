@@ -904,7 +904,7 @@ namespace Repository.Migrations
                     b.Property<bool>("IsSync")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("JSonData")
+                    b.Property<string>("JsonData")
                         .HasColumnType("text");
 
                     b.Property<int>("RStatus")
@@ -1431,6 +1431,60 @@ namespace Repository.Migrations
                     b.HasIndex("FkMenuActionMapId");
 
                     b.ToTable("AssociateActionRoutes");
+                });
+
+            modelBuilder.Entity("Models.Entities.UserManagement.MenuActionDepartmentMappingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FKMenuActionMapId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FkDepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsAllowed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FKMenuActionMapId");
+
+                    b.HasIndex("FkDepartmentId");
+
+                    b.ToTable("MenuActionDepartmentMapping", "UserMgmt");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionMapModel", b =>
@@ -2096,6 +2150,25 @@ namespace Repository.Migrations
                     b.HasOne("Models.Entities.UserManagement.MenuActionMapModel", "MenuActionMap")
                         .WithMany()
                         .HasForeignKey("FkMenuActionMapId");
+
+                    b.Navigation("MenuActionMap");
+                });
+
+            modelBuilder.Entity("Models.Entities.UserManagement.MenuActionDepartmentMappingModel", b =>
+                {
+                    b.HasOne("Models.Entities.UserManagement.MenuActionMapModel", "MenuActionMap")
+                        .WithMany()
+                        .HasForeignKey("FKMenuActionMapId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Entities.Org.DepartmentModel", "Department")
+                        .WithMany()
+                        .HasForeignKey("FkDepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
 
                     b.Navigation("MenuActionMap");
                 });

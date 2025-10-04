@@ -23,6 +23,12 @@ namespace WebApi.Controllers.Auth
         {
             return await _roleService.GetRolesWithUsersAsync();
         }
+        [HttpGet]
+        public async Task<IActionResult> GetById(int roleId)
+        {
+            var data = await _roleService.GetRoleByIdAsync(roleId);
+            return Ok(data);
+        }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RoleInputDto input)
         {

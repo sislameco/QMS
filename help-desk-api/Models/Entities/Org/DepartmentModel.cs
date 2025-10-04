@@ -15,6 +15,5 @@ namespace Models.Entities.Org
         public CompanyModel Company { get; set; }
         [ForeignKey("FKManagerId")]
         public UserModel User { get; set; }
-
     }
 }

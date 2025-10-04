@@ -9,7 +9,6 @@ namespace Models.Dto.UserManagement
 
         [Required]
         public string Description { get; set; } = string.Empty;
-        [Required]
         public List<RoleSetWithMenuActoinDto> FKMenuActionIds { get; set; } 
 
     }    
@@ -17,5 +16,6 @@ namespace Models.Dto.UserManagement
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public List<MenuAccessDto> Menus { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace Services.UserManagement
     public interface IRoleService
     {
         Task<PaginationResponse<RoleWithUsersDto>> GetRolesWithUsersAsync();
+        Task<RoleDetail?> GetRoleByIdAsync(int roleId);
         Task CreateRole(RoleInputDto role);
         Task UpdateRole(int roleId, RoleInputDto role);
         Task DeleteRole(int roleId);
@@ -18,14 +19,29 @@ namespace Services.UserManagement
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserInfos _userInfos;
+        private readonly IMenuRepository _menuRepository;
         public RoleService(IUnitOfWork unitOfWork, IUserInfos userInfos, IMenuRepository menuRepository)
         {
             _unitOfWork = unitOfWork;
             _userInfos = userInfos;
+            _menuRepository = menuRepository;
         }
         public async Task<PaginationResponse<RoleWithUsersDto>> GetRolesWithUsersAsync()
         {
             return await _unitOfWork.CommonRepository.GetRolesWithUsersAsync();
+        }
+        public async Task<RoleDetail?> GetRoleByIdAsync(int roleId)
+        {
+            var role = await _unitOfWork.Repository<RoleModel, int>().GetByIdAsync(roleId);
+            if (role == null || role.RStatus == EnumRStatus.Deleted)
+                return null;
+
+            return new RoleDetail
+            {
+                Name = role.Name,
+                Description = role.Description,
+                Menus = await _menuRepository.GetRolePermittedMenusAsync(roleId)
+            };
         }
         public async Task CreateRole(RoleInputDto role)
         {

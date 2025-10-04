@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Org;
 using Services.Org;
+using WebApi.Helper.Security;
 
 namespace WebApi.Controllers.Org
 {
