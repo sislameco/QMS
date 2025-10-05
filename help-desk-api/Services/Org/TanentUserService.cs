@@ -17,7 +17,7 @@ namespace Services.Org
     public interface ITenantUserService
     {
         // scan UserSetupController and implement similar methods
-        Task<IEnumerable<UserSetupOutputDto>> GetUsersByTenantAsync(int companyId, UserPaginationInputDto input);
+        Task<List<UserSetupOutputDto>> GetUsersByTenantAsync(int companyId, UserPaginationInputDto input);
         Task<UserSetupOutputDto> GetUserByIdAsync(int userId);
         Task<bool> UpdateUserAsync(UserSetupInputDto input);
         Task<bool> DeleteUserAsync(int userId);
