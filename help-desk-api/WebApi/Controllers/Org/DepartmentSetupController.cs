@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.GlobalDto;
 using Models.Dto.Org;
 using Services.Org;
 using WebApi.Helper.Security;
@@ -30,12 +31,18 @@ namespace WebApi.Controllers.Org
                 return Ok();
             return BadRequest("Update failed");
         }
-        // generate department get by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDepartmentById(int id)
         {
             var department = await _companyService.GetDepartmentById(id);
             return Ok(department);
+        }
+        [HttpGet("dropdown")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<UserDropdownDto>>> GetDepartmentDropdown(int companyId)
+        {
+            var departments = await _companyService.GetDepartmentSelectedList(companyId);
+            return Ok(departments);
         }
     }
 }

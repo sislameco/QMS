@@ -1,4 +1,5 @@
 ﻿using Amazon.SimpleEmailV2.Model;
+using Models.Dto.GlobalDto;
 using Models.Dto.Intregation;
 using Models.Dto.Menus;
 using Models.Dto.Org;
@@ -26,7 +27,8 @@ namespace Services.Org
         #region Departments
         Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input);
         Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto);
-        public Task<DepartmentSetupOutputDto> GetDepartmentById(int id);
+        Task<DepartmentSetupOutputDto> GetDepartmentById(int id);
+        List<UserDropdownDto> GetDepartmentSelectedList(int companyId);
         #endregion
     }
     public class CompanyService : ICompanyService
@@ -332,6 +334,16 @@ namespace Services.Org
             department.RStatus = EnumRStatus.Deleted;
             await _unitOfWork.Repository<DepartmentModel, int>().SoftDeleteAsync(department);
             return await _unitOfWork.CommitAsync() > 0;
+        }
+
+        public async Task<List<UserDropdownDto>> GetDepartmentSelectedList(int companyId)
+        {
+            var data = await _unitOfWork.Repository<DepartmentModel, int>().FindByConditionAsync(s => s.FKCompanyId == companyId && s.RStatus == EnumRStatus.Active);
+            return data.Select(s => new UserDropdownDto
+            {
+                Id = s.Id,
+                 FullName = s.Name
+            }).ToList();
         }
     }
 }
