@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Models.Dto.Org;
+using Models.Dto.Pagination;
 using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
@@ -17,7 +18,7 @@ namespace Services.Org
     public interface ITenantUserService
     {
         // scan UserSetupController and implement similar methods
-        Task<List<UserSetupOutputDto>> GetUsersByTenantAsync(int companyId, UserPaginationInputDto input);
+        Task<PaginationResponse<UserSetupOutputDto>> GetUsersByTenantAsync(int companyId, UserPaginationInputDto input);
         Task<UserSetupOutputDto> GetUserByIdAsync(int userId);
         Task<bool> UpdateUserAsync(UserSetupInputDto input);
         Task<bool> DeleteUserAsync(int userId);
@@ -33,9 +34,9 @@ namespace Services.Org
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<UserSetupOutputDto>> GetUsersByTenantAsync(int companyId, UserPaginationInputDto input)
+        public async Task<PaginationResponse<UserSetupOutputDto>> GetUsersByTenantAsync(int companyId, UserPaginationInputDto input)
         {
-            return _userRepository.GetTenentUser(companyId, input);
+            return await _userRepository.GetTenentUser(companyId, input);
         }
 
         public async Task<UserSetupOutputDto> GetUserByIdAsync(int userId)

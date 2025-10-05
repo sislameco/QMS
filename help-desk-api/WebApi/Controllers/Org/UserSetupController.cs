@@ -7,7 +7,7 @@ using WebApi.Helper.Security;
 namespace WebApi.Controllers.Org
 {
     [ApiController]
-    [Route("department-setting")]
+    [Route("tenant-user")]
     [AllowAnonymous]
     public class UserSetupController : ControllerBase
     {

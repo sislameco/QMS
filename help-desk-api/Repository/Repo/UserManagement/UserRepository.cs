@@ -1,4 +1,5 @@
 ﻿using Models.Dto.Org;
+using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Models.Enum;
@@ -11,7 +12,7 @@ namespace Repository.Repo.UserManagement
     public interface IUserMGtRepository
     {
         IQueryable<UserOutPutDto> GetUsers(UserFilterDto inputDto);
-        List<UserSetupOutputDto> GetTenentUser(int companyId, UserPaginationInputDto inputDto);
+        Task<PaginationResponse<UserSetupOutputDto>> GetTenentUser(int companyId, UserPaginationInputDto inputDto);
         UserSetupOutputDto GetTenentUserById(int userId);
     }
 
@@ -77,7 +78,7 @@ namespace Repository.Repo.UserManagement
             return query;
         }
 
-        public List<UserSetupOutputDto> GetTenentUser(int companyId, UserPaginationInputDto inputDto)
+        public async Task<PaginationResponse<UserSetupOutputDto>> GetTenentUser(int companyId, UserPaginationInputDto inputDto)
         {
             int skip = (inputDto.PageNo - 1) * inputDto.ItemsPerPage;
 
@@ -89,10 +90,9 @@ namespace Repository.Repo.UserManagement
                  from role in r.DefaultIfEmpty()
                  join userDepartment in _context.Departments on user.FkDepartmentId equals userDepartment.Id into ud
                  from userDept in ud.DefaultIfEmpty()
-                 where (user.RStatus == inputDto.Status
-                        && userRole.RStatus == EnumRStatus.Active
-                        && role.RStatus == EnumRStatus.Active
-                        && userDept.RStatus == EnumRStatus.Active)
+                 where (user.RStatus == inputDto.Status) && (userRole.RStatus == EnumRStatus.Active || userRole == null)
+                        && ( role == null || role.RStatus == EnumRStatus.Active)
+                        && (userDept == null || userDept.RStatus == EnumRStatus.Active)
                         && user.FkCompanyId == companyId
                     && (inputDto.RoleId == 0 || role.Id == inputDto.RoleId)
                     && (inputDto.DepartmentId == 0 || userDept.Id == inputDto.DepartmentId)
@@ -112,7 +112,14 @@ namespace Repository.Repo.UserManagement
                      RoleId = g.Select(s => s.role.Id).FirstOrDefault(),
                      RoleName = g.Select(x => x.role.Name).FirstOrDefault()
                  }).Skip(skip).Take(inputDto.ItemsPerPage).ToList();
-            return users;
+
+            return new PaginationResponse<UserSetupOutputDto>
+            {
+                Items = users,
+                Page = inputDto.PageNo,
+                PageSize = inputDto.ItemsPerPage,
+                Total = users.Count
+            };
         }
 
         public UserSetupOutputDto GetTenentUserById(int userId)
