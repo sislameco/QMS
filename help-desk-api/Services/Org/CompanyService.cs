@@ -28,7 +28,7 @@ namespace Services.Org
         Task<PaginationResponse<DepartmentSettingOutputDto>> GetAllDepartmentsAsync(int companyId, DepartmentSettingInputDto input);
         Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto);
         Task<DepartmentSetupOutputDto> GetDepartmentById(int id);
-        List<UserDropdownDto> GetDepartmentSelectedList(int companyId);
+        Task<List<UserDropdownDto>> GetDepartmentSelectedList(int companyId);
         #endregion
     }
     public class CompanyService : ICompanyService
@@ -259,7 +259,7 @@ namespace Services.Org
                 Id = department.Id,
                 Name = department.Name,
                 Description = department.Description,
-                ManagerId = department.FKManagerId??0,
+                ManagerId = department.FKManagerId ?? 0,
                 Status = department.RStatus,
                 menus = await _menuRepository.GetDepartmentPermittedMenusAsync(id)
             };
@@ -342,7 +342,7 @@ namespace Services.Org
             return data.Select(s => new UserDropdownDto
             {
                 Id = s.Id,
-                 FullName = s.Name
+                FullName = s.Name
             }).ToList();
         }
     }
