@@ -323,5 +323,15 @@ namespace Services.Org
             }
             #endregion
         }
+        // delete Department
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            var department = await _unitOfWork.Repository<DepartmentModel, int>().GetByIdAsync(id);
+            if (department == null)
+                throw new Exception("Department not found");
+            department.RStatus = EnumRStatus.Deleted;
+            await _unitOfWork.Repository<DepartmentModel, int>().SoftDeleteAsync(department);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
     }
 }

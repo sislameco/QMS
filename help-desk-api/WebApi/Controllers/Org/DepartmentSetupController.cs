@@ -9,10 +9,10 @@ namespace WebApi.Controllers.Org
     [ApiController]
     [Route("department-setting")]
     [AllowAnonymous]
-    public class DepartmentController : ControllerBase
+    public class DepartmentSetupController : ControllerBase
     {
         private readonly ICompanyService _companyService;
-        public DepartmentController(ICompanyService companyService)
+        public DepartmentSetupController(ICompanyService companyService)
         {
             _companyService = companyService;
         }
