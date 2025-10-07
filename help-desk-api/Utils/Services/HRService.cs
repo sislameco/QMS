@@ -2,10 +2,10 @@
 using Models.Enum;
 using Newtonsoft.Json;
 
-using Utils.Intregation.API;
-using Utils.Intregation.Request;
+using Utils.Integration.API;
+using Utils.Integration.Request;
 
-namespace Utils.Intregation
+namespace Utils.Integration
 {
     public interface IHRService
     {

@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace Utils.Intregation.API
+namespace Utils.Integration.API
 {
     public class ApiRequest: HttpRequestMessage
     {

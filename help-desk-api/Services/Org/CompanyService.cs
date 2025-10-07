@@ -11,7 +11,7 @@ using Models.Enum;
 using Repository;
 using Repository.Repo.Pagination;
 using Repository.Repo.Permission;
-using Utils.Intregation;
+using Utils.Integration;
 using Utils.LoginData;
 
 namespace Services.Org
@@ -35,16 +35,18 @@ namespace Services.Org
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHRService _hRService;
+        private readonly IQsmartService _qsmartService;
         private readonly ICommonRepository _commonRepository;
         private readonly IUserInfos _userInfos;
         private readonly IMenuRepository _menuRepository;
-        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos, IMenuRepository menuRepository)
+        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos, IMenuRepository menuRepository, IQsmartService qsmartService)
         {
             _unitOfWork = unitOfWork;
             _hRService = hRService;
             _commonRepository = commonRepository;
             _userInfos = userInfos;
             _menuRepository = menuRepository;
+            _qsmartService = qsmartService;
         }
         public async Task<List<CompanyDto>> GetActiveCompaniesAsync()
         {
@@ -155,6 +157,18 @@ namespace Services.Org
                     isSync = await SyncDepartments(id, companyId);
 
                     break;
+                case EnumDataSource.Customer:
+                    isSync = await SyncDepartments(id, companyId);
+
+                    break;
+                case EnumDataSource.Project:
+                    isSync = await SyncDepartments(id, companyId);
+
+                    break;
+                case EnumDataSource.Scheme:
+                    isSync = await SyncDepartments(id, companyId);
+
+                    break;
                 default:
                     throw new Exception("Invalid data source type");
             }
@@ -243,6 +257,30 @@ namespace Services.Org
             }
 
 
+        }
+        private async Task<bool> SyncCustomers(int id, int CompanyId)
+        {
+            try
+            {
+                var customers = await _hRService.GetCustomersAsync();
+                if (customers.Any())
+                {
+                    var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);
+                    if (companyData == null)
+                        throw new Exception("Company Define Data Source not found");
+                    companyData.JsonData = System.Text.Json.JsonSerializer.Serialize(customers);
+                    companyData.IsSync = true;
+                    _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().Update(companyData);
+                    await _unitOfWork.CommitAsync();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
         #region Departments
 

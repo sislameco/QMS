@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Utilities;
 using Utils.Exceptions;
 
-namespace Utils.Intregation.API
+namespace Utils.Integration.API
 {
     public interface IQsClient
     {

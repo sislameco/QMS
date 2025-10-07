@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Utilities;
 
-namespace Utils.Intregation.API
+namespace Utils.Integration.API
 {
     public abstract class BaseHttpClient
     {

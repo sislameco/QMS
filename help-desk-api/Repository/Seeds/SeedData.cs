@@ -129,7 +129,7 @@ namespace Repository.Seeds
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1,
                 AccessKey = "CHS",
-                SecretKey = "CHS2024!" 
+                SecretKey = "CHS2024!"
             },
             new CompanyModel
             {
@@ -160,29 +160,65 @@ namespace Repository.Seeds
         public static readonly CompanyDefineDataSourceModel[] companyDefineDataSources =
         {
             new CompanyDefineDataSourceModel
-    {
-        Id = 1,
-        FkCompanyId = 1,
-        Source = "api/company-data/users",
-        IsSync = false,
-        JsonData = null,
-        CreatedDate = DateTime.UtcNow,
-        CreatedBy = 1,
-        RStatus = EnumRStatus.Active,
-        DataSourceType = EnumDataSource.User
-    },
-    new CompanyDefineDataSourceModel
-    {
-        Id = 2,
-        FkCompanyId = 1,
-        Source = "api/company-data/department",
-        IsSync = false,
-        JsonData = null,
-        CreatedDate = DateTime.UtcNow,
-        CreatedBy = 1,
-        RStatus = EnumRStatus.Active,
-        DataSourceType = EnumDataSource.Department
-    }
+            {
+                Id = 1,
+                FkCompanyId = 1,
+                Source = "api/company-data/users",
+                IsSync = false,
+                JsonData = null,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1,
+                RStatus = EnumRStatus.Active,
+                DataSourceType = EnumDataSource.User
+            },
+            new CompanyDefineDataSourceModel
+            {
+                Id = 2,
+                FkCompanyId = 1,
+                Source = "api/company-data/department",
+                IsSync = false,
+                JsonData = null,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1,
+                RStatus = EnumRStatus.Active,
+                DataSourceType = EnumDataSource.Department
+            },
+            new CompanyDefineDataSourceModel
+            {
+                Id = 2,
+                FkCompanyId = 1,
+                Source = "api/company-data/projects",
+                IsSync = false,
+                JsonData = null,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1,
+                RStatus = EnumRStatus.Active,
+                DataSourceType = EnumDataSource.Project
+            },
+            new CompanyDefineDataSourceModel
+            {
+                Id = 2,
+                FkCompanyId = 1,
+                Source = "api/company-data/customers",
+                IsSync = false,
+                JsonData = null,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1,
+                RStatus = EnumRStatus.Active,
+                DataSourceType = EnumDataSource.Customer
+            },
+            new CompanyDefineDataSourceModel
+            {
+                Id = 2,
+                FkCompanyId = 1,
+                Source = "api/company-data/schemes",
+                IsSync = false,
+                JsonData = null,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1,
+                RStatus = EnumRStatus.Active,
+                DataSourceType = EnumDataSource.Scheme
+            }
         };
     }
 
