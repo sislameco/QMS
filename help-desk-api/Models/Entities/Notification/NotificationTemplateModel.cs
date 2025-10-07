@@ -6,8 +6,8 @@ namespace Models.Entities.Notification
     [Table("NotificationTemplate", Schema = "notification")]
     public class NotificationTemplateModel : BaseEntity<int>
     {
-        public int TicketTypeId { get; set; }
-        public NotificationTrigger Trigger { get; set; }
+        public int FkCompanyId { get; set; }
+        public NotificationEvent Trigger { get; set; }
         public NotificationType NotificationType { get; set; }
         public int? EmailConfigurationId { get; set; }
         public string SubjectTemplate { get; set; }

@@ -1,3 +1,4 @@
+using Models.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.Setup
@@ -16,6 +17,6 @@ namespace Models.Entities.Setup
         public bool IsDefault { get; set; }
         public string Name { get; set; }
         public string ReplyTo { get; set; }
-        public ICollection<NotificationScheduleModel> NotificationSchedules { get; set; }
+        public NotificationEvent Event { get; set; }
     }
 }

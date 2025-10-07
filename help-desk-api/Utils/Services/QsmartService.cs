@@ -26,7 +26,7 @@ namespace Utils.Services
             var request = new DepartmentServiceRequest(HttpMethod.Get, "api/company-data/customers");
             try
             {
-                dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.HRAPI);
+                dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.QsmartAPI);
                 if (response == null)
                     throw new InvalidOperationException("No department data returned from HRAPI.");
 
@@ -46,7 +46,7 @@ namespace Utils.Services
             var request = new DepartmentServiceRequest(HttpMethod.Get, "api/company-data/schemes");
             try
             {
-                dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.HRAPI);
+                dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.QsmartAPI);
                 if (response == null)
                     throw new InvalidOperationException("No department data returned from HRAPI.");
 
@@ -66,7 +66,7 @@ namespace Utils.Services
             var request = new DepartmentServiceRequest(HttpMethod.Get, "api/company-data/projects");
             try
             {
-                dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.HRAPI);
+                dynamic response = await _qsClient.RequestAsync<object>(request, EnumExternalServiceModules.QsmartAPI);
                 if (response == null)
                     throw new InvalidOperationException("No department data returned from HRAPI.");
 

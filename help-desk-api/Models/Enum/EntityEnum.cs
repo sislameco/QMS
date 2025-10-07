@@ -30,7 +30,7 @@ namespace Models.Enum
     /// <summary>
     /// Trigger event for notification.
     /// </summary>
-    public enum NotificationTrigger { Created = 1, Updated = 2, Resolved = 3, Closed = 4, SLADue = 5, SLAOverdue = 6 }
+    public enum NotificationEvent { Created = 1, Updated = 2, Resolved = 3, Closed = 4, SLADue = 5, SLAOverdue = 6 }
 
     /// <summary>
     /// Type of audit action performed.

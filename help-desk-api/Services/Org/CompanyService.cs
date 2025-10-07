@@ -13,6 +13,7 @@ using Repository.Repo.Pagination;
 using Repository.Repo.Permission;
 using Utils.Integration;
 using Utils.LoginData;
+using Utils.Services;
 
 namespace Services.Org
 {
@@ -35,11 +36,11 @@ namespace Services.Org
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHRService _hRService;
-        private readonly IQsmartService _qsmartService;
+        private readonly IQSmartService _qsmartService;
         private readonly ICommonRepository _commonRepository;
         private readonly IUserInfos _userInfos;
         private readonly IMenuRepository _menuRepository;
-        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos, IMenuRepository menuRepository, IQsmartService qsmartService)
+        public CompanyService(IUnitOfWork unitOfWork, IHRService hRService, ICommonRepository commonRepository, IUserInfos userInfos, IMenuRepository menuRepository, IQSmartService qsmartService)
         {
             _unitOfWork = unitOfWork;
             _hRService = hRService;
@@ -158,15 +159,15 @@ namespace Services.Org
 
                     break;
                 case EnumDataSource.Customer:
-                    isSync = await SyncDepartments(id, companyId);
+                    isSync = await SyncCustomers(id, companyId);
 
                     break;
                 case EnumDataSource.Project:
-                    isSync = await SyncDepartments(id, companyId);
+                    isSync = await SyncProjects(id, companyId);
 
                     break;
                 case EnumDataSource.Scheme:
-                    isSync = await SyncDepartments(id, companyId);
+                    isSync = await SyncSchemes(id, companyId);
 
                     break;
                 default:
@@ -262,7 +263,55 @@ namespace Services.Org
         {
             try
             {
-                var customers = await _hRService.GetCustomersAsync();
+                var customers = await _qsmartService.GetCustomers();
+                if (customers.Any())
+                {
+                    var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);
+                    if (companyData == null)
+                        throw new Exception("Company Define Data Source not found");
+                    companyData.JsonData = System.Text.Json.JsonSerializer.Serialize(customers);
+                    companyData.IsSync = true;
+                    _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().Update(companyData);
+                    await _unitOfWork.CommitAsync();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        private async Task<bool> SyncProjects(int id, int CompanyId)
+        {
+            try
+            {
+                var customers = await _qsmartService.GetProjects();
+                if (customers.Any())
+                {
+                    var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);
+                    if (companyData == null)
+                        throw new Exception("Company Define Data Source not found");
+                    companyData.JsonData = System.Text.Json.JsonSerializer.Serialize(customers);
+                    companyData.IsSync = true;
+                    _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().Update(companyData);
+                    await _unitOfWork.CommitAsync();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        private async Task<bool> SyncSchemes(int id, int CompanyId)
+        {
+            try
+            {
+                var customers = await _qsmartService.GetSchemes();
                 if (customers.Any())
                 {
                     var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);

@@ -16,6 +16,7 @@ using Utils.EmailUtil;
 using Utils.Integration;
 using Utils.Integration.API;
 using Utils.LoginData;
+using Utils.Services;
 using WebApi.Configuration;
 using WebApi.Extensions;
 using WebApi.Helper;
@@ -61,6 +62,7 @@ builder.Services.RegisterServices(
 
 // Register Generic Repository + UnitOfWork
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+builder.Services.AddScoped<IQSmartService, QSmartService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
 builder.Services.AddScoped<IHRService, HRService>();

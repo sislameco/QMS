@@ -1,4 +1,5 @@
 using Models.Entities.Org;
+using Models.Entities.Setup;
 using Models.Entities.UserManagement;
 using Models.Enum; // Add this at the top of the file
 
@@ -185,7 +186,7 @@ namespace Repository.Seeds
             },
             new CompanyDefineDataSourceModel
             {
-                Id = 2,
+                Id = 3,
                 FkCompanyId = 1,
                 Source = "api/company-data/projects",
                 IsSync = false,
@@ -197,7 +198,7 @@ namespace Repository.Seeds
             },
             new CompanyDefineDataSourceModel
             {
-                Id = 2,
+                Id = 4,
                 FkCompanyId = 1,
                 Source = "api/company-data/customers",
                 IsSync = false,
@@ -209,7 +210,7 @@ namespace Repository.Seeds
             },
             new CompanyDefineDataSourceModel
             {
-                Id = 2,
+                Id = 5,
                 FkCompanyId = 1,
                 Source = "api/company-data/schemes",
                 IsSync = false,
@@ -628,6 +629,106 @@ namespace Repository.Seeds
                  RStatus = EnumRStatus.Active
             }
         };
-    }
-}
 
+
+    }
+
+
+    public static class EmailConfigurationSeedData
+    {
+        public static readonly EmailConfigurationModel[] emailConfigurations =
+        {
+                new EmailConfigurationModel
+                {
+                    UserName = "noreply@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123456",
+                    SecretKey = "SECRET123456",
+                    BCC = "audit@company.com",
+                    IsDefault = true,
+                    Name = "Ticket Created Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Created
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "updates@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123457",
+                    SecretKey = "SECRET123457",
+                    BCC = "audit@company.com",
+                    IsDefault = false,
+                    Name = "Ticket Updated Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Updated
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "resolved@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123458",
+                    SecretKey = "SECRET123458",
+                    BCC = "audit@company.com",
+                    IsDefault = false,
+                    Name = "Ticket Resolved Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Resolved
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "closed@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123459",
+                    SecretKey = "SECRET123459",
+                    BCC = "audit@company.com",
+                    IsDefault = false,
+                    Name = "Ticket Closed Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Closed
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "sla@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123460",
+                    SecretKey = "SECRET123460",
+                    BCC = "audit@company.com",
+                    IsDefault = false,
+                    Name = "SLA Due Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.SLADue
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "slaoverdue@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123461",
+                    SecretKey = "SECRET123461",
+                    BCC = "audit@company.com",
+                    IsDefault = false,
+                    Name = "SLA Overdue Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.SLAOverdue
+                }
+            };
+    }
+
+}

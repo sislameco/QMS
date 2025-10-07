@@ -43,6 +43,11 @@ namespace Repository.Seeds
                 await context.CompanyDefineDataSources.AddRangeAsync(CompanyDefineDataSourceSeedData.companyDefineDataSources);
                 await context.SaveChangesAsync();
             }
+            if (!await context.EmailConfigurations.AnyAsync())
+            {
+                await context.EmailConfigurations.AddRangeAsync(EmailConfigurationSeedData.emailConfigurations);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
