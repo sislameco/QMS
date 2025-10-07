@@ -1,3 +1,4 @@
+using Models.Entities.Notification;
 using Models.Entities.Org;
 using Models.Entities.Setup;
 using Models.Entities.UserManagement;
@@ -730,5 +731,83 @@ namespace Repository.Seeds
                 }
             };
     }
-
+    public static class NotificationTemplateModelSeedData
+    {
+        public static readonly NotificationTemplateModel[] notifications =
+            {
+    new NotificationTemplateModel
+    {
+        FkCompanyId = 1,
+        Trigger = NotificationEvent.Created,
+        NotificationType = NotificationType.Email,
+        EmailConfigurationId = 1,
+        SubjectTemplate = "New Ticket Created - {{TicketId}}",
+        BodyTemplate = "Hello {{AssigneeName}},<br/>A new ticket ({{TicketId}}) has been created by {{CreatedBy}}.<br/>Subject: {{Subject}}",
+        CcList = "manager@company.com;supportlead@company.com",
+        IsEnabled = true,
+        Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" }
+    },
+    new NotificationTemplateModel
+    {
+        FkCompanyId = 1,
+        Trigger = NotificationEvent.Updated,
+        NotificationType = NotificationType.Email,
+        EmailConfigurationId = 2,
+        SubjectTemplate = "Ticket Updated - {{TicketId}}",
+        BodyTemplate = "Hello {{AssigneeName}},<br/>Ticket {{TicketId}} has been updated.<br/>Updated By: {{UpdatedBy}}<br/>Remarks: {{Remarks}}",
+        CcList = "audit@company.com",
+        IsEnabled = true,
+        Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" }
+    },
+    new NotificationTemplateModel
+    {
+        FkCompanyId = 1,
+        Trigger = NotificationEvent.Resolved,
+        NotificationType = NotificationType.Email,
+        EmailConfigurationId = 3,
+        SubjectTemplate = "Ticket Resolved - {{TicketId}}",
+        BodyTemplate = "Hello {{CreatedBy}},<br/>Ticket {{TicketId}} has been resolved by {{ResolvedBy}}.<br/>Resolution: {{ResolutionSummary}}",
+        CcList = "qa@company.com",
+        IsEnabled = true,
+        Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" }
+    },
+    new NotificationTemplateModel
+    {
+        FkCompanyId = 1,
+        Trigger = NotificationEvent.Closed,
+        NotificationType = NotificationType.Email,
+        EmailConfigurationId = 4,
+        SubjectTemplate = "Ticket Closed - {{TicketId}}",
+        BodyTemplate = "Dear {{CreatedBy}},<br/>Your ticket {{TicketId}} has been closed.<br/>Closed By: {{ClosedBy}}",
+        CcList = "audit@company.com",
+        IsEnabled = true,
+        Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" }
+    },
+    new NotificationTemplateModel
+    {
+        FkCompanyId = 1,
+        Trigger = NotificationEvent.SLADue,
+        NotificationType = NotificationType.Email,
+        EmailConfigurationId = 5,
+        SubjectTemplate = "SLA Due - {{TicketId}}",
+        BodyTemplate = "Reminder: Ticket {{TicketId}} assigned to {{AssigneeName}} is approaching SLA deadline ({{SLADate}}).",
+        CcList = "sla@company.com",
+        IsEnabled = true,
+        Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
+    },
+    new NotificationTemplateModel
+    {
+        FkCompanyId = 1,
+        Trigger = NotificationEvent.SLAOverdue,
+        NotificationType = NotificationType.Email,
+        EmailConfigurationId = 6,
+        SubjectTemplate = "SLA Overdue - {{TicketId}}",
+        BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+        CcList = "admin@company.com;sla@company.com",
+        IsEnabled = true,
+        Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
+    }
+};
+    }
 }
+
