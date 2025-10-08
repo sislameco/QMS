@@ -664,6 +664,7 @@ namespace Repository.Seeds
                     AccessKey = "AKIA123457",
                     SecretKey = "SECRET123457",
                     BCC = "audit@company.com",
+
                     IsDefault = false,
                     Name = "Ticket Updated Notification",
                     ReplyTo = "support@company.com",

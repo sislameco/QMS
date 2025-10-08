@@ -13,7 +13,8 @@ namespace Models.Entities.Setup
         public int IMAPPort { get; set; }
         public string AccessKey { get; set; }
         public string SecretKey { get; set; }
-        public string BCC { get; set; }
+        public string[] BCC { get; set; }
+        public string[] CcList { get; set; }
         public bool IsDefault { get; set; }
         public string Name { get; set; }
         public string ReplyTo { get; set; }

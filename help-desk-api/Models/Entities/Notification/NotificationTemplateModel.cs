@@ -7,12 +7,11 @@ namespace Models.Entities.Notification
     public class NotificationTemplateModel : BaseEntity<int>
     {
         public int FkCompanyId { get; set; }
-        public NotificationEvent Trigger { get; set; }
+        public NotificationEvent Event { get; set; }
         public NotificationType NotificationType { get; set; }
         public int? EmailConfigurationId { get; set; }
         public string SubjectTemplate { get; set; }
         public string BodyTemplate { get; set; }
-        public string CcList { get; set; }
         public bool IsEnabled { get; set; }
         public string[] Variables { get; set; }
     }
