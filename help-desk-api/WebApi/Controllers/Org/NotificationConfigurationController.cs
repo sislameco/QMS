@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace WebApi.Controllers.Org
 {
     [ApiController]
-    [Route("company/notification-configuration")]
+    [Route("notification-configuration")]
     [AllowAnonymous]
     public class NotificationConfigurationController : ControllerBase
     {
@@ -19,19 +19,19 @@ namespace WebApi.Controllers.Org
             _notificationService = notificationService;
         }
 
-        [HttpPut("update-template/{id}")]
-        public async Task<IActionResult> UpdateTemplate(int id, [FromBody] UpdateTemplateDto dto)
-        {
-            var result = await _notificationService.UpdateTemplateAsync(id, dto.EmailConfigurationId, dto.SubjectTemplate, dto.BodyTemplate, dto.CcList);
-            if (!result)
-                return BadRequest("Update failed.");
-            return Ok();
-        }
+        //[HttpPut("update-template/{id}")]
+        //public async Task<IActionResult> UpdateTemplate(int id, [FromBody] UpdateTemplateDto dto)
+        //{
+        //    var result = await _notificationService.UpdateTemplateAsync(id, dto.EmailConfigurationId, dto.SubjectTemplate, dto.BodyTemplate, dto.CcList);
+        //    if (!result)
+        //        return BadRequest("Update failed.");
+        //    return Ok();
+        //}
 
         [HttpPut("update-enabled/{id}")]
-        public async Task<IActionResult> UpdateIsEnabled(int id, [FromBody] UpdateIsEnabledDto dto)
+        public async Task<IActionResult> UpdateIsEnabled(int id, bool isEnabled)
         {
-            var result = await _notificationService.UpdateIsEnabledAsync(id, dto.IsEnabled);
+            var result = await _notificationService.UpdateIsEnabledAsync(id, isEnabled);
             if (!result)
                 return BadRequest("Update failed.");
             return Ok();

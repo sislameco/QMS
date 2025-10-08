@@ -59,7 +59,7 @@ namespace Services.Org
         public async Task<List<EmailConfigurationModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId)
         {
             var repo = _unitOfWork.Repository<EmailConfigurationModel, int>();
-            var entities = await repo.FindByConditionAsync(x => x.RStatus == EnumRStatus.Active && x.CreatedBy == fkCompanyId);
+            var entities = await repo.FindByConditionAsync(x => x.RStatus == EnumRStatus.Active);
             return entities.ToList();
         }
     }

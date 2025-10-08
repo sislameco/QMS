@@ -839,6 +839,12 @@ namespace Repository.Migrations
                     b.Property<int>("FkCompanyId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("FooterTemplate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeaderTemplate")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 

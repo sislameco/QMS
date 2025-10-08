@@ -160,6 +160,8 @@ namespace Repository.Migrations
                     EmailConfigurationId = table.Column<int>(type: "integer", nullable: true),
                     SubjectTemplate = table.Column<string>(type: "text", nullable: true),
                     BodyTemplate = table.Column<string>(type: "text", nullable: true),
+                    HeaderTemplate = table.Column<string>(type: "text", nullable: true),
+                    FooterTemplate = table.Column<string>(type: "text", nullable: true),
                     IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     Variables = table.Column<string[]>(type: "text[]", nullable: true)
                 },

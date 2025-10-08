@@ -635,180 +635,180 @@ namespace Repository.Seeds
     }
 
 
-//    public static class EmailConfigurationSeedData
-//    {
-//        public static readonly EmailConfigurationModel[] emailConfigurations =
-//        {
-//                new EmailConfigurationModel
-//                {
-//                    UserName = "noreply@company.com",
-//                    Password = "password123",
-//                    Host = "smtp.company.com",
-//                    SMTPPort = 587,
-//                    IMAPPort = 993,
-//                    AccessKey = "AKIA123456",
-//                    SecretKey = "SECRET123456",
-//                    BCC = "audit@company.com",
-//                    IsDefault = true,
-//                    Name = "Ticket Created Notification",
-//                    ReplyTo = "support@company.com",
-//                    Event = NotificationEvent.Created
-//                },
-//                new EmailConfigurationModel
-//                {
-//                    UserName = "updates@company.com",
-//                    Password = "password123",
-//                    Host = "smtp.company.com",
-//                    SMTPPort = 587,
-//                    IMAPPort = 993,
-//                    AccessKey = "AKIA123457",
-//                    SecretKey = "SECRET123457",
-//                    BCC = "audit@company.com",
+    public static class EmailConfigurationSeedData
+    {
+        public static readonly EmailConfigurationModel[] emailConfigurations =
+        {
+                new EmailConfigurationModel
+                {
+                    UserName = "noreply@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123456",
+                    SecretKey = "SECRET123456",
+                                     BCC = new[] { "audit@company.com", "audit@company.com" },
+                    CcList = new[] { "audit@company.com", "audit@company.com" },
+                    IsDefault = true,
+                    Name = "Ticket Created Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Created
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "updates@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123457",
+                    SecretKey = "SECRET123457",
+                                     BCC = new[] { "audit@company.com", "audit@company.com" },
+                    CcList = new[] { "audit@company.com", "audit@company.com" },
 
-//                    IsDefault = false,
-//                    Name = "Ticket Updated Notification",
-//                    ReplyTo = "support@company.com",
-//                    Event = NotificationEvent.Updated
-//                },
-//                new EmailConfigurationModel
-//                {
-//                    UserName = "resolved@company.com",
-//                    Password = "password123",
-//                    Host = "smtp.company.com",
-//                    SMTPPort = 587,
-//                    IMAPPort = 993,
-//                    AccessKey = "AKIA123458",
-//                    SecretKey = "SECRET123458",
-//                    BCC = "audit@company.com",
-//                    IsDefault = false,
-//                    Name = "Ticket Resolved Notification",
-//                    ReplyTo = "support@company.com",
-//                    Event = NotificationEvent.Resolved
-//                },
-//                new EmailConfigurationModel
-//                {
-//                    UserName = "closed@company.com",
-//                    Password = "password123",
-//                    Host = "smtp.company.com",
-//                    SMTPPort = 587,
-//                    IMAPPort = 993,
-//                    AccessKey = "AKIA123459",
-//                    SecretKey = "SECRET123459",
-//                    BCC = "audit@company.com",
-//                    IsDefault = false,
-//                    Name = "Ticket Closed Notification",
-//                    ReplyTo = "support@company.com",
-//                    Event = NotificationEvent.Closed
-//                },
-//                new EmailConfigurationModel
-//                {
-//                    UserName = "sla@company.com",
-//                    Password = "password123",
-//                    Host = "smtp.company.com",
-//                    SMTPPort = 587,
-//                    IMAPPort = 993,
-//                    AccessKey = "AKIA123460",
-//                    SecretKey = "SECRET123460",
-//                    BCC = "audit@company.com",
-//                    IsDefault = false,
-//                    Name = "SLA Due Notification",
-//                    ReplyTo = "support@company.com",
-//                    Event = NotificationEvent.SLADue
-//                },
-//                new EmailConfigurationModel
-//                {
-//                    UserName = "slaoverdue@company.com",
-//                    Password = "password123",
-//                    Host = "smtp.company.com",
-//                    SMTPPort = 587,
-//                    IMAPPort = 993,
-//                    AccessKey = "AKIA123461",
-//                    SecretKey = "SECRET123461",
-//                    BCC = "audit@company.com",
-//                    IsDefault = false,
-//                    Name = "SLA Overdue Notification",
-//                    ReplyTo = "support@company.com",
-//                    Event = NotificationEvent.SLAOverdue
-//                }
-//            };
-//    }
-//    public static class NotificationTemplateModelSeedData
-//    {
-//        public static readonly NotificationTemplateModel[] notifications =
-//            {
-//    new NotificationTemplateModel
-//    {
-//        FkCompanyId = 1,
-//        Trigger = NotificationEvent.Created,
-//        NotificationType = NotificationType.Email,
-//        EmailConfigurationId = 1,
-//        SubjectTemplate = "New Ticket Created - {{TicketId}}",
-//        BodyTemplate = "Hello {{AssigneeName}},<br/>A new ticket ({{TicketId}}) has been created by {{CreatedBy}}.<br/>Subject: {{Subject}}",
-//        CcList = "manager@company.com;supportlead@company.com",
-//        IsEnabled = true,
-//        Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" }
-//    },
-//    new NotificationTemplateModel
-//    {
-//        FkCompanyId = 1,
-//        Trigger = NotificationEvent.Updated,
-//        NotificationType = NotificationType.Email,
-//        EmailConfigurationId = 2,
-//        SubjectTemplate = "Ticket Updated - {{TicketId}}",
-//        BodyTemplate = "Hello {{AssigneeName}},<br/>Ticket {{TicketId}} has been updated.<br/>Updated By: {{UpdatedBy}}<br/>Remarks: {{Remarks}}",
-//        CcList = "audit@company.com",
-//        IsEnabled = true,
-//        Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" }
-//    },
-//    new NotificationTemplateModel
-//    {
-//        FkCompanyId = 1,
-//        Trigger = NotificationEvent.Resolved,
-//        NotificationType = NotificationType.Email,
-//        EmailConfigurationId = 3,
-//        SubjectTemplate = "Ticket Resolved - {{TicketId}}",
-//        BodyTemplate = "Hello {{CreatedBy}},<br/>Ticket {{TicketId}} has been resolved by {{ResolvedBy}}.<br/>Resolution: {{ResolutionSummary}}",
-//        CcList = "qa@company.com",
-//        IsEnabled = true,
-//        Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" }
-//    },
-//    new NotificationTemplateModel
-//    {
-//        FkCompanyId = 1,
-//        Trigger = NotificationEvent.Closed,
-//        NotificationType = NotificationType.Email,
-//        EmailConfigurationId = 4,
-//        SubjectTemplate = "Ticket Closed - {{TicketId}}",
-//        BodyTemplate = "Dear {{CreatedBy}},<br/>Your ticket {{TicketId}} has been closed.<br/>Closed By: {{ClosedBy}}",
-//        CcList = "audit@company.com",
-//        IsEnabled = true,
-//        Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" }
-//    },
-//    new NotificationTemplateModel
-//    {
-//        FkCompanyId = 1,
-//        Trigger = NotificationEvent.SLADue,
-//        NotificationType = NotificationType.Email,
-//        EmailConfigurationId = 5,
-//        SubjectTemplate = "SLA Due - {{TicketId}}",
-//        BodyTemplate = "Reminder: Ticket {{TicketId}} assigned to {{AssigneeName}} is approaching SLA deadline ({{SLADate}}).",
-//        CcList = "sla@company.com",
-//        IsEnabled = true,
-//        Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
-//    },
-//    new NotificationTemplateModel
-//    {
-//        FkCompanyId = 1,
-//        Trigger = NotificationEvent.SLAOverdue,
-//        NotificationType = NotificationType.Email,
-//        EmailConfigurationId = 6,
-//        SubjectTemplate = "SLA Overdue - {{TicketId}}",
-//        BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
-//        CcList = "admin@company.com;sla@company.com",
-//        IsEnabled = true,
-//        Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
-//    }
-//};
-//    }
+                    IsDefault = false,
+                    Name = "Ticket Updated Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Updated
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "resolved@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123458",
+                    SecretKey = "SECRET123458",
+                                     BCC = new[] { "audit@company.com", "audit@company.com" },
+                    CcList = new[] { "audit@company.com", "audit@company.com" },
+                    IsDefault = false,
+                    Name = "Ticket Resolved Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Resolved
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "closed@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123459",
+                    SecretKey = "SECRET123459",
+                                     BCC = new[] { "audit@company.com", "audit@company.com" },
+                    CcList = new[] { "audit@company.com", "audit@company.com" },
+                    IsDefault = false,
+                    Name = "Ticket Closed Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.Closed
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "sla@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123460",
+                    SecretKey = "SECRET123460",
+                    BCC = new[] { "audit@company.com", "audit@company.com" },
+                    CcList = new[] { "audit@company.com", "audit@company.com" },
+                    IsDefault = false,
+                    Name = "SLA Due Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.SLADue
+                },
+                new EmailConfigurationModel
+                {
+                    UserName = "slaoverdue@company.com",
+                    Password = "password123",
+                    Host = "smtp.company.com",
+                    SMTPPort = 587,
+                    IMAPPort = 993,
+                    AccessKey = "AKIA123461",
+                    SecretKey = "SECRET123461",
+                                     BCC = new[] { "audit@company.com", "audit@company.com" },
+                    CcList = new[] { "audit@company.com", "audit@company.com" },
+                    IsDefault = false,
+                    Name = "SLA Overdue Notification",
+                    ReplyTo = "support@company.com",
+                    Event = NotificationEvent.SLAOverdue
+                }
+            };
+    }
+    public static class NotificationTemplateModelSeedData
+    {
+        public static readonly NotificationTemplateModel[] notifications =
+            {
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Created,
+            NotificationType = NotificationType.Email,
+            EmailConfigurationId = 1,
+            SubjectTemplate = "New Ticket Created - {{TicketId}}",
+            BodyTemplate = "Hello {{AssigneeName}},<br/>A new ticket ({{TicketId}}) has been created by {{CreatedBy}}.<br/>Subject: {{Subject}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" }
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Updated,
+            NotificationType = NotificationType.Email,
+            EmailConfigurationId = 2,
+            SubjectTemplate = "Ticket Updated - {{TicketId}}",
+            BodyTemplate = "Hello {{AssigneeName}},<br/>Ticket {{TicketId}} has been updated.<br/>Updated By: {{UpdatedBy}}<br/>Remarks: {{Remarks}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" }
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Resolved,
+            NotificationType = NotificationType.Email,
+            EmailConfigurationId = 3,
+            SubjectTemplate = "Ticket Resolved - {{TicketId}}",
+            BodyTemplate = "Hello {{CreatedBy}},<br/>Ticket {{TicketId}} has been resolved by {{ResolvedBy}}.<br/>Resolution: {{ResolutionSummary}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" }
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Closed,
+            NotificationType = NotificationType.Email,
+            EmailConfigurationId = 4,
+            SubjectTemplate = "Ticket Closed - {{TicketId}}",
+            BodyTemplate = "Dear {{CreatedBy}},<br/>Your ticket {{TicketId}} has been closed.<br/>Closed By: {{ClosedBy}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" }
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.SLADue,
+            NotificationType = NotificationType.Email,
+            EmailConfigurationId = 5,
+            SubjectTemplate = "SLA Due - {{TicketId}}",
+            BodyTemplate = "Reminder: Ticket {{TicketId}} assigned to {{AssigneeName}} is approaching SLA deadline ({{SLADate}}).",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.SLAOverdue,
+            NotificationType = NotificationType.Email,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
+        }
+    };
+    }
 }
 

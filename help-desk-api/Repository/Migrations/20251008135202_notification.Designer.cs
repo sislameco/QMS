@@ -12,7 +12,7 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20251008061344_notification")]
+    [Migration("20251008135202_notification")]
     partial class notification
     {
         /// <inheritdoc />
@@ -841,6 +841,12 @@ namespace Repository.Migrations
 
                     b.Property<int>("FkCompanyId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("FooterTemplate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeaderTemplate")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");

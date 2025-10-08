@@ -47,11 +47,7 @@ namespace Services.AuthService
 
             if (user == null)
             {
-                return new HelpDeskLoginResponseDto
-                {
-                    Success = false,
-                    Message = "Invalid email or password."
-                };
+                throw new BadRequestException("Invalid username or password.");
             }
 
             // 2. Check if password change is required
@@ -150,7 +146,7 @@ namespace Services.AuthService
 
           //  AuthCacheUtil.SetPermittedMenu($"{userInfo.Id}", menus);
 
-            var refreshToken = await CreateRefreshToken(userInfo.Id, ip, currentToken.FkLoginId);
+            var refreshToken = await CreateRefreshToken(userInfo.Id, userHostAddress, currentToken.FkLoginId);
             DeleteRefreshToken(currentToken);
             return new HelpDeskLoginResponseDto { Token = newToken, RefreshToken = refreshToken };
         }

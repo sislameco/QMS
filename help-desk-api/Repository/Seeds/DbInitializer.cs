@@ -43,16 +43,16 @@ namespace Repository.Seeds
                 await context.CompanyDefineDataSources.AddRangeAsync(CompanyDefineDataSourceSeedData.companyDefineDataSources);
                 await context.SaveChangesAsync();
             }
-            //if (!await context.EmailConfigurations.AnyAsync())
-            //{
-            //    await context.EmailConfigurations.AddRangeAsync(EmailConfigurationSeedData.emailConfigurations);
-            //    await context.SaveChangesAsync();
-            //}
-            //if (!await context.NotificationTemplates.AnyAsync())
-            //{
-            //    await context.NotificationTemplates.AddRangeAsync(NotificationTemplateModelSeedData.notifications);
-            //    await context.SaveChangesAsync();
-            //}
+            if (!await context.EmailConfigurations.AnyAsync())
+            {
+                await context.EmailConfigurations.AddRangeAsync(EmailConfigurationSeedData.emailConfigurations);
+                await context.SaveChangesAsync();
+            }
+            if (!await context.NotificationTemplates.AnyAsync())
+            {
+                await context.NotificationTemplates.AddRangeAsync(NotificationTemplateModelSeedData.notifications);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace WebApi.Controllers.Org
 {
     [ApiController]
-    [Route("company/email-configuration")]
+    [Route("email-configuration")]
     [AllowAnonymous]
     public class EmailConfigurationController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Org
             _emailConfigurationService = emailConfigurationService;
         }
 
-        [HttpPut("update-fields")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateFields([FromBody] EmailConfigInputDto input)
         {
             var result = await _emailConfigurationService.UpdateFieldsAsync(input);
