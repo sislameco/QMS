@@ -124,12 +124,12 @@ namespace Services.AuthService
         public async Task<HelpDeskLoginResponseDto> RefreshToken(string token, HttpContext httpContext, HttpRequest request)
         {
             var browser = Common.GetBrowserIpInformation(httpContext, request);
-
+            var userHostAddress = browser.Item2.ToString();
             var operatingSystem = Convert.ToString(httpContext.Request?.Headers["OperatingSystem"]);
             /*
              Get Refresh token from repository to generate a new access token
              */
-            RefreshTokenModel currentToken = await GetRefreshToken(token, ip);
+            RefreshTokenModel currentToken = await GetRefreshToken(token, userHostAddress);
             if (currentToken == null)
                 throw new SessionExpiredException("Invalid token request!");
 
@@ -139,7 +139,7 @@ namespace Services.AuthService
             /*
              Generate new access token using refresh token
              */
-            var newToken = _jwtGenerator.GenerateJWT(userInfo, browser.Item2.ipa, currentToken.FkLoginId);
+            var newToken = _jwtGenerator.GenerateJWT(userInfo, userHostAddress, currentToken.FkLoginId);
 
             /* Getting permitted menus again to update Redis cache 
              */

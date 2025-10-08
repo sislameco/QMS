@@ -16,7 +16,7 @@ namespace Services.UserManagement
         Task UpdateRole(int roleId, RoleInputDto role);
         Task DeleteRole(int roleId);
         // role dropdown 
-        Task<List<RoleWithUsersDto>> GetRoleDropdownAsync();
+        Task<List<DropdownOutputDto<int, string>>> GetRoleDropdownAsync();
     }
     public class RoleService : IRoleService
     {
