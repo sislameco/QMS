@@ -1,4 +1,5 @@
-﻿using Models.Entities.Setup;
+﻿using Models.Entities.Org;
+using Models.Entities.Setup;
 using Models.Enum;
 using Repository;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Services.Org
 {
     public interface IEmailConfigurationService
     {
-        Task<bool> UpdateFieldsAsync(int id, string userName, string name, string replyTo, string[] bcc, string[] ccList);
+        Task<bool> UpdateFieldsAsync(EmailConfigInputDto input);
         Task<bool> SetDefaultAsync(int id);
         Task<List<EmailConfigurationModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId);
     }
@@ -21,18 +22,18 @@ namespace Services.Org
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> UpdateFieldsAsync(int id, string userName, string name, string replyTo, string[] bcc, string[] ccList)
+        public async Task<bool> UpdateFieldsAsync(EmailConfigInputDto input)
         {
             var repo = _unitOfWork.Repository<EmailConfigurationModel, int>();
-            var entity = await repo.GetByIdAsync(id);
+            var entity = await repo.GetByIdAsync(input.Id);
             if (entity == null)
                 throw new System.Exception("EmailConfiguration not found");
 
-            entity.UserName = userName;
-            entity.Name = name;
-            entity.ReplyTo = replyTo;
-            entity.BCC = bcc;
-            entity.CcList = ccList;
+            entity.UserName = input.UserName;
+            entity.Name = input.Name;
+            entity.ReplyTo = input.ReplyTo;
+            entity.BCC = input.Bcc;
+            entity.CcList = input.CcList;
 
             await repo.UpdateAsync(entity);
             return await _unitOfWork.CommitAsync() > 0;

@@ -39,7 +39,7 @@ namespace WebApi.Controllers.Org
         }
         [HttpGet("dropdown")]
         [AllowAnonymous]
-        public async Task<ActionResult<List<UserDropdownDto>>> GetDepartmentDropdown(int companyId)
+        public async Task<ActionResult<List<UserDropdownDto>>> GetDepartmentDropDown(int companyId)
         {
             var departments = await _companyService.GetDepartmentSelectedList(companyId);
             return Ok(departments);

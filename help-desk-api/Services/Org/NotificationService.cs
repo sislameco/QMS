@@ -1,4 +1,5 @@
 using Models.Entities.Notification;
+using Models.Enum;
 using Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
