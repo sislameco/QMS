@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Models.Dto.Auth;
+using Models.Dto.GlobalDto;
 using Models.Dto.Menus;
 using Models.Entities.Audit;
 using Models.Entities.UserManagement;
@@ -19,7 +20,9 @@ namespace Services.AuthService
     {
         Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskLoginDto dto, HttpContext httpContext, HttpRequest request);
         bool SignOut();
-        Task<HelpDeskLoginResponseDto> RefreshToken(string token, Tuple<ClientInfo, IPAddress> browserInfo);
+        Task<HelpDeskLoginResponseDto> RefreshToken(string token,  HttpContext httpContext, HttpRequest request);
+        Task<string> ForgotPassword(ForgotPasswordInputDto model);
+        Task<ObjectResponse<bool>> UpdatePassword(ChangePasswordInputDto data, int userId);
     }
 
     public class HelpDeskAuthService : IHelpDeskAuthService
@@ -118,9 +121,11 @@ namespace Services.AuthService
             _user.SetUserId(0);
             return true;
         }
-        public async Task<HelpDeskLoginResponseDto> RefreshToken(string token, Tuple<ClientInfo, IPAddress> browserInfo)
+        public async Task<HelpDeskLoginResponseDto> RefreshToken(string token, HttpContext httpContext, HttpRequest request)
         {
-            string ip = browserInfo.Item2.ToString();
+            var browser = Common.GetBrowserIpInformation(httpContext, request);
+
+            var operatingSystem = Convert.ToString(httpContext.Request?.Headers["OperatingSystem"]);
             /*
              Get Refresh token from repository to generate a new access token
              */
@@ -134,7 +139,7 @@ namespace Services.AuthService
             /*
              Generate new access token using refresh token
              */
-            var newToken = _jwtGenerator.GenerateJWT(userInfo, ip, currentToken.FkLoginId);
+            var newToken = _jwtGenerator.GenerateJWT(userInfo, browser.Item2.ipa, currentToken.FkLoginId);
 
             /* Getting permitted menus again to update Redis cache 
              */
@@ -178,6 +183,39 @@ namespace Services.AuthService
         {
             await _unitOfWork.WithOutRepository<RefreshTokenModel, int>().SoftDeleteAsync(token);
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<string> ForgotPassword(ForgotPasswordInputDto model)
+        {
+            UserModel user = await _unitOfWork.Repository<UserModel,int>().FirstOrDefaultAsync(u => u.UserName == model.UserName) ?? throw new BadRequestException("");
+
+            if (user == null || string.IsNullOrEmpty(user.Email))
+                throw new BadRequestException("No User Found");
+
+            var token = string.Empty;
+
+            if (user.RStatus == EnumRStatus.Active)
+            {
+                // send opt in email
+            }
+            else
+            {
+                throw new BadRequestException("Inactive User");
+            }
+            return token;
+        }
+        public async Task<ObjectResponse<bool>> UpdatePassword(ChangePasswordInputDto data, int userId)
+        {
+            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(x => x.Id == userId) ?? throw new BadRequestException("") ?? throw new BadRequestException("Requested user does not exist.");
+
+  
+            if (Common.DecryptText(user.PasswordHash) != data.CurrentPassword)
+                throw new BadRequestException("Entered Current password is not valid.");
+
+            // update password
+            //send an email notification
+
+            return new ObjectResponse<bool> { Data = true };
         }
     }
 }

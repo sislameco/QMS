@@ -1,3 +1,4 @@
+using Models.Dto.GlobalDto;
 using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
@@ -14,6 +15,8 @@ namespace Services.UserManagement
         Task CreateRole(RoleInputDto role);
         Task UpdateRole(int roleId, RoleInputDto role);
         Task DeleteRole(int roleId);
+        // role dropdown 
+        Task<List<RoleWithUsersDto>> GetRoleDropdownAsync();
     }
     public class RoleService : IRoleService
     {
@@ -120,5 +123,16 @@ namespace Services.UserManagement
             return true;
         }
 
+        public async Task<List<DropdownOutputDto<int,string>>> GetRoleDropdownAsync()
+        {
+            var roles = await _unitOfWork.Repository<RoleModel, int>()
+                .FindByConditionAsync(r => r.RStatus == EnumRStatus.Active);
+
+            return roles.Select(r => new DropdownOutputDto<int, string>
+            {
+                Id = r.Id,
+                Name = r.Name
+            }).ToList();
+        }
     }
 }

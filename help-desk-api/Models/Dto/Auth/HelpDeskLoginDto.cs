@@ -17,4 +17,22 @@ namespace Models.Dto.Auth
         [JsonIgnore]
         public Tuple<ClientInfo, IPAddress> Browser { get; set; }
     }
+    public class ChangePasswordInputDto
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        public string CurrentPassword { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
+    }
+
+    public class ForgotPasswordInputDto
+    {
+
+        [Required]
+        public string UserName { get; set; }
+        [JsonIgnore]
+        public Tuple<ClientInfo, IPAddress> Browser { get; set; }
+    }
 }

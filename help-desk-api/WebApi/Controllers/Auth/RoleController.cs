@@ -47,5 +47,12 @@ namespace WebApi.Controllers.Auth
             await _roleService.DeleteRole(id);
             return Ok();
         }
+        [HttpGet("dropdown")]
+        public async Task<IActionResult> GetRoleDropdown()
+        {
+            var roles = await _roleService.GetRolesWithUsersAsync();
+            var dropdown = roles.Items.Select(r => new { r.RoleId, r.RoleName }).ToList();
+            return Ok(dropdown);
+        }
     }
 }

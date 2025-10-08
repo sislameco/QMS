@@ -17,6 +17,7 @@ namespace Services.UserManagement
         Task DeleteAsync(int id);
         UserModel GetSystemUser();
         Task<List<UserDropdownDto>> GetUserSelectedList(int companyId);
+        Task<bool> SendInvitation(int userId);
     }
     public class UserService : IUserService
     {
@@ -66,6 +67,12 @@ namespace Services.UserManagement
         {
             var data = await _unitOfWork.Repository<UserModel,int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active);
             return data.Select(s=> new UserDropdownDto { Id = s.Id, FullName = s.FullName}).ToList();
+        }
+
+        public async Task<bool> SendInvitation(int userId)
+        {
+            // an emails sending logic will be here
+            return true;
         }
     }
 }

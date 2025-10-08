@@ -67,5 +67,16 @@ namespace WebApi.Controllers.Auth
             return Ok(users);
         }
 
+        /// <summary>
+        /// Sends an invitation email to the specified user.
+        /// </summary>
+        [HttpPost("{userId}/send-invitation")]
+        public async Task<ActionResult> SendInvitationEmail(int userId)
+        {
+            return Ok(await _userService.SendInvitation(userId));
+        }
+
+
+
     }
 }

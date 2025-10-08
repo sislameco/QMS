@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Auth;
+using Models.Dto.GlobalDto;
 using Services.AuthService;
 using System.Threading.Tasks;
+using Utils;
 
 namespace WebApi.Controllers.Auth
 {
@@ -38,5 +40,32 @@ namespace WebApi.Controllers.Auth
         {
             return Ok(_authService.SignOut());
         }
+
+
+        [AllowAnonymous]
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(string token)
+        {
+            return Ok(await _authService.RefreshToken(token, HttpContext, Request));
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("forgot-password")]
+        public async Task<ObjectResponse<string>> ForgotPassword(ForgotPasswordInputDto model)
+        {
+            model.Browser = Common.GetBrowserIpInformation(HttpContext, Request);
+            var res = await _authService.ForgotPassword(model);
+            return new ObjectResponse<string>() { Data = res, Message = "Send OTP" };
+        }
+
+        [HttpPost]
+        [Route("change-password/{userId}")]
+        [AllowAnonymous]
+        public async Task<ObjectResponse<bool>> ChangePassword(ChangePasswordInputDto data, int userId)
+        {
+            return await _authService.UpdatePassword(data, userId);
+        }
+
     }
 }
