@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Org;
+using Models.Dto.Org;
 using Models.Entities.Notification;
-using System.Threading.Tasks;
+using Services.Org;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers.Org
 {
@@ -19,21 +20,17 @@ namespace WebApi.Controllers.Org
             _notificationService = notificationService;
         }
 
-        //[HttpPut("update-template/{id}")]
-        //public async Task<IActionResult> UpdateTemplate(int id, [FromBody] UpdateTemplateDto dto)
-        //{
-        //    var result = await _notificationService.UpdateTemplateAsync(id, dto.EmailConfigurationId, dto.SubjectTemplate, dto.BodyTemplate, dto.CcList);
-        //    if (!result)
-        //        return BadRequest("Update failed.");
-        //    return Ok();
-        //}
+        [HttpPut("update-template/{id}")]
+        public async Task<IActionResult> UpdateTemplate([FromBody] NotificationInputDto input)
+        {
+            var result = await _notificationService.UpdateTemplateAsync(input);
+            return Ok(result);
+        }
 
         [HttpPut("update-enabled/{id}")]
         public async Task<IActionResult> UpdateIsEnabled(int id, bool isEnabled)
         {
             var result = await _notificationService.UpdateIsEnabledAsync(id, isEnabled);
-            if (!result)
-                return BadRequest("Update failed.");
             return Ok();
         }
 

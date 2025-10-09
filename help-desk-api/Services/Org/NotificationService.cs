@@ -1,3 +1,4 @@
+using Models.Dto.Org;
 using Models.Entities.Notification;
 using Models.Enum;
 using Repository;
@@ -8,7 +9,7 @@ namespace Services.Org
 {
     public interface INotificationService
     {
-        Task<bool> UpdateTemplateAsync(int id, int emailConfigurationId, string subjectTemplate, string bodyTemplate, string ccList);
+        Task<bool> UpdateTemplateAsync(NotificationInputDto input);
         Task<bool> UpdateIsEnabledAsync(int id, bool isEnabled);
         Task<List<NotificationTemplateModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId);
     }
@@ -21,19 +22,20 @@ namespace Services.Org
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> UpdateTemplateAsync(int id, int emailConfigurationId, string subjectTemplate, string bodyTemplate, string ccList)
+        public async Task<bool> UpdateTemplateAsync(NotificationInputDto input)
         {
             var repo = _unitOfWork.Repository<NotificationTemplateModel, int>();
-            var entity = await repo.GetByIdAsync(id);
+            var entity = await _unitOfWork.Repository<NotificationTemplateModel, int>().GetByIdAsync(input.Id);
             if (entity == null)
                 throw new System.Exception("NotificationTemplate not found");
 
-            entity.EmailConfigurationId = emailConfigurationId;
-            entity.SubjectTemplate = subjectTemplate;
-            entity.BodyTemplate = bodyTemplate;
+            entity.EmailConfigurationId = input.EmailConfigurationId;
+            entity.SubjectTemplate = input.SubjectTemplate;
+            entity.BodyTemplate = input.BodyTemplate;
 
-            await repo.UpdateAsync(entity);
+            _unitOfWork.Repository<NotificationTemplateModel, int>().Update(entity);
             return await _unitOfWork.CommitAsync() > 0;
+
         }
 
         public async Task<bool> UpdateIsEnabledAsync(int id, bool isEnabled)
@@ -44,7 +46,7 @@ namespace Services.Org
                 throw new System.Exception("NotificationTemplate not found");
 
             entity.IsEnabled = isEnabled;
-            await repo.UpdateAsync(entity);
+            repo.Update(entity);
             return await _unitOfWork.CommitAsync() > 0;
         }
 
