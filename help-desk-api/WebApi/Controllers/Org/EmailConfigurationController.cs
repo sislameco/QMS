@@ -33,9 +33,7 @@ namespace WebApi.Controllers.Org
         public async Task<IActionResult> SetDefault(int id)
         {
             var result = await _emailConfigurationService.SetDefaultAsync(id);
-            if (!result)
-                return BadRequest("Set default failed.");
-            return Ok();
+            return Ok(result);
         }
 
         [HttpGet("all/{fkCompanyId}")]

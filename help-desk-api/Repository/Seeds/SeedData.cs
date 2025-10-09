@@ -319,7 +319,8 @@ namespace Repository.Seeds
             {
                 Name = "Company Config",
                 ParentId = 3,
-                Url = "/pages/company-configuration/list",
+                Url = "#",
+                Route = "/pages/company-configuration/list",
                 DisplayOrder = 1,
                 IconClass = "#",
                 IconViewBox = "#",
@@ -331,7 +332,8 @@ namespace Repository.Seeds
             {
                 Name = "Issue Prefix",
                 ParentId = 3,
-                Url = "pages/tickets",
+                //Url = "pages/tickets",
+                Route = "pages/tickets",
                 DisplayOrder = 2,
                 IconClass = "#",
                 IconViewBox = "#",
@@ -653,7 +655,8 @@ namespace Repository.Seeds
                     IsDefault = true,
                     Name = "Ticket Created Notification",
                     ReplyTo = "support@company.com",
-                    Event = NotificationEvent.Created
+                    Event = NotificationEvent.Created,
+                                       RStatus = EnumRStatus.Active
                 },
                 new EmailConfigurationModel
                 {
@@ -670,7 +673,8 @@ namespace Repository.Seeds
                     IsDefault = false,
                     Name = "Ticket Updated Notification",
                     ReplyTo = "support@company.com",
-                    Event = NotificationEvent.Updated
+                    Event = NotificationEvent.Updated,
+                                       RStatus = EnumRStatus.Active
                 },
                 new EmailConfigurationModel
                 {
@@ -686,7 +690,8 @@ namespace Repository.Seeds
                     IsDefault = false,
                     Name = "Ticket Resolved Notification",
                     ReplyTo = "support@company.com",
-                    Event = NotificationEvent.Resolved
+                    Event = NotificationEvent.Resolved,
+                                       RStatus = EnumRStatus.Active
                 },
                 new EmailConfigurationModel
                 {
@@ -702,7 +707,8 @@ namespace Repository.Seeds
                     IsDefault = false,
                     Name = "Ticket Closed Notification",
                     ReplyTo = "support@company.com",
-                    Event = NotificationEvent.Closed
+                    Event = NotificationEvent.Closed,
+                                       RStatus = EnumRStatus.Active
                 },
                 new EmailConfigurationModel
                 {
@@ -718,7 +724,8 @@ namespace Repository.Seeds
                     IsDefault = false,
                     Name = "SLA Due Notification",
                     ReplyTo = "support@company.com",
-                    Event = NotificationEvent.SLADue
+                    Event = NotificationEvent.SLADue,
+                                       RStatus = EnumRStatus.Active
                 },
                 new EmailConfigurationModel
                 {
@@ -734,7 +741,8 @@ namespace Repository.Seeds
                     IsDefault = false,
                     Name = "SLA Overdue Notification",
                     ReplyTo = "support@company.com",
-                    Event = NotificationEvent.SLAOverdue
+                    Event = NotificationEvent.SLAOverdue,
+                    RStatus = EnumRStatus.Active
                 }
             };
     }
@@ -751,7 +759,8 @@ namespace Repository.Seeds
             SubjectTemplate = "New Ticket Created - {{TicketId}}",
             BodyTemplate = "Hello {{AssigneeName}},<br/>A new ticket ({{TicketId}}) has been created by {{CreatedBy}}.<br/>Subject: {{Subject}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" }
+            Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" },
+                               RStatus = EnumRStatus.Active
         },
         new NotificationTemplateModel
         {
@@ -762,7 +771,8 @@ namespace Repository.Seeds
             SubjectTemplate = "Ticket Updated - {{TicketId}}",
             BodyTemplate = "Hello {{AssigneeName}},<br/>Ticket {{TicketId}} has been updated.<br/>Updated By: {{UpdatedBy}}<br/>Remarks: {{Remarks}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" }
+            Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" },
+                               RStatus = EnumRStatus.Active
         },
         new NotificationTemplateModel
         {
@@ -773,7 +783,8 @@ namespace Repository.Seeds
             SubjectTemplate = "Ticket Resolved - {{TicketId}}",
             BodyTemplate = "Hello {{CreatedBy}},<br/>Ticket {{TicketId}} has been resolved by {{ResolvedBy}}.<br/>Resolution: {{ResolutionSummary}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" }
+            Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" },
+                               RStatus = EnumRStatus.Active
         },
         new NotificationTemplateModel
         {
@@ -784,7 +795,8 @@ namespace Repository.Seeds
             SubjectTemplate = "Ticket Closed - {{TicketId}}",
             BodyTemplate = "Dear {{CreatedBy}},<br/>Your ticket {{TicketId}} has been closed.<br/>Closed By: {{ClosedBy}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" }
+            Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" },
+                               RStatus = EnumRStatus.Active
         },
         new NotificationTemplateModel
         {
@@ -795,7 +807,8 @@ namespace Repository.Seeds
             SubjectTemplate = "SLA Due - {{TicketId}}",
             BodyTemplate = "Reminder: Ticket {{TicketId}} assigned to {{AssigneeName}} is approaching SLA deadline ({{SLADate}}).",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
         },
         new NotificationTemplateModel
         {
@@ -806,7 +819,8 @@ namespace Repository.Seeds
             SubjectTemplate = "SLA Overdue - {{TicketId}}",
             BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" }
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
         }
     };
     }

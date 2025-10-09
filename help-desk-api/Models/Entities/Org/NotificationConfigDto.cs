@@ -20,6 +20,7 @@ namespace Models.Entities.Org
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }
+        public string Host { get; set; }
         public string ReplyTo { get; set; }
         public string[] Bcc { get; set; }
         public string[] CcList { get; set; }

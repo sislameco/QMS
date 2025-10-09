@@ -53,7 +53,8 @@ namespace Services.Org
                 config.IsDefault = config.Id == id;
                 await repo.UpdateAsync(config);
             }
-            return await _unitOfWork.CommitAsync() > 0;
+            await _unitOfWork.CommitAsync();
+            return false;
         }
 
         public async Task<List<EmailConfigurationModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId)
