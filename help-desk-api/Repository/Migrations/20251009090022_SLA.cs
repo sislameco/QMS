@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class notification : Migration
+    public partial class SLA : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -379,7 +379,9 @@ namespace Repository.Migrations
                     Priority = table.Column<int>(type: "integer", nullable: false),
                     FKCompanyId = table.Column<int>(type: "integer", nullable: false),
                     Unit = table.Column<int>(type: "integer", nullable: false),
-                    Value = table.Column<int>(type: "integer", nullable: false)
+                    ResponseTime = table.Column<int>(type: "integer", nullable: false),
+                    ResolutionTime = table.Column<int>(type: "integer", nullable: false),
+                    EscalationTime = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

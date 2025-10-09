@@ -13,7 +13,9 @@ namespace Models.Dto.Org
         public EnumPriority Priority { get; set; }
         public int FKCompanyId { get; set; }
         public EnumUnit Unit { get; set; }
-        public int Value { get; set; }
+        public int ResponseTime { get; set; }
+        public int ResolutionTime { get; set; }
+        public int EscalationTime { get; set; }
     }
     public class SLAOutputDto: SLAInputDto
     {

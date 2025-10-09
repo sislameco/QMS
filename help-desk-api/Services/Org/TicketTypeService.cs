@@ -56,7 +56,10 @@ namespace Services.Org
             entity.Priority = dto.Priority;
             entity.FKCompanyId = dto.FKCompanyId;
             entity.Unit = dto.Unit;
-            entity.Value = dto.Value;
+
+            entity.ResponseTime = dto.ResponseTime;
+            entity.ResolutionTime = dto.ResolutionTime;
+            entity.EscalationTime = dto.EscalationTime;
 
             await repo.UpdateAsync(entity);
             await _unitOfWork.CommitAsync();
@@ -81,7 +84,9 @@ namespace Services.Org
             Priority = entity.Priority,
             FKCompanyId = entity.FKCompanyId,
             Unit = entity.Unit,
-            Value = entity.Value
+            ResponseTime = entity.ResponseTime,
+            ResolutionTime = entity.ResolutionTime,
+            EscalationTime = entity.EscalationTime
         };
 
         private static SLAConfigurationModel MapToEntity(SLAInputDto dto) => new SLAConfigurationModel
@@ -90,7 +95,9 @@ namespace Services.Org
             Priority = dto.Priority,
             FKCompanyId = dto.FKCompanyId,
             Unit = dto.Unit,
-            Value = dto.Value
+            ResponseTime = dto.ResponseTime,
+            ResolutionTime = dto.ResolutionTime,
+            EscalationTime = dto.EscalationTime
         };
     }
 }

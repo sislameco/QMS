@@ -1136,6 +1136,9 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
+                    b.Property<int>("EscalationTime")
+                        .HasColumnType("integer");
+
                     b.Property<int>("FKCompanyId")
                         .HasColumnType("integer");
 
@@ -1145,6 +1148,12 @@ namespace Repository.Migrations
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
+
+                    b.Property<int>("ResolutionTime")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ResponseTime")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -1159,9 +1168,6 @@ namespace Repository.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(105);
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
