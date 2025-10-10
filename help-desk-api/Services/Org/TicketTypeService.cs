@@ -1,6 +1,7 @@
 ﻿using Models.Dto.Org;
 using Models.Entities.Issue;
 using Models.Entities.Org;
+using Models.Enum;
 using Repository;
 
 namespace Services.Org
@@ -26,13 +27,25 @@ namespace Services.Org
         public async Task<List<TicketTypeOutputDto>> GetAllAsync()
         {
             var entities = await _unitOfWork.Repository<TicketTypeModel, int>().GetAllAsync();
-            return (List<TicketTypeOutputDto>)entities.Select(MapToDto);
+            entities.ToList();
+
+            var departments = _unitOfWork.Repository<DepartmentModel, int>()
+                 .FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == 1, s => new { s.Id, s.Name });
+            entities = entities.ToList();
+
+
+            var data = (List<TicketTypeOutputDto>)entities.Select(MapToDto).ToList();
+            foreach (var item in data)
+            {
+                item.DepartmentNames = departments.Where(d => item.FKDepartmentIds.Contains(d.Id)).Select(s=> s.Name).ToArray();
+            }
+            return data;
         }
 
         public async Task<TicketTypeOutputDto> GetByIdAsync(int id)
         {
             var entity = await _unitOfWork.Repository<TicketTypeModel, int>().GetByIdAsync(id);
-            return entity == null ? null : await MapToDto(entity);
+            return entity == null ? null : MapToDto(entity);
         }
 
         public async Task<bool> CreateAsync(TicketTypeInputDto dto)
@@ -56,7 +69,8 @@ namespace Services.Org
             entity.FKDepartmentIds = dto.FKDepartmentIds;
             entity.Description = dto.Description;
             entity.Title = dto.Title;
-            await repo.UpdateAsync(entity);
+            entity.RStatus = EnumRStatus.Active;
+            _unitOfWork.Repository<TicketTypeModel, int>().Update(entity);
             return await _unitOfWork.CommitAsync() > 0;
         }
 
@@ -72,17 +86,16 @@ namespace Services.Org
         }
 
         // Mapping helpers
-        private   async Task<TicketTypeOutputDto> MapToDto(TicketTypeModel entity) => new TicketTypeOutputDto
+        private TicketTypeOutputDto MapToDto(TicketTypeModel entity) => new TicketTypeOutputDto
         {
+            Title = entity.Title,
             FKAssignedUserId = entity.FKAssignedUserId,
             Priority = entity.Priority,
             IsEnabled = entity.IsEnabled,
             FKDepartmentIds = entity.FKDepartmentIds,
             FKCompanyId = entity.FKCompanyId,
             Id = entity.Id,
-            Description = entity.Description,
-            DepartmentNames = _unitOfWork.Repository<DepartmentModel, int>()
-                                .FindByConditionOneColumn(d => entity.FKDepartmentIds.Contains(d.Id),s=> s.Name).ToArray(),
+            Description = entity.Description
         };
 
         private static TicketTypeModel MapToEntity(TicketTypeInputDto dto) => new TicketTypeModel
@@ -93,7 +106,8 @@ namespace Services.Org
             Priority = dto.Priority,
             FKAssignedUserId = dto.FKAssignedUserId,
             FKDepartmentIds = dto.FKDepartmentIds,
-            FKCompanyId = dto.FKCompanyId
+            FKCompanyId = dto.FKCompanyId,
+            RStatus = EnumRStatus.Active
         };
     }
 }

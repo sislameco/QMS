@@ -1,10 +1,5 @@
-﻿using Models.Entities;
-using Models.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models.Enum;
+
 
 namespace Models.Dto.Org
 {

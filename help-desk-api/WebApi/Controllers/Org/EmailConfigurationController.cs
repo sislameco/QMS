@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Entities.Org;
+using Models.Dto.Org;
 using Models.Entities.Setup;
 using Services.Org;
 using System.Collections.Generic;

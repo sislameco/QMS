@@ -41,7 +41,7 @@ namespace Repository
         }
 
         public async Task<T?> GetByIdAsync(TId id) =>
-            await _dbSet.FirstOrDefaultAsync(e => e.Id!.Equals(id) && e.RStatus == EnumRStatus.Active);
+            await _dbSet.FirstOrDefaultAsync(e => e.Id.Equals(id) && e.RStatus == EnumRStatus.Active);
 
         public async Task<List<T>> GetAllAsync()
         {

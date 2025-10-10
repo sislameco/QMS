@@ -1,4 +1,4 @@
-﻿using Models.Entities.Org;
+﻿using Models.Dto.Org;
 using Models.Entities.Setup;
 using Models.Enum;
 using Repository;
