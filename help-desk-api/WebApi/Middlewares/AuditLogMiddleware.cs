@@ -64,6 +64,7 @@ namespace WebApi.Middlewares
                     LogAt = DateTime.UtcNow
                 };
                 await auditService.AddAsync(auditLog);
+
             }
             finally
             {
