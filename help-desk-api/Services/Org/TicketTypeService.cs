@@ -1,18 +1,16 @@
 ﻿using Models.Dto.Org;
-using Repository;
+using Models.Entities.Issue;
 using Models.Entities.Org;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Repository;
 
 namespace Services.Org
 {
     public interface ITicketTypeService
     {
-        Task<IEnumerable<SLAInputDto>> GetAllAsync();
-        Task<SLAInputDto?> GetByIdAsync(int id);
-        Task<SLAInputDto> CreateAsync(SLAInputDto dto);
-        Task<SLAInputDto?> UpdateAsync(int id, SLAInputDto dto);
+        Task<List<TicketTypeOutputDto>> GetAllAsync();
+        Task<TicketTypeOutputDto> GetByIdAsync(int id);
+        Task<bool> CreateAsync(TicketTypeInputDto dto);
+        Task<bool> UpdateAsync(int id, TicketTypeInputDto dto);
         Task<bool> DeleteAsync(int id);
     }
 
@@ -25,50 +23,46 @@ namespace Services.Org
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SLAInputDto>> GetAllAsync()
+        public async Task<List<TicketTypeOutputDto>> GetAllAsync()
         {
-            var entities = await _unitOfWork.Repository<SLAConfigurationModel, int>().GetAllAsync();
-            return entities.Select(MapToDto);
+            var entities = await _unitOfWork.Repository<TicketTypeModel, int>().GetAllAsync();
+            return (List<TicketTypeOutputDto>)entities.Select(MapToDto);
         }
 
-        public async Task<SLAInputDto?> GetByIdAsync(int id)
+        public async Task<TicketTypeOutputDto> GetByIdAsync(int id)
         {
-            var entity = await _unitOfWork.Repository<SLAConfigurationModel, int>().GetByIdAsync(id);
-            return entity == null ? null : MapToDto(entity);
+            var entity = await _unitOfWork.Repository<TicketTypeModel, int>().GetByIdAsync(id);
+            return entity == null ? null : await MapToDto(entity);
         }
 
-        public async Task<SLAInputDto> CreateAsync(SLAInputDto dto)
+        public async Task<bool> CreateAsync(TicketTypeInputDto dto)
         {
             var entity = MapToEntity(dto);
-            await _unitOfWork.Repository<SLAConfigurationModel, int>().AddAsync(entity);
-            await _unitOfWork.CommitAsync();
-            return MapToDto(entity);
+            await _unitOfWork.Repository<TicketTypeModel, int>().AddAsync(entity);
+            return await _unitOfWork.CommitAsync() > 0;
+
         }
 
-        public async Task<SLAInputDto?> UpdateAsync(int id, SLAInputDto dto)
+        public async Task<bool> UpdateAsync(int id, TicketTypeInputDto dto)
         {
-            var repo = _unitOfWork.Repository<SLAConfigurationModel, int>();
+            var repo = _unitOfWork.Repository<TicketTypeModel, int>();
             var entity = await repo.GetByIdAsync(id);
-            if (entity == null) return null;
+            if (entity == null) return false;
 
             // Update fields
-            entity.Type = dto.Type;
             entity.Priority = dto.Priority;
-            entity.FKCompanyId = dto.FKCompanyId;
-            entity.Unit = dto.Unit;
-
-            entity.ResponseTime = dto.ResponseTime;
-            entity.ResolutionTime = dto.ResolutionTime;
-            entity.EscalationTime = dto.EscalationTime;
-
+            entity.FKAssignedUserId = dto.FKAssignedUserId;
+            entity.IsEnabled = dto.IsEnabled;
+            entity.FKDepartmentIds = dto.FKDepartmentIds;
+            entity.Description = dto.Description;
+            entity.Title = dto.Title;
             await repo.UpdateAsync(entity);
-            await _unitOfWork.CommitAsync();
-            return MapToDto(entity);
+            return await _unitOfWork.CommitAsync() > 0;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var repo = _unitOfWork.Repository<SLAConfigurationModel, int>();
+            var repo = _unitOfWork.Repository<TicketTypeModel, int>();
             var entity = await repo.GetByIdAsync(id);
             if (entity == null) return false;
 
@@ -78,26 +72,28 @@ namespace Services.Org
         }
 
         // Mapping helpers
-        private static SLAInputDto MapToDto(SLAConfigurationModel entity) => new SLAInputDto
+        private   async Task<TicketTypeOutputDto> MapToDto(TicketTypeModel entity) => new TicketTypeOutputDto
         {
-            Type = entity.Type,
+            FKAssignedUserId = entity.FKAssignedUserId,
             Priority = entity.Priority,
+            IsEnabled = entity.IsEnabled,
+            FKDepartmentIds = entity.FKDepartmentIds,
             FKCompanyId = entity.FKCompanyId,
-            Unit = entity.Unit,
-            ResponseTime = entity.ResponseTime,
-            ResolutionTime = entity.ResolutionTime,
-            EscalationTime = entity.EscalationTime
+            Id = entity.Id,
+            Description = entity.Description,
+            DepartmentNames = _unitOfWork.Repository<DepartmentModel, int>()
+                                .FindByConditionOneColumn(d => entity.FKDepartmentIds.Contains(d.Id),s=> s.Name).ToArray(),
         };
 
-        private static SLAConfigurationModel MapToEntity(SLAInputDto dto) => new SLAConfigurationModel
+        private static TicketTypeModel MapToEntity(TicketTypeInputDto dto) => new TicketTypeModel
         {
-            Type = dto.Type,
+            Title = dto.Title,
+            Description = dto.Description,
+            IsEnabled = dto.IsEnabled,
             Priority = dto.Priority,
-            FKCompanyId = dto.FKCompanyId,
-            Unit = dto.Unit,
-            ResponseTime = dto.ResponseTime,
-            ResolutionTime = dto.ResolutionTime,
-            EscalationTime = dto.EscalationTime
+            FKAssignedUserId = dto.FKAssignedUserId,
+            FKDepartmentIds = dto.FKDepartmentIds,
+            FKCompanyId = dto.FKCompanyId
         };
     }
 }

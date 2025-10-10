@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Models.Dto.Org
@@ -20,5 +21,7 @@ namespace Models.Dto.Org
     public class SLAOutputDto: SLAInputDto
     {
         public int Id { get; set; }
+        [JsonIgnore]
+        public EnumRStatus Status { get; set; }
     }
 }

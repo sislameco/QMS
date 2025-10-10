@@ -1,10 +1,11 @@
 ﻿using Models.Dto.Org;
-using Repository;
 using Models.Entities.Org;
+using Models.Enum;
+using Repository;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
-using Models.Enum;
 using Utils.Exceptions;
 
 namespace Services.Org
@@ -41,13 +42,18 @@ namespace Services.Org
 
         public async Task<bool> CreateAsync(SLAInputDto dto)
         {
+            // validation EnumQMSType and EnumPriority should be unique 
+            if (!await IsTypePriorityUniqueAsync(dto.Type, dto.Priority, dto.FKCompanyId))
+                throw new BadRequestException("QMS Type and Priority Level are must be unique!");
+
             var entity = MapToEntity(dto);
             await _unitOfWork.Repository<SLAConfigurationModel, int>().AddAsync(entity);
-            return await _unitOfWork.CommitAsync()> 0;
+            return await _unitOfWork.CommitAsync() > 0;
         }
 
         public async Task<bool> UpdateAsync(int id, SLAInputDto dto)
         {
+            await IsTypePriorityUniqueAsync(dto.Type, dto.Priority, dto.FKCompanyId, id);
             var repo = _unitOfWork.Repository<SLAConfigurationModel, int>();
             var entity = await repo.GetByIdAsync(id);
             if (entity == null) throw new BadRequestException("No SLA Found");
@@ -72,7 +78,7 @@ namespace Services.Org
             if (entity == null) return false;
 
             await repo.DeleteAsync(id);
-            return await _unitOfWork.CommitAsync()> 0;
+            return await _unitOfWork.CommitAsync() > 0;
         }
 
         // Mapping helpers
@@ -81,23 +87,35 @@ namespace Services.Org
             Id = entity.Id,
             Type = entity.Type,
             Priority = entity.Priority,
-            FKCompanyId = 1,
+            FKCompanyId = entity.FKCompanyId,
             Unit = entity.Unit,
             ResponseTime = entity.ResponseTime,
             ResolutionTime = entity.ResolutionTime,
             EscalationTime = entity.ResolutionTime,
+            Status = entity.RStatus
         };
 
         private static SLAConfigurationModel MapToEntity(SLAInputDto dto) => new SLAConfigurationModel
         {
             Type = dto.Type,
             Priority = dto.Priority,
-            FKCompanyId = 1,
+            FKCompanyId = dto.FKCompanyId,
             Unit = dto.Unit,
             ResponseTime = dto.ResponseTime,
             ResolutionTime = dto.ResolutionTime,
             EscalationTime = dto.ResolutionTime,
             RStatus = EnumRStatus.Active
         };
+        private async Task<bool> IsTypePriorityUniqueAsync(EnumQMSType type, EnumPriority priority, int companyId, int id = 0)
+        {
+            var repo = _unitOfWork.Repository<SLAConfigurationModel, int>();
+            var exists = await repo.ExistsAsync(x =>
+                x.Type == type &&
+                x.Priority == priority &&
+                x.FKCompanyId == companyId &&
+                x.Id != id &&
+                x.RStatus == EnumRStatus.Active);
+            return !exists;
+        }
     }
 }

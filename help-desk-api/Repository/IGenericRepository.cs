@@ -23,6 +23,9 @@ namespace Repository
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync();
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        List<TResult> FindByConditionOneColumn<TResult>(
+           Expression<Func<T, bool>> predicate,
+           Expression<Func<T, TResult>> selector);
     }
 
     public class GenericRepository<T, TId> : IGenericRepository<T, TId> where T : BaseEntity<TId>
@@ -123,6 +126,17 @@ namespace Repository
         public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).Where(e => e.RStatus == EnumRStatus.Active).FirstOrDefaultAsync();
+        }
+
+        public List<TResult> FindByConditionOneColumn<TResult>(
+           Expression<Func<T, bool>> predicate,
+           Expression<Func<T, TResult>> selector)
+        {
+            return _dbSet
+                .Where(predicate)
+                .Where(e => e.RStatus == EnumRStatus.Active)
+                .Select(selector)
+                .ToList();
         }
     }
 }
