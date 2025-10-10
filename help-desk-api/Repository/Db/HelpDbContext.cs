@@ -28,6 +28,7 @@ namespace Repository.Db
         
         public DbSet<AssociateActionRouteModel> AssociateActionRoutes => Set<AssociateActionRouteModel>();
         public DbSet<AuditLogModel> AuditLogs => Set<AuditLogModel>();
+        public DbSet<QMSAuditLogModel> QMSAuditLog => Set<QMSAuditLogModel>();
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();
         public DbSet<CompanyDefineDataSourceModel> CompanyDefineDataSources => Set<CompanyDefineDataSourceModel>();
         public DbSet<SLAConfigurationModel> SLAs => Set<SLAConfigurationModel>();

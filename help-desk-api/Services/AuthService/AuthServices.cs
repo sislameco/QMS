@@ -1,12 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Models.Entities.Audit;
+using Repository;
 using System.Threading.Tasks;
 
-namespace Services.AuthService
+namespace Services.Global
 {
-    public class AuthServices
+    public interface IAuditLogService
     {
+        Task AddAsync(QMSAuditLogModel log);
+    }
+    public class AuditLogService : IAuditLogService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public AuditLogService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task AddAsync(QMSAuditLogModel log)
+        {
+            await _unitOfWork.WithOutRepository<QMSAuditLogModel,int>().AddAsync(log);
+            await _unitOfWork.CommitAsync();
+        }
     }
 }

@@ -20,4 +20,19 @@ namespace Models.Entities.Audit
         public string Notes { get; set; }
         public UserModel User { get; set; } // Navigation property
     }
+
+    [Table("HelpDeskAuditLog", Schema = "log")]
+    public class QMSAuditLogModel
+    {
+        public int Id { get; set; }
+        public int IntegratedCompanyId { get; set; }
+        public string FkUserId { get; set; }
+        public string IsHost { get; set; }
+        public string Path { get; set; }
+        public string Method { get; set; }
+        public string RequestBody { get; set; }
+        public string ResponseBody { get; set; }
+        public int StatusCode { get; set; }
+        public DateTime LogAt { get; set; }
+    }
 }
