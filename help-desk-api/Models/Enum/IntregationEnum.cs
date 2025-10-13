@@ -27,5 +27,12 @@ namespace Models.Enum
         Project = 3,
         Customer = 4,
         Scheme = 5,
+        RootCause = 6,
+        Resolution = 7
+    }
+    public enum EnumRootResolutionType
+    {
+        RootCause = 1,
+        Resolution = 2
     }
 }

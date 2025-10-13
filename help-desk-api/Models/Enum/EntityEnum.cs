@@ -54,4 +54,15 @@ namespace Models.Enum
         Weeks = 4,
         Months = 5
     }
+    public enum EnumCrud
+    {
+        Create = 1,
+        Read = 2,
+        Update = 3,
+        Delete = 4
+    }
+    public enum  CompanyDefineFieldType
+    {
+        pu
+    }
 }

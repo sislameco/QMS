@@ -38,8 +38,7 @@ namespace Repository.Db
         public DbSet<EmailConfigurationModel> EmailConfigurations => Set<EmailConfigurationModel>();
         public DbSet<NotificationScheduleModel> NotificationSchedules => Set<NotificationScheduleModel>();
         public DbSet<NotificationTemplateModel> NotificationTemplates => Set<NotificationTemplateModel>();
-        public DbSet<ResolutionModel> Resolutions => Set<ResolutionModel>();
-        public DbSet<RootCauseModel> RootCauses => Set<RootCauseModel>();
+        public DbSet<CompanyDefineRootResolutionModel> CompanyDefineRootResolutions => Set<CompanyDefineRootResolutionModel>();
         public DbSet<TicketAttachmentModel> TicketAttachments => Set<TicketAttachmentModel>();
         public DbSet<TicketCommentModel> TicketComments => Set<TicketCommentModel>();
         public DbSet<TicketDepartmentMapModel> TicketDepartmentMaps => Set<TicketDepartmentMapModel>();
