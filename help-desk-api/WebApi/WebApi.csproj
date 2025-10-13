@@ -34,6 +34,10 @@
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://www.schemastore.org/azure-iot-edge-deployment-2.0.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -16,6 +16,7 @@ namespace Models.AppSettings
         public static BasicAuthCredential BasicAuthCredential { get; set; }
         public static ApiConf QsmartAPI { get; set; }
         public static ApiConf HRAPI { get; set; }
+        public static string TemporaryFilePath { get; set; }
     }
     public class Redis
     {

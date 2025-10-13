@@ -61,7 +61,7 @@ namespace Models.Enum
         Update = 3,
         Delete = 4
     }
-    public enum  CompanyDefineFieldType
+    public enum  FileType
     {
         pu
     }

@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Dashboard;
 using Models.Dto.Ticket.Models.Dto.Tickets;
 
-namespace WebApi.Controllers.Dashboard
+namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
     [Route("ticket")]
     public class TicketController : ControllerBase
     {
+        // create ticket - POST /ticket
+           
+
         [AllowAnonymous]
         [HttpGet("list")]
         public IActionResult GetTickets()

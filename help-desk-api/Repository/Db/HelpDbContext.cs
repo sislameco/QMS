@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models.Entities.UserManagement;
 using Models.Entities.Audit;
+using Models.Entities.File;
+using Models.Entities.Issue;
+using Models.Entities.Notification;
 using Models.Entities.Org;
 using Models.Entities.Setup;
-using Models.Entities.Notification;
-using Models.Entities.Issue;
+using Models.Entities.UserManagement;
 
 namespace Repository.Db
 {
@@ -32,6 +33,8 @@ namespace Repository.Db
         public DbSet<CompanyModel> Companies => Set<CompanyModel>();
         public DbSet<CompanyDefineDataSourceModel> CompanyDefineDataSources => Set<CompanyDefineDataSourceModel>();
         public DbSet<SLAConfigurationModel> SLAs => Set<SLAConfigurationModel>();
+        public DbSet<TempFileModel> TempFiles => Set<TempFileModel>();
+
         public DbSet<CustomFieldModel> CustomFields { get; set; }
         public DbSet<TicketCustomFieldValue> TicketCustomFields { get; set; }
         public DbSet<DepartmentModel> Departments => Set<DepartmentModel>();

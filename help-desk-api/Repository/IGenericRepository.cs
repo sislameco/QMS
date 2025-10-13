@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using Models.Enum;
+using Org.BouncyCastle.Asn1;
 using Repository.Db;
 using System.Linq.Expressions;
 using Utils.LoginData;
@@ -26,6 +27,7 @@ namespace Repository
         List<TResult> FindByConditionOneColumn<TResult>(
            Expression<Func<T, bool>> predicate,
            Expression<Func<T, TResult>> selector);
+        Task BulkInsertAsync(IEnumerable<T> entities);
     }
 
     public class GenericRepository<T, TId> : IGenericRepository<T, TId> where T : BaseEntity<TId>
@@ -137,6 +139,10 @@ namespace Repository
                 .Where(e => e.RStatus == EnumRStatus.Active)
                 .Select(selector)
                 .ToList();
+        }
+        public async Task BulkInsertAsync(IEnumerable<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
         }
     }
 }

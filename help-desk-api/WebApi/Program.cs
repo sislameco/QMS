@@ -167,6 +167,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// ✅ Enable static file serving
+app.UseStaticFiles();
 
 // Seed Db
 using (var scope = app.Services.CreateScope())
