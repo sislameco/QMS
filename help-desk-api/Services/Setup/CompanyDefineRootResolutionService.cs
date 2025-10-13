@@ -58,7 +58,7 @@ namespace Services.Setup
                 FKCompanyId = data.FKCompanyId,
                 Id = data.Id,
                 Name = data.Name,
-                Type = data.Result.Type
+                Type = data.Type
             };
         }
 
@@ -66,8 +66,14 @@ namespace Services.Setup
         {
 
             var repo = _unitOfWork.Repository<CompanyDefineRootResolutionModel, int>();
+
+            var values = await repo.FindByConditionAsync(s => s.Id != input.Id && s.Name == input.Name && s.Type == input.Type);
+            if (values.Any()) throw new BadRequestException("Name must be unique!");
+                
             if (input.Id == 0 && input.Task == EnumCrud.Create)
             {
+
+
                 CompanyDefineRootResolutionModel add = new CompanyDefineRootResolutionModel
                 {
                     Name = input.Name,

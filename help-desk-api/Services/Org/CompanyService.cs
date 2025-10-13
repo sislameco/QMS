@@ -85,33 +85,6 @@ namespace Services.Org
             company.Description = dto.Description;
             company.PrefixTicket = dto.PrefixTicket;
             company.LastTicketNumber = dto.LastTicketNumber;
-
-            foreach (var defineData in dto.DefineDataSources)
-            {
-                if (defineData.Id == 0)
-                {
-                    CompanyDefineDataSourceModel companyDefineDataSource = new CompanyDefineDataSourceModel
-                    {
-                        FkCompanyId = dto.Id,
-                        IsSync = defineData.IsSync,
-                        JsonData = defineData.JSonData,
-                        Source = defineData.Source,
-                        RStatus = EnumRStatus.Active,
-                    };
-                    company.CompanyDefineData.Add(companyDefineDataSource);
-                }
-                else
-                {
-                    CompanyDefineDataSourceModel upcompanyDefineDataSource = company.CompanyDefineData.FirstOrDefault(c => c.Id == defineData.Id) ?? null;
-                    if (upcompanyDefineDataSource != null)
-                    {
-                        upcompanyDefineDataSource.IsSync = defineData.IsSync;
-                        upcompanyDefineDataSource.JsonData = defineData.JSonData;
-                        upcompanyDefineDataSource.Source = defineData.Source;
-                    }
-                    company.CompanyDefineData.Add(upcompanyDefineDataSource);
-                }
-            }
             await _unitOfWork.Repository<CompanyModel, int>().UpdateAsync(company);
             return await _unitOfWork.CommitAsync() > 0;
 

@@ -52,7 +52,7 @@ namespace WebApi.Controllers.Org
         public async Task<IActionResult> ChangeDisplayOrder([FromQuery] int id, [FromQuery] int order)
         {
             var success = await _rootResolutionService.ChangeDisplayOrder(id, order);
-            if (success) return Ok();
+            if (success) return Ok(success);
             return NotFound();
         }
     }
