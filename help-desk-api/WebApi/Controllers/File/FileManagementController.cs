@@ -18,10 +18,7 @@ namespace WebApi.Controllers.IssueManagement
             _fileService = fileService;
         }
         [HttpPost]
-        public  IActionResult Save([FromForm] List<IFormFile> fileList)
-        {
-            return Ok(_fileService.SaveFile(fileList));
-        }
+        public IActionResult Save([FromForm] List<IFormFile> fileList) => Ok(_fileService.SaveFile(fileList));
 
     }
 }
