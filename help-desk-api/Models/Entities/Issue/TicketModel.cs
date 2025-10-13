@@ -1,3 +1,4 @@
+using Models.Entities.Org;
 using Models.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,6 +32,7 @@ namespace Models.Entities.Issue
         public ICollection<TicketDepartmentMapModel> DepartmentMaps { get; set; }
         public ICollection<TicketLinkModel> Links { get; set; }
         public ICollection<TicketLeadCustomerMapModel> LeadCustomerMaps { get; set; }
+        public ICollection<TicketCustomFieldValue> CustomFieldValues { get; set; }
     }
 
 }
