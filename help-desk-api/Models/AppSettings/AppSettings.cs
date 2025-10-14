@@ -52,6 +52,7 @@ namespace Models.AppSettings
         public string WebhookUrl { get; set; }
         public string BotToken { get; set; }
         public string EndPoint { get; set; }
+        public string BaseUrl { get; set; }
 
     }
 
