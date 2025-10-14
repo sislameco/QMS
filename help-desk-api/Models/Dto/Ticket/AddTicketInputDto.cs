@@ -20,9 +20,11 @@ namespace Models.Dto.Ticket
         // Screen 3 
         public int FkTicketTypeId { get; set; }
         public List<SubFromInputDto> SubFrom { get; set; }
+        public int FkRelocationId { get; set; }
+        public int FkRootCauseId { get; set; }
 
         // Screen 4
-        public int FKAssignUser { get;set; } // default select as per ticket type
+        public int FKAssignUser { get; set; } // default select as per ticket type
         public int[] FKDepartmentId { get; set; }
         public int[] Files { get; set; }
 

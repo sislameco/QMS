@@ -7,6 +7,7 @@ namespace Models.Entities.Issue
     [Table("Ticket", Schema = "issue")]
     public class TicketModel : BaseEntity<int>
     {
+        public string Guid { get; set; }
         public string TicketNumber { get; set; }
         public string Subject { get; set; }
         public string Description { get; set; }
@@ -31,8 +32,9 @@ namespace Models.Entities.Issue
         public ICollection<TicketWatchListModel> WatchList { get; set; }
         public ICollection<TicketDepartmentMapModel> DepartmentMaps { get; set; }
         public ICollection<TicketLinkModel> Links { get; set; }
-        public ICollection<TicketLeadCustomerMapModel> LeadCustomerMaps { get; set; }
+        public ICollection<TicketCustomerMapModel> TicketCustomerMaps { get; set; }
         public ICollection<TicketCustomFieldValue> CustomFieldValues { get; set; }
+        public ICollection<TicketProjectMapModel> TicketProjectMaps { get; set; }
     }
 
 }

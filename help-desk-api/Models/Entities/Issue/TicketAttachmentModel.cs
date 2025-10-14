@@ -10,7 +10,7 @@ namespace Models.Entities.Issue
         public int FKTicketId { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
-        public string ContentType { get; set; }
+        public string FileExtension { get; set; }
         [ForeignKey("FKTicketId")]
         public TicketModel Ticket { get; set; }
     }
