@@ -17,6 +17,7 @@ namespace Models.AppSettings
         public static ApiConf QsmartAPI { get; set; }
         public static ApiConf HRAPI { get; set; }
         public static string TemporaryFilePath { get; set; }
+        public static Slack Slack { get; set; }
     }
     public class Redis
     {
@@ -45,6 +46,13 @@ namespace Models.AppSettings
         public string AuthorizationKey { get; set; }
         public string Company { get; set; }
         public string BaseUrl { get; set; }
+    }
+    public class Slack
+    {
+        public string WebhookUrl { get; set; }
+        public string BotToken { get; set; }
+        public string EndPoint { get; set; }
+
     }
 
 }
