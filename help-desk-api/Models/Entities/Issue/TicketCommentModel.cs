@@ -8,6 +8,6 @@ namespace Models.Entities.Issue
     {
         public int TicketId { get; set; }
         public string CommentText { get; set; }
-        public string MentionUserIds { get; set; }
+        public int[] MentionUserIds { get; set; }
     }
 }

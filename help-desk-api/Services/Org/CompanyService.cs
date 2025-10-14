@@ -5,6 +5,7 @@ using Models.Dto.Menus;
 using Models.Dto.Org;
 using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
+using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Entities.UserManagement;
 using Models.Enum;
@@ -154,6 +155,8 @@ namespace Services.Org
             try
             {
                 var users = await _hRService.GetUsersAsync();
+                var existingUsers = await _unitOfWork.Repository<UserModel, int>().FindByConditionAsync(s => s.FkCompanyId == CompanyId && s.RStatus == EnumRStatus.Active);
+
                 if (users.Any())
                 {
                     var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);
@@ -165,20 +168,25 @@ namespace Services.Org
 
                     foreach (var user in users)
                     {
-                        UserModel addUser = new UserModel
+                        var existingUser = existingUsers.FirstOrDefault(s => s.Id == user.UserId);
+                        if (existingUser == null)
                         {
-                            FkCompanyId = CompanyId,
-                            FirstName = user.FirstName,
-                            LastName = user.LastName,
-                            Email = user.EmailAddress,
-                            UserName = user.UserName,
-                            FullName = $"{user.FirstName} {user.LastName}",
-                            Phone = string.Empty,
-                            PasswordHash = string.Empty,
-                            IntegrationsPrimaryId = user.UserId,
-                            RStatus = EnumRStatus.Active,
-                        };
-                        await _unitOfWork.Repository<UserModel, int>().AddAsync(addUser);
+
+                            UserModel addUser = new UserModel
+                            {
+                                FkCompanyId = CompanyId,
+                                FirstName = user.FirstName,
+                                LastName = user.LastName,
+                                Email = user.EmailAddress,
+                                UserName = user.UserName,
+                                FullName = $"{user.FirstName} {user.LastName}",
+                                Phone = string.Empty,
+                                PasswordHash = string.Empty,
+                                IntegrationsPrimaryId = user.UserId,
+                                RStatus = EnumRStatus.Active,
+                            };
+                            await _unitOfWork.Repository<UserModel, int>().AddAsync(addUser);
+                        }
                     }
                     await _unitOfWork.CommitAsync();
                     return true;
@@ -197,6 +205,9 @@ namespace Services.Org
             try
             {
                 var departments = await _hRService.GetDepartmentsAsync();
+
+                var existingDepartments = await _unitOfWork.Repository<DepartmentModel, int>().FindByConditionAsync(s => s.FKCompanyId == CompanyId && s.RStatus == EnumRStatus.Active);
+
                 if (departments.Any())
                 {
                     var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);
@@ -209,15 +220,20 @@ namespace Services.Org
 
                     foreach (var department in departments)
                     {
-                        DepartmentModel addDep = new DepartmentModel
+                        var existingDepartment = existingDepartments.FirstOrDefault(s => s.Id == department.Id);
+                        if (existingDepartment == null)
                         {
-                            Name = department.Name,
-                            Description = string.Empty,
-                            FKCompanyId = CompanyId,
-                            FKManagerId = null,
-                            IntegrationsPrimaryId = department.Id
-                        };
-                        await _unitOfWork.Repository<DepartmentModel, int>().AddAsync(addDep);
+                            DepartmentModel addDep = new DepartmentModel
+                            {
+                                Name = department.Name,
+                                Description = string.Empty,
+                                FKCompanyId = CompanyId,
+                                FKManagerId = null,
+                                Id = department.Id
+                            };
+                            await _unitOfWork.Repository<DepartmentModel, int>().AddAsync(addDep);
+                        }
+
                     }
                     await _unitOfWork.CommitAsync();
                     return true;
@@ -260,16 +276,38 @@ namespace Services.Org
         {
             try
             {
-                var customers = await _qsmartService.GetProjects();
-                if (customers.Any())
+                var existingProjects = await _unitOfWork.Repository<CompanyProjectModel, int>().FindByConditionAsync(s =>
+                s.FKCompanyId == CompanyId
+                && s.RStatus == EnumRStatus.Active);
+
+                var projects = await _qsmartService.GetProjects();
+                if (projects.Any())
                 {
                     var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);
                     if (companyData == null)
                         throw new Exception("Company Define Data Source not found");
-                    companyData.JsonData = System.Text.Json.JsonSerializer.Serialize(customers);
+                    companyData.JsonData = System.Text.Json.JsonSerializer.Serialize(projects);
                     companyData.IsSync = true;
                     _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().Update(companyData);
+
+
+                    foreach (var project in projects)
+                    {
+                        var existingProject = existingProjects.FirstOrDefault(s => s.Id == project.ProjectId);
+
+                        CompanyProjectModel companyProject = new CompanyProjectModel
+                        {
+                            FKCompanyId = CompanyId,
+                            ProjectName = project.ProjectName,
+                            ReferenceNumber = project.ProjectNumber,
+                            ProjectAddress = project.Address,
+                            Id = project.ProjectId
+                        };
+                        await _unitOfWork.Repository<CompanyProjectModel, int>().AddAsync(companyProject);
+                    }
                     await _unitOfWork.CommitAsync();
+
+
                     return true;
                 }
                 else
