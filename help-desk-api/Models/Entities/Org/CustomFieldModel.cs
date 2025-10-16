@@ -16,11 +16,13 @@ namespace Models.Entities.Org
     {
         public int FkTicketTypeId { get; set; }
         public string DisplayName { get; set; }
-        public CustomFieldType DataType { get; set; } 
+        public EnumDataType DataType { get; set; } 
         public string[] DDLValue { get; set; }
         public bool IsRequired { get; set; }
         [ForeignKey("FkTicketTypeId")]
         public TicketTypeModel TicketType { get; set; }
+        public string Description { get; set; }
+        public bool IsMultiSelect { get; set; }
     }
     [Table("TicketCustomFields", Schema = "Org")]
     public class TicketCustomFieldValue : BaseEntity<int>

@@ -19,7 +19,7 @@ namespace WebApi.Controllers.Org
 
         // GET: field
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomFieldDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CustomFieldInputDto>>> GetAll()
         {
             var fields = await _customFieldService.GetAllAsync();
             return Ok(fields);
@@ -27,7 +27,7 @@ namespace WebApi.Controllers.Org
 
         // GET: field/{id}
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CustomFieldDto>> GetById(int id)
+        public async Task<ActionResult<CustomFieldOutPutDto>> GetById(int id)
         {
             var field = await _customFieldService.GetByIdAsync(id);
             if (field == null)
@@ -38,15 +38,16 @@ namespace WebApi.Controllers.Org
         // POST: field
         // Save multiple fields, input is List<CustomFieldDto> (ignore BaseEntity)
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<CustomFieldDto>>> CreateMany([FromBody] List<CustomFieldDto> dtos)
+        public async Task<ActionResult<bool>> CreateMany([FromBody] CustomFieldInputDto input)
         {
-            var createdFields = await _customFieldService.CreateManyAsync(dtos);
+
+            var createdFields = await _customFieldService.CreateManyAsync(input);
             return CreatedAtAction(nameof(GetAll), createdFields);
         }
 
         // PUT: field/{id}
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<CustomFieldDto>> Update(int id, [FromBody] CustomFieldDto dto)
+        public async Task<ActionResult<CustomFieldInputDto>> Update(int id, [FromBody] CustomFieldInputDto dto)
         {
             var updated = await _customFieldService.UpdateAsync(id, dto);
             if (updated == null)

@@ -11,7 +11,7 @@ namespace Models.Enum
         QsmartAPI = 1,
         HRAPI = 2
     }
-    public enum CustomFieldType
+    public enum EnumDataType
     {
         TextInput = 1,
         TextArea = 2,
