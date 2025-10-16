@@ -17,6 +17,7 @@ namespace Models.AppSettings
         public static ApiConf QsmartAPI { get; set; }
         public static ApiConf HRAPI { get; set; }
         public static string TemporaryFilePath { get; set; }
+        public static string TicketPath { get; set; }
         public static Slack Slack { get; set; }
     }
     public class Redis

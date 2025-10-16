@@ -30,4 +30,12 @@ namespace Models.Dto.Org
         public int Id { get; set; }
         public string Value { get; set; }
     }
+    public class FieldOutputDto
+    {
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
+        public CustomFieldType DataType { get; set; }
+        public string[] DDLValue { get; set; }
+        public bool IsRequired { get; set; }
+    }
 }

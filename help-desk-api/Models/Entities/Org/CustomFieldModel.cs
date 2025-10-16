@@ -17,7 +17,7 @@ namespace Models.Entities.Org
         public int FkTicketTypeId { get; set; }
         public string DisplayName { get; set; }
         public CustomFieldType DataType { get; set; } 
-        public string? OptionsJson { get; set; }
+        public string[] DDLValue { get; set; }
         public bool IsRequired { get; set; }
         [ForeignKey("FkTicketTypeId")]
         public TicketTypeModel TicketType { get; set; }

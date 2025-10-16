@@ -15,18 +15,18 @@ namespace Models.Dto.Ticket
         public string Description { get; set; }
         // Screen 2
         public bool IsCustomer { get; set; }
-        public int? FKCustomerId { get; set; }
-        public int? FKProjectId { get; set; }
+        public int? FKCustomerId { get; set; } // ddl
+        public int? FKProjectId { get; set; } // ddl
         // Screen 3 
-        public int FkTicketTypeId { get; set; }
-        public List<SubFromInputDto> SubFrom { get; set; }
-        public int FkRelocationId { get; set; }
-        public int FkRootCauseId { get; set; }
+        public int FkTicketTypeId { get; set; } // ddl
+        public List<SubFromInputDto> SubFrom { get; set; } // get api 
+        public int FkRelocationId { get; set; } // ddl
+        public int FkRootCauseId { get; set; } // ddl
 
         // Screen 4
-        public int FKAssignUser { get; set; } // default select as per ticket type
-        public int[] FKDepartmentId { get; set; }
-        public int[] Files { get; set; }
+        public int FKAssignUser { get; set; } // default select as per ticket type // ddl
+        public int[] FKDepartmentId { get; set; } // ddl
+        public int[] Files { get; set; } // api
 
 
     }

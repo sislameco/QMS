@@ -1,14 +1,10 @@
-﻿using Models.Dto.Ticket;
+﻿using Models.AppSettings;
+using Models.Dto.Ticket;
 using Models.Entities.File;
 using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Enum;
 using Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.IssueManagement
 {
@@ -50,7 +46,7 @@ namespace Services.IssueManagement
                 Guid = Guid.NewGuid().ToString("N").Substring(0, 8),
                 DueDate = DateTime.UtcNow, // todo: calculate due date based on ticket type and priority,
                 EstimatedTime = "2h", // todo: get estimated time from ticket type and priority,
-                 
+
             };
 
             #endregion
@@ -83,16 +79,14 @@ namespace Services.IssueManagement
             }
             #endregion
             #region Attachments
-            var tempFiles = await _unitOfWork.Repository<TempFileModel, int>().FindByConditionAsync(t => t.RStatus == EnumRStatus.Active && input.Files.Contains(t.Id));
-            tempFiles.ToList();
-            foreach (var file in input.Files)
+            var tempFiles = await GetAndMoveAttachments(input.Files.ToList(), ticket.TicketNumber);
+            foreach (var file in tempFiles)
             {
-                var tempFile = tempFiles.FirstOrDefault(t => t.Id == file);
                 TicketAttachmentModel attachments = new TicketAttachmentModel
                 {
-                    FileName = tempFile.FileName,
-                    FilePath = tempFile.FilePath,
-                    FileExtension = tempFile.Extension,
+                    FileName = file.Name,
+                    FilePath = file.Path,
+                    FileExtension = Path.GetExtension(file.Path),
                     CreatedBy = 1, // ??
                     CreatedDate = DateTime.UtcNow,
                 };
@@ -115,17 +109,12 @@ namespace Services.IssueManagement
                     ticket.WatchList.Add(assign);
                 }
             }
-
             TicketWatchListModel watchListModel = new TicketWatchListModel
             {
                 FKUserId = input.FKAssignUser,
                 RStatus = EnumRStatus.Active
             };
-
-            // get Ticket Id 
-
             ticket.WatchList.Add(watchListModel);
-
             #endregion
             #region Customer/Lead Map
             if (input.IsCustomer && input.FKCustomerId.HasValue)
@@ -139,20 +128,78 @@ namespace Services.IssueManagement
                 };
                 ticket.TicketCustomerMaps.Add(customerMap);
             }
-            else if(!input.IsCustomer && input.FKProjectId.HasValue)
+            else if (!input.IsCustomer && input.FKProjectId.HasValue)
             {
-                
-                    TicketProjectMapModel projectMap = new TicketProjectMapModel
-                    {
-                        FkProjectId = input.FKProjectId.Value,
-                        RStatus = EnumRStatus.Active,
-                        CreatedBy = 1, // ??
-                        CreatedDate = DateTime.UtcNow
-                    };
-                    ticket.TicketProjectMaps.Add(projectMap);
+
+                TicketProjectMapModel projectMap = new TicketProjectMapModel
+                {
+                    FkProjectId = input.FKProjectId.Value,
+                    RStatus = EnumRStatus.Active,
+                    CreatedBy = 1, // ??
+                    CreatedDate = DateTime.UtcNow
+                };
+                ticket.TicketProjectMaps.Add(projectMap);
             }
             #endregion
             return "";
+        }
+        private async Task<List<AttachmentDto>> GetAndMoveAttachments(
+           List<int> attachments,
+           string orderReferenceNumber
+       )
+        {
+            string targetRootPath = Path.Combine(
+                AppSettings.TicketPath,
+                orderReferenceNumber
+            );
+
+            var movedFileNames = new List<AttachmentDto>();
+
+            var attachFiles = await _unitOfWork.Repository<TempFileModel, int>().FindByConditionAsync(s => attachments.Contains(s.Id));
+
+            if (attachFiles == null)
+                return new List<AttachmentDto>();
+
+            attachFiles = attachFiles.ToList();
+            foreach (var attachFile in attachFiles)
+            {
+                // Use Path class to manipulate file and directory paths.
+                string SourceFile = attachFile.FilePath;
+                if (!Directory.Exists(targetRootPath))
+                    Directory.CreateDirectory(targetRootPath);
+
+                string FileName = $"{attachFile.FileName}";
+                string TargetFile = Path.Combine(targetRootPath, FileName);
+                if (SourceFile != TargetFile)
+                {
+                    System.IO.File.Copy(SourceFile, TargetFile, true);
+                    movedFileNames.Add(new AttachmentDto()
+                    {
+                        Name = FileName,
+                        Path = TargetFile
+                    });
+                }
+                else
+                {
+                    movedFileNames.Add(new AttachmentDto()
+                    {
+                        Name = FileName,
+                        Path = TargetFile
+                    });
+                }
+            }
+            if (attachFiles.Count() > 0)
+            {
+                foreach (var attachFile in attachFiles)
+                {
+                    if(attachFile == null)
+                        continue;
+                    await _unitOfWork.Repository<TempFileModel, int>().SoftDeleteAsync(attachFile);
+                }
+            }
+            await _unitOfWork.CommitAsync();
+
+            return movedFileNames;
         }
     }
 }
