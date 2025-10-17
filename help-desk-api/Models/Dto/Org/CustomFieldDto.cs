@@ -29,7 +29,7 @@ namespace Models.Dto.Org
         public string DisplayName { get; set; }
         public DataType DataType { get; set; }
         public bool IsRequired { get; set; }
-        public string DDLValue { get; set; }
+        public string[] DDLValue { get; set; }
         public bool IsMultiSelect { get; set; }
     }
     public class SubFromInputDto
@@ -40,9 +40,12 @@ namespace Models.Dto.Org
     public class FieldOutputDto
     {
         public int Id { get; set; }
+        public int FkTicketTypeId { get; set; }
         public string DisplayName { get; set; }
         public EnumDataType DataType { get; set; }
         public string[] DDLValue { get; set; }
         public bool IsRequired { get; set; }
+        public string Description { get; set; }
+        public bool IsMultiSelect { get; set; }
     }
 }

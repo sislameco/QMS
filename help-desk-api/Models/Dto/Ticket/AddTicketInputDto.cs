@@ -27,7 +27,5 @@ namespace Models.Dto.Ticket
         public int FKAssignUser { get; set; } // default select as per ticket type // ddl
         public int[] FKDepartmentId { get; set; } // ddl
         public int[] Files { get; set; } // api
-
-
     }
 }

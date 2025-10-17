@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Dto.Dashboard;
+using Models.Dto.Ticket;
 using Models.Dto.Ticket.Models.Dto.Tickets;
-using Services.IssueManagement; // Add this using
+using Services.IssueManagement;
 
 namespace WebApi.Controllers.IssueManagement
 {
@@ -11,12 +11,13 @@ namespace WebApi.Controllers.IssueManagement
     public class TicketController : ControllerBase
     {
         private readonly ITicketReferenceService _ticketReferenceService;
-
-        public TicketController(ITicketReferenceService ticketReferenceService)
+        private readonly ITicketService _ticketService;
+        public TicketController(ITicketReferenceService ticketReferenceService, ITicketService ticketService)
         {
             _ticketReferenceService = ticketReferenceService;
+            _ticketService = ticketService;
         }
-
+        // generate create endpoint _ticketService.CreateTicket
         [AllowAnonymous]
         [HttpGet("list")]
         public IActionResult GetTickets(int fkCompanyId)
@@ -101,5 +102,13 @@ namespace WebApi.Controllers.IssueManagement
         }
 
         #endregion
+
+        [AllowAnonymous]
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateTicket([FromBody] AddTicketInputDto input)
+        {
+            var result = await _ticketService.CreateTicket(input);
+            return Ok(new { ticketId = result });
+        }
     }
 }

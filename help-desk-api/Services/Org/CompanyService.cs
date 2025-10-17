@@ -252,6 +252,7 @@ namespace Services.Org
         {
             try
             {
+                var existingCustomers = await _unitOfWork.Repository<CompanyProjectModel, int>().FindByConditionAsync(s => s.FKCompanyId == CompanyId && s.RStatus == EnumRStatus.Active);
                 var customers = await _qsmartService.GetCustomers();
                 if (customers.Any())
                 {
@@ -261,6 +262,23 @@ namespace Services.Org
                     companyData.JsonData = System.Text.Json.JsonSerializer.Serialize(customers);
                     companyData.IsSync = true;
                     _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().Update(companyData);
+                    foreach (var customer in customers)
+                    {
+                        var existingCustomer = existingCustomers.FirstOrDefault(s => s.Id == customer.Id);
+                        if (existingCustomer == null)
+                        {
+                            CompanyCustomerModel addCustomer = new CompanyCustomerModel
+                            {
+                                FKCompanyId = CompanyId,
+                                CustomerFirstName = customer.FirstName,
+                                CustomerLastName = customer.LastName,
+                                Email = customer.Email,
+                                Phone = customer.Mobile,
+                                Id = customer.Id
+                            };
+                            await _unitOfWork.Repository<CompanyCustomerModel, int>().AddAsync(addCustomer);
+                        }
+                    }
                     await _unitOfWork.CommitAsync();
                     return true;
                 }
@@ -294,16 +312,19 @@ namespace Services.Org
                     foreach (var project in projects)
                     {
                         var existingProject = existingProjects.FirstOrDefault(s => s.Id == project.ProjectId);
-
-                        CompanyProjectModel companyProject = new CompanyProjectModel
+                        if (existingProject == null)
                         {
-                            FKCompanyId = CompanyId,
-                            ProjectName = project.ProjectName,
-                            ReferenceNumber = project.ProjectNumber,
-                            ProjectAddress = project.Address,
-                            Id = project.ProjectId
-                        };
-                        await _unitOfWork.Repository<CompanyProjectModel, int>().AddAsync(companyProject);
+                            CompanyProjectModel companyProject = new CompanyProjectModel
+                            {
+                                FKCompanyId = CompanyId,
+                                ProjectName = project.ProjectName,
+                                ReferenceNumber = project.ProjectNumber,
+                                ProjectAddress = project.Address,
+                                Id = project.ProjectId
+                            };
+                            await _unitOfWork.Repository<CompanyProjectModel, int>().AddAsync(companyProject);
+                        }
+
                     }
                     await _unitOfWork.CommitAsync();
 
