@@ -1,16 +1,12 @@
-using Models.Dto.Dashboard;
 using Models.Dto.GlobalDto;
 using Models.Dto.Org;
-using Models.Dto.Ticket;
-using Models.Dto.Ticket.Models.Dto.Tickets;
 using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Entities.Setup;
 using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace Services.IssueManagement
 {

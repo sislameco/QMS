@@ -1,7 +1,4 @@
-﻿using Elasticsearch.Net.Specification.IndicesApi;
-using Microsoft.EntityFrameworkCore;
-using Models.Dto.Org;
-using Models.Entities;
+﻿using Models.Dto.Org;
 using Models.Entities.Org;
 using Repository;
 
@@ -111,4 +108,3 @@ namespace Services.Org
         }
     }
 }
-GetIndexTemplateRequestParameters 

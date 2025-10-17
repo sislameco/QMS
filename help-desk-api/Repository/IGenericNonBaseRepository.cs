@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models.Entities;
-using Models.Enum;
 using Repository.Db;
 using System.Linq.Expressions;
 using Utils.LoginData;

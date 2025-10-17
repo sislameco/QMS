@@ -1,17 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic;
 using Models.AppSettings;
 using Models.Entities.File;
-using Models.Entities.Issue;
 using Models.Enum;
 using Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Utils;
 using Utils.Exceptions;
 
 namespace Services.File

@@ -1,6 +1,5 @@
 ﻿using Models.Entities.Audit;
 using Repository;
-using System.Threading.Tasks;
 
 namespace Services.Global
 {

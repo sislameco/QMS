@@ -1,10 +1,8 @@
 ﻿using Models.Dto.Org;
 using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
-using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository.Db;
-using System.Linq;
 using Utils.Exceptions;
 
 namespace Repository.Repo.UserManagement
