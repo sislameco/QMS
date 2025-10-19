@@ -22,8 +22,10 @@ namespace Models.Dto.Org
         public int Id { get; set; }
         public string[] DepartmentNames { get; set; }
         public string UserName { get; set; }
+        public EnumQMSType QmsType { get; set; }
     }
     public class TicketTypeInputDto: TicketTypeCommonDto
     {
+        public EnumQMSType QmsType { get; set; }
     }
 }

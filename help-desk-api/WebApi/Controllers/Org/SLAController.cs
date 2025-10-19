@@ -21,9 +21,9 @@ namespace WebApi.Controllers.Org
 
         // Get all SLAs
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int fkCompanyId)
         {
-            var slas = await _slaService.GetAllAsync();
+            var slas = await _slaService.GetAllAsync(fkCompanyId);
             return Ok(slas);
         }
 

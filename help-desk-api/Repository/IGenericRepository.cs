@@ -12,7 +12,8 @@ namespace Repository
         Task<T?> GetByIdAsync(TId id);
         Task<List<T>> GetAllAsync(); // Added for entity list
         Task<List<TDto>> GetAllAsync<TDto>(Expression<Func<T, TDto>> selector);
-        Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> predicate,
+         params Expression<Func<T, object>>[] includes);
         Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize);
         Task AddAsync(T entity);
         Task AddAndSaveAsync(T entity);
@@ -57,8 +58,22 @@ namespace Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> predicate) =>
-            await _dbSet.Where(predicate).Where(e => e.RStatus == EnumRStatus.Active).ToListAsync();
+        public async Task<IEnumerable<T>> FindByConditionAsync(
+         Expression<Func<T, bool>> predicate,
+         params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet
+                .Where(predicate)
+                .Where(e => e.RStatus == EnumRStatus.Active);
+
+            // Apply eager loading includes
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.ToListAsync();
+        }
 
         public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
         {

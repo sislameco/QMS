@@ -37,13 +37,11 @@ namespace Services.Org
                  .FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active && s.FkCompanyId == 1, s => new { s.Id,s.FirstName,s.LastName });
             entities = entities.ToList();
 
-
             var data = (List<TicketTypeOutputDto>)entities.Select(MapToDto).ToList();
             foreach (var item in data)
             {
                 item.DepartmentNames = departments.Where(d => item.FKDepartmentIds.Contains(d.Id)).Select(s=> s.Name).ToArray();
                 item.UserName = users.Where(u => u.Id == item.FKAssignedUserId).Select(s => string.Concat(s.FirstName," ",s.LastName)).FirstOrDefault();
-
             }
             return data;
         }
@@ -76,6 +74,7 @@ namespace Services.Org
             entity.Description = dto.Description;
             entity.Title = dto.Title;
             entity.RStatus = EnumRStatus.Active;
+            entity.QmsType = dto.QmsType;
             _unitOfWork.Repository<TicketTypeModel, int>().Update(entity);
             return await _unitOfWork.CommitAsync() > 0;
         }
@@ -113,7 +112,8 @@ namespace Services.Org
             FKAssignedUserId = dto.FKAssignedUserId,
             FKDepartmentIds = dto.FKDepartmentIds,
             FKCompanyId = dto.FKCompanyId,
-            RStatus = EnumRStatus.Active
+            RStatus = EnumRStatus.Active,
+            QmsType = dto.QmsType
         };
     }
 }
