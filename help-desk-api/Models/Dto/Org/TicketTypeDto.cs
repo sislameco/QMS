@@ -21,6 +21,7 @@ namespace Models.Dto.Org
     {
         public int Id { get; set; }
         public string[] DepartmentNames { get; set; }
+        public string UserName { get; set; }
     }
     public class TicketTypeInputDto: TicketTypeCommonDto
     {
