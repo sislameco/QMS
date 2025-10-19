@@ -1262,6 +1262,8 @@ namespace Repository.Migrations
 
                     b.HasIndex("FKCompanyId");
 
+                    b.HasIndex("FKTicketTypeId");
+
                     b.ToTable("SLAConfiguration", "Org");
                 });
 
@@ -2278,7 +2280,15 @@ namespace Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.Entities.Issue.TicketTypeModel", "TicketType")
+                        .WithMany()
+                        .HasForeignKey("FKTicketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("TicketType");
                 });
 
             modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>

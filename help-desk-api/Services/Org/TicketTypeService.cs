@@ -101,6 +101,8 @@ namespace Services.Org
             FKCompanyId = entity.FKCompanyId,
             Id = entity.Id,
             Description = entity.Description,
+            QmsType = entity.QmsType
+            
         };
 
         private static TicketTypeModel MapToEntity(TicketTypeInputDto dto) => new TicketTypeModel

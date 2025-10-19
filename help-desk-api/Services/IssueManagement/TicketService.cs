@@ -21,14 +21,13 @@ namespace Services.IssueManagement
         }
         public async Task<string> CreateTicket(AddTicketInputDto input)
         {
-
+            var ticketNumber = await GenerateNextTicketNumberAsync(input.FKCompanyId);
             var departments = await _unitOfWork.Repository<DepartmentModel, int>().FindByConditionAsync(d => d.RStatus == EnumRStatus.Active && input.FKDepartmentId.Contains(d.Id));
             departments.ToList();
-
             #region Ticket Creation
             TicketModel ticket = new TicketModel
             {
-                TicketNumber = "", // generate ticket number
+                TicketNumber = ticketNumber,
                 Subject = input.Description,
                 Description = "Open",
                 SubmittedByUserId = 1, // ??
@@ -201,5 +200,31 @@ namespace Services.IssueManagement
 
             return movedFileNames;
         }
+
+        public async Task<string> GenerateNextTicketNumberAsync(int companyId)
+        {
+            // 1️⃣ Fetch company (tracked entity so EF will save updates)
+            var company = await _unitOfWork.Repository<CompanyModel, int>()
+                .FirstOrDefaultAsync(c => c.Id == companyId);
+
+            if (company == null)
+                throw new Exception($"Company not found for ID: {companyId}");
+
+            // 2️⃣ Generate next ticket number
+            company.LastTicketNumber += 1;
+            var nextNumber = company.LastTicketNumber;
+
+            var ticketNumber = $"{company.PrefixTicket}-{nextNumber:D6}";
+
+            // 3️⃣ Update company record
+            _unitOfWork.Repository<CompanyModel, int>().Update(company);
+
+            // 4️⃣ Persist changes in the same transaction
+            await _unitOfWork.CommitAsync();
+
+            // 5️⃣ Return ticket number
+            return ticketNumber;
+        }
+
     }
 }

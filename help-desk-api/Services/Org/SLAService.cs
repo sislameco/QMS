@@ -32,8 +32,6 @@ namespace Services.Org
         public async Task<List<SLAOutputDto>> GetAllAsync(int fkCompanyId)
         {
             var entities = await _unitOfWork.Repository<SLAConfigurationModel, int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == fkCompanyId, x=> x.TicketType);
-
-
             return entities.Select(MapToDto).ToList();
         }
 
@@ -96,7 +94,7 @@ namespace Services.Org
             Status = entity.RStatus,
             Priority = entity.TicketType != null ? entity.TicketType.Priority : default,
             TypeTitle = entity.TicketType != null ? entity.TicketType.Title.ToString(): default ,
-            Type = entity.TicketType != null ? entity.TicketType.QmsType : default,
+            QmsType = entity.TicketType != null ? entity.TicketType.QmsType : default,
         };
 
         private static SLAConfigurationModel MapToEntity(SLAInputDto dto) => new SLAConfigurationModel

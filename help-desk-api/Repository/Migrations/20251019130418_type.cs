@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class Ticket : Migration
+    public partial class type : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -411,40 +411,6 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SLAConfiguration",
-                schema: "Org",
-                columns: table => new
-                {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    Priority = table.Column<int>(type: "integer", nullable: false),
-                    FKCompanyId = table.Column<int>(type: "integer", nullable: false),
-                    Unit = table.Column<int>(type: "integer", nullable: false),
-                    ResponseTime = table.Column<int>(type: "integer", nullable: false),
-                    ResolutionTime = table.Column<int>(type: "integer", nullable: false),
-                    EscalationTime = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SLAConfiguration", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SLAConfiguration_Companies_FKCompanyId",
-                        column: x => x.FKCompanyId,
-                        principalSchema: "Org",
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MenuActionMap",
                 schema: "UserMgmt",
                 columns: table => new
@@ -596,7 +562,9 @@ namespace Repository.Migrations
                     DisplayName = table.Column<string>(type: "text", nullable: true),
                     DataType = table.Column<int>(type: "integer", nullable: false),
                     DDLValue = table.Column<string[]>(type: "text[]", nullable: true),
-                    IsRequired = table.Column<bool>(type: "boolean", nullable: false)
+                    IsRequired = table.Column<bool>(type: "boolean", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsMultiSelect = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -730,7 +698,8 @@ namespace Repository.Migrations
                     Priority = table.Column<int>(type: "integer", nullable: false),
                     FKAssignedUserId = table.Column<int>(type: "integer", nullable: true),
                     FKDepartmentIds = table.Column<int[]>(type: "integer[]", nullable: true),
-                    FKCompanyId = table.Column<int>(type: "integer", nullable: false)
+                    FKCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    QmsType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -777,6 +746,46 @@ namespace Repository.Migrations
                         principalSchema: "UserMgmt",
                         principalTable: "Users",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SLAConfiguration",
+                schema: "Org",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FKTicketTypeId = table.Column<int>(type: "integer", nullable: false),
+                    FKCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    Unit = table.Column<int>(type: "integer", nullable: false),
+                    ResponseTime = table.Column<int>(type: "integer", nullable: false),
+                    ResolutionTime = table.Column<int>(type: "integer", nullable: false),
+                    EscalationTime = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SLAConfiguration", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SLAConfiguration_Companies_FKCompanyId",
+                        column: x => x.FKCompanyId,
+                        principalSchema: "Org",
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SLAConfiguration_TicketType_FKTicketTypeId",
+                        column: x => x.FKTicketTypeId,
+                        principalSchema: "issue",
+                        principalTable: "TicketType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1252,6 +1261,12 @@ namespace Repository.Migrations
                 schema: "Org",
                 table: "SLAConfiguration",
                 column: "FKCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SLAConfiguration_FKTicketTypeId",
+                schema: "Org",
+                table: "SLAConfiguration",
+                column: "FKTicketTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ticket_FKCompanyId",

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Models.Entities.Audit;
+using Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +30,12 @@ namespace Models.Dto.GlobalDto
             this.Name = name;
             this.IsDefault = isDefault;
         }
-
-
+    }
+    public class TicketTypeDDL
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public EnumQMSType QmsType { get; set; } 
+        public EnumPriority Priority { get; set; }
     }
 }
