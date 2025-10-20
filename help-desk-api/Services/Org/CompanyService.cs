@@ -252,8 +252,9 @@ namespace Services.Org
         {
             try
             {
-                var existingCustomers = await _unitOfWork.Repository<CompanyProjectModel, int>().FindByConditionAsync(s => s.FKCompanyId == CompanyId && s.RStatus == EnumRStatus.Active);
+                var existingCustomers = await _unitOfWork.Repository<CompanyCustomerModel, int>().FindByConditionAsync(s => s.FKCompanyId == CompanyId && s.RStatus == EnumRStatus.Active);
                 var customers = await _qsmartService.GetCustomers();
+                customers = customers.DistinctBy(s => s.Id).ToList();
                 if (customers.Any())
                 {
                     var companyData = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>().FirstOrDefaultAsync(s => s.Id == id);

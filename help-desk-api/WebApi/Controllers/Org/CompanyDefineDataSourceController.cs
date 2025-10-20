@@ -7,7 +7,7 @@ using Models.Enum;
 namespace WebApi.Controllers.Org
 {
     [ApiController]
-    [Route("rootresolution")]
+    [Route("root-resolution")]
     [AllowAnonymous]
     public class CompanyDefineDataSourceController : ControllerBase
     {

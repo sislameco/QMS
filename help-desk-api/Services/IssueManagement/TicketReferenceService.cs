@@ -129,7 +129,7 @@ namespace Services.IssueManagement
                     Id = c.Id,
                     Email = c.Email,
                     Phone = c.Phone,
-                    FullName = string.Concat(c.CustomerFirstName, " ", c.CustomerLastName)
+                    FullName = string.Concat(c.CustomerFirstName, " ", c.CustomerLastName, "| ", c.Email , "| ", c.Phone)
                 }).ToList();
         }
 
@@ -146,7 +146,7 @@ namespace Services.IssueManagement
                 {
                     Id = p.Id,
                     ProjectAddress = p.ProjectAddress,
-                    ReferenceNumber = p.ReferenceNumber,
+                    ReferenceNumber = string.Concat(p.ReferenceNumber, " Address: ",p.ProjectAddress),
                 }).ToList();
         }
 

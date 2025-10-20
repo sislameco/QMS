@@ -70,7 +70,7 @@ namespace Services.Setup
             var values = await repo.FindByConditionAsync(s => s.Id != input.Id && s.Name == input.Name && s.Type == input.Type);
             if (values.Any()) throw new BadRequestException("Name must be unique!");
                 
-            if (input.Id == 0 && input.Task == EnumCrud.Create)
+            if (input.Id == 0)
             {
 
 
@@ -80,11 +80,12 @@ namespace Services.Setup
                     Description = input.Description,
                     DisplayOrder = input.DisplayOrder,
                     Type = input.Type,
-                    FKCompanyId = input.FKCompanyId
+                    FKCompanyId = input.FKCompanyId,
+                    RStatus = EnumRStatus.Active
                 };
                 await repo.AddAsync(add);
             }
-            else if (input.Id > 0 && input.Task == EnumCrud.Create)
+            else if (input.Id > 0 )
             {
                 var entity = await repo.GetByIdAsync(input.Id);
                 if (entity == null) return false;
@@ -95,7 +96,7 @@ namespace Services.Setup
                 entity.Type = input.Type;
                 entity.FKCompanyId = input.FKCompanyId;
                 entity.RStatus = EnumRStatus.Active;
-                await repo.UpdateAsync(entity);
+                repo.Update(entity);
             }
             else
                 throw new BadRequestException("Invalid Request!");
