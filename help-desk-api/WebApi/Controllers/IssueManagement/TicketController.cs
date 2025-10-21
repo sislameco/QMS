@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using Models.Dto.Ticket;
 using Models.Dto.Ticket.Models.Dto.Tickets;
 using Services.IssueManagement;
@@ -111,5 +112,17 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(new { ticketId = result });
         }
 
+
+
+        // add/update comment NgxEditorModule
+        // add/revove wattcher
+        // add/remove
+        // remvoe attachment
+
+        // Section wise update of ticket
+        //   1. Subject 
+        //   Description NgxEditorModule 
+        // view ticket details
+        // update ticket details
     }
 }
