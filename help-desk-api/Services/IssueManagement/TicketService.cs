@@ -5,6 +5,7 @@ using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Enum;
 using Repository;
+using Stripe;
 
 namespace Services.IssueManagement
 {
@@ -21,22 +22,22 @@ namespace Services.IssueManagement
         }
         public async Task<string> CreateTicket(AddTicketInputDto input)
         {
-
+            var ticketNumber = await GenerateNextTicketNumberAsync(input.FKCompanyId);
             var departments = await _unitOfWork.Repository<DepartmentModel, int>().FindByConditionAsync(d => d.RStatus == EnumRStatus.Active && input.FKDepartmentId.Contains(d.Id));
             departments.ToList();
-
             #region Ticket Creation
             TicketModel ticket = new TicketModel
             {
-                TicketNumber = "", // generate ticket number
+
+                TicketNumber = ticketNumber,
                 Subject = input.Description,
                 Description = "Open",
                 SubmittedByUserId = 1, // ??
-                FKCompanyId = input.FKCompanyId,
+                FKCompanyId = 1,
                 RootCauseId = input.FkRootCauseId,
                 ResolutionId = input.FkRelocationId,
                 TicketCategory = EnumQMSType.Ticket, // default ticket category
-                Status = EnumTicketStatus.Open,
+                Status = EnumTicketStatus.Open, // Its comFrom Ticket type
                 FKTicketTypeId = input.FkTicketTypeId,
                 AssignedUserId = input.FKAssignUser,
                 Priority = EnumPriority.Medium, // default priority from ticket type
@@ -48,7 +49,8 @@ namespace Services.IssueManagement
                 EstimatedTime = "2h", // todo: get estimated time from ticket type and priority,
 
             };
-
+            await _unitOfWork.Repository<TicketModel, int>().AddAsync(ticket);
+            await _unitOfWork.CommitAsync();
             #endregion
             #region Department Map
             foreach (var deptId in input.FKDepartmentId)
@@ -58,9 +60,10 @@ namespace Services.IssueManagement
                     FKDepartmentId = deptId,
                     RStatus = EnumRStatus.Active,
                     CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow,
+                    FKTicketId = ticket.Id
                 };
-                ticket.DepartmentMaps.Add(departmentMap);
+                await _unitOfWork.Repository<TicketDepartmentMapModel, int>().AddAsync(departmentMap);
             }
             #endregion
             #region Custom field
@@ -72,10 +75,13 @@ namespace Services.IssueManagement
                     RStatus = EnumRStatus.Active,
                     TicketTypeCustomFieldId = customField.Id,
                     CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow,
+                    FkTicketId = ticket.Id
 
                 };
-                ticket.CustomFieldValues.Add(ticketCustomField);
+                
+                await _unitOfWork.Repository<TicketCustomFieldValue, int>().AddAsync(ticketCustomField);
+
             }
             #endregion
             #region Attachments
@@ -89,8 +95,10 @@ namespace Services.IssueManagement
                     FileExtension = Path.GetExtension(file.Path),
                     CreatedBy = 1, // ??
                     CreatedDate = DateTime.UtcNow,
+                    FKTicketId = ticket.Id
                 };
-                ticket.Attachments.Add(attachments);
+                await _unitOfWork.Repository<TicketAttachmentModel, int>().AddAsync(attachments);
+
             }
             #endregion
             #region WatchList
@@ -104,9 +112,11 @@ namespace Services.IssueManagement
                         FKUserId = input.FKAssignUser,
                         RStatus = EnumRStatus.Active,
                         CreatedBy = 1, // ??
-                        CreatedDate = DateTime.UtcNow
+                        CreatedDate = DateTime.UtcNow,
+                        FKTicketId = ticket.Id
                     };
-                    ticket.WatchList.Add(assign);
+                    await _unitOfWork.Repository<TicketWatchListModel, int>().AddAsync(assign);
+
                 }
             }
             TicketWatchListModel watchListModel = new TicketWatchListModel
@@ -124,9 +134,10 @@ namespace Services.IssueManagement
                     FkCustomerId = input.FKCustomerId.Value,
                     RStatus = EnumRStatus.Active,
                     CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow,
+                    FKTicketId = ticket.Id
                 };
-                ticket.TicketCustomerMaps.Add(customerMap);
+                await _unitOfWork.Repository<TicketCustomerMapModel, int>().AddAsync(customerMap);
             }
             else if (!input.IsCustomer && input.FKProjectId.HasValue)
             {
@@ -136,9 +147,10 @@ namespace Services.IssueManagement
                     FkProjectId = input.FKProjectId.Value,
                     RStatus = EnumRStatus.Active,
                     CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow
+                    CreatedDate = DateTime.UtcNow,
+                    FKTicketId = ticket.Id
                 };
-                ticket.TicketProjectMaps.Add(projectMap);
+                await _unitOfWork.Repository<TicketProjectMapModel, int>().AddAsync(projectMap);
             }
             #endregion
             return "";
@@ -201,5 +213,31 @@ namespace Services.IssueManagement
 
             return movedFileNames;
         }
+
+        public async Task<string> GenerateNextTicketNumberAsync(int companyId)
+        {
+            // 1️⃣ Fetch company (tracked entity so EF will save updates)
+            var company = await _unitOfWork.Repository<CompanyModel, int>()
+                .FirstOrDefaultAsync(c => c.Id == companyId);
+
+            if (company == null)
+                throw new Exception($"Company not found for ID: {companyId}");
+
+            // 2️⃣ Generate next ticket number
+            company.LastTicketNumber += 1;
+            var nextNumber = company.LastTicketNumber;
+
+            var ticketNumber = $"{company.PrefixTicket}-{nextNumber:D6}";
+
+            // 3️⃣ Update company record
+            _unitOfWork.Repository<CompanyModel, int>().Update(company);
+
+            // 4️⃣ Persist changes in the same transaction
+            await _unitOfWork.CommitAsync();
+
+            // 5️⃣ Return ticket number
+            return ticketNumber;
+        }
+
     }
 }

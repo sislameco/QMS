@@ -813,6 +813,9 @@ namespace Repository.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
+                    b.Property<int>("QmsType")
+                        .HasColumnType("integer");
+
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
@@ -1318,7 +1321,7 @@ namespace Repository.Migrations
                     b.Property<int>("FKCompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Priority")
+                    b.Property<int>("FKTicketTypeId")
                         .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
@@ -1329,9 +1332,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ResponseTime")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.Property<int>("Unit")
@@ -1348,6 +1348,8 @@ namespace Repository.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FKCompanyId");
+
+                    b.HasIndex("FKTicketTypeId");
 
                     b.ToTable("SLAConfiguration", "Org");
                 });
@@ -2172,7 +2174,7 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketModel", b =>
                 {
-                    b.HasOne("Models.Entities.Issue.TicketModel", "Ticket")
+                    b.HasOne("Models.Entities.Org.CompanyModel", "Ticket")
                         .WithMany()
                         .HasForeignKey("FKCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2296,7 +2298,15 @@ namespace Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.Entities.Issue.TicketTypeModel", "TicketType")
+                        .WithMany()
+                        .HasForeignKey("FKTicketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("TicketType");
                 });
 
             modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>

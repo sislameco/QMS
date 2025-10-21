@@ -10,7 +10,9 @@ namespace Models.Dto.Org
 {
     public class SLAInputDto
     {
-        public EnumQMSType Type { get; set; }
+        public EnumQMSType QmsType { get; set; }
+        public int FKTicketTypeId { get; set; }
+        public string TypeTitle { get; set; }
         public EnumPriority Priority { get; set; }
         public int FKCompanyId { get; set; }
         public EnumUnit Unit { get; set; }

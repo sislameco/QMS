@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20251016091035_Ticket")]
-    partial class Ticket
+    [Migration("20251019175052_types")]
+    partial class types
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -816,6 +816,9 @@ namespace Repository.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
+                    b.Property<int>("QmsType")
+                        .HasColumnType("integer");
+
                     b.Property<int>("RStatus")
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
@@ -1110,11 +1113,17 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(107);
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
                     b.Property<int>("FkTicketTypeId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsMultiSelect")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsRequired")
                         .HasColumnType("boolean");
@@ -1228,7 +1237,7 @@ namespace Repository.Migrations
                     b.Property<int>("FKCompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Priority")
+                    b.Property<int>("FKTicketTypeId")
                         .HasColumnType("integer");
 
                     b.Property<int>("RStatus")
@@ -1239,9 +1248,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("ResponseTime")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.Property<int>("Unit")
@@ -1258,6 +1264,8 @@ namespace Repository.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FKCompanyId");
+
+                    b.HasIndex("FKTicketTypeId");
 
                     b.ToTable("SLAConfiguration", "Org");
                 });
@@ -2166,7 +2174,7 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Entities.Issue.TicketModel", b =>
                 {
-                    b.HasOne("Models.Entities.Issue.TicketModel", "Ticket")
+                    b.HasOne("Models.Entities.Org.CompanyModel", "Ticket")
                         .WithMany()
                         .HasForeignKey("FKCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2275,7 +2283,15 @@ namespace Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.Entities.Issue.TicketTypeModel", "TicketType")
+                        .WithMany()
+                        .HasForeignKey("FKTicketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("TicketType");
                 });
 
             modelBuilder.Entity("Models.Entities.Org.TicketCustomFieldValue", b =>

@@ -11,7 +11,7 @@ namespace Models.Dto.Ticket
     {
         // Screen 1
         public int FKCompanyId { get; set; }
-        public int Subject { get; set; }
+        public string Subject { get; set; }
         public string Description { get; set; }
         // Screen 2
         public bool IsCustomer { get; set; }

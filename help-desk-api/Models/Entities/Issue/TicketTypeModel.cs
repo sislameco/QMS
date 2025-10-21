@@ -16,6 +16,7 @@ namespace Models.Entities.Issue
         public UserModel User { get; set; }
         public int[] FKDepartmentIds { get; set; }
         public int FKCompanyId { get; set; }
+        public EnumQMSType QmsType { get; set; }
     }
 
 

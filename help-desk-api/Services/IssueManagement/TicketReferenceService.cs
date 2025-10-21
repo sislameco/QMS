@@ -14,7 +14,7 @@ namespace Services.IssueManagement
     {
         List<DropdownOutputDto<int,string>> GetTickets(int fkCompanyId);
         List<DropdownOutputDto<int, string>> GetDepartments(int fkCompanyId);
-        List<DropdownOutputDto<int, string>> GetTicketTypes(int fkCompanyId);
+        List<TicketTypeDDL> GetTicketTypes(int fkCompanyId);
         List<DropdownOutputDto<int, string>> GetRootCauses(int fkCompanyId);
         List<DropdownOutputDto<int, string>> GetRelocations(int fkCompanyId);
         List<CustomerOutputDto> GetCustomers(int fkCompanyId);
@@ -62,19 +62,21 @@ namespace Services.IssueManagement
                 .ToList();
         }
 
-        public List<DropdownOutputDto<int, string>> GetTicketTypes(int fkCompanyId)
+        public List<TicketTypeDDL> GetTicketTypes(int fkCompanyId)
         {
             var data = _unitOfWork.Repository<TicketTypeModel, int>()
                 .FindByConditionOneColumn(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
-                    x => new { x.Id, x.Title }
+                    x => new { x.Id, x.Title , x.QmsType, x.Priority}
                 );
 
             return data
-                .Select(tt => new DropdownOutputDto<int, string>
+                .Select(tt => new TicketTypeDDL
                 {
                     Id = tt.Id,
-                    Name = tt.Title
+                    Title = tt.Title,
+                     QmsType = tt.QmsType,
+                     Priority = tt.Priority
                 })
                 .ToList();
         }
@@ -127,7 +129,7 @@ namespace Services.IssueManagement
                     Id = c.Id,
                     Email = c.Email,
                     Phone = c.Phone,
-                    FullName = string.Concat(c.CustomerFirstName, " ", c.CustomerLastName)
+                    FullName = string.Concat(c.CustomerFirstName, " ", c.CustomerLastName, "| ", c.Email , "| ", c.Phone)
                 }).ToList();
         }
 
@@ -144,7 +146,7 @@ namespace Services.IssueManagement
                 {
                     Id = p.Id,
                     ProjectAddress = p.ProjectAddress,
-                    ReferenceNumber = p.ReferenceNumber,
+                    ReferenceNumber = string.Concat(p.ReferenceNumber, " Address: ",p.ProjectAddress),
                 }).ToList();
         }
 

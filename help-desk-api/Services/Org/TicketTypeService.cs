@@ -1,6 +1,7 @@
 ﻿using Models.Dto.Org;
 using Models.Entities.Issue;
 using Models.Entities.Org;
+using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
 
@@ -32,12 +33,15 @@ namespace Services.Org
             var departments = _unitOfWork.Repository<DepartmentModel, int>()
                  .FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == 1, s => new { s.Id, s.Name });
             entities = entities.ToList();
-
+            var users = _unitOfWork.Repository<UserModel, int>()
+                 .FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active && s.FkCompanyId == 1, s => new { s.Id,s.FirstName,s.LastName });
+            entities = entities.ToList();
 
             var data = (List<TicketTypeOutputDto>)entities.Select(MapToDto).ToList();
             foreach (var item in data)
             {
                 item.DepartmentNames = departments.Where(d => item.FKDepartmentIds.Contains(d.Id)).Select(s=> s.Name).ToArray();
+                item.UserName = users.Where(u => u.Id == item.FKAssignedUserId).Select(s => string.Concat(s.FirstName," ",s.LastName)).FirstOrDefault();
             }
             return data;
         }
@@ -70,6 +74,7 @@ namespace Services.Org
             entity.Description = dto.Description;
             entity.Title = dto.Title;
             entity.RStatus = EnumRStatus.Active;
+            entity.QmsType = dto.QmsType;
             _unitOfWork.Repository<TicketTypeModel, int>().Update(entity);
             return await _unitOfWork.CommitAsync() > 0;
         }
@@ -95,7 +100,9 @@ namespace Services.Org
             FKDepartmentIds = entity.FKDepartmentIds,
             FKCompanyId = entity.FKCompanyId,
             Id = entity.Id,
-            Description = entity.Description
+            Description = entity.Description,
+            QmsType = entity.QmsType
+            
         };
 
         private static TicketTypeModel MapToEntity(TicketTypeInputDto dto) => new TicketTypeModel
@@ -107,7 +114,8 @@ namespace Services.Org
             FKAssignedUserId = dto.FKAssignedUserId,
             FKDepartmentIds = dto.FKDepartmentIds,
             FKCompanyId = dto.FKCompanyId,
-            RStatus = EnumRStatus.Active
+            RStatus = EnumRStatus.Active,
+            QmsType = dto.QmsType
         };
     }
 }
