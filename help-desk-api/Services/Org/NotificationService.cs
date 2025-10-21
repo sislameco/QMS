@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Services.Org
 {
-    public interface INotificationService
+    public interface INotificationTemplateService
     {
         Task<bool> UpdateTemplateAsync(NotificationInputDto input);
         Task<bool> UpdateIsEnabledAsync(int id, bool isEnabled);
         Task<List<NotificationTemplateModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId);
     }
-    public class NotificationService : INotificationService
+    public class NotificationTemplateService : INotificationTemplateService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public NotificationService(IUnitOfWork unitOfWork)
+        public NotificationTemplateService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

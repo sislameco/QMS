@@ -20,7 +20,7 @@ namespace Models.Enum
     /// <summary>
     /// Type of notification channel.
     /// </summary>
-    public enum NotificationType { Email = 1, SMS = 2, App = 3, System = 4 }
+    public enum EnumNotificationType { Email = 1, SMS = 2, App = 3, System = 4 }
 
     /// <summary>
     /// Status of the notification schedule.

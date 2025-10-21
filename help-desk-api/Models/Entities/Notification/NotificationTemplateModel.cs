@@ -8,7 +8,7 @@ namespace Models.Entities.Notification
     {
         public int FkCompanyId { get; set; }
         public NotificationEvent Event { get; set; }
-        public NotificationType NotificationType { get; set; }
+        public EnumNotificationType NotificationType { get; set; }
         public int? EmailConfigurationId { get; set; }
         public string SubjectTemplate { get; set; }
         public string BodyTemplate { get; set; }

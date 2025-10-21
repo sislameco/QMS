@@ -14,7 +14,7 @@ namespace Models.Dto.Org
     {
         public int Id { get; set; }
         public NotificationEvent Event { get; set; }
-        public NotificationType NotificationType { get; set; }
+        public EnumNotificationType NotificationType { get; set; }
         public string SubjectTemplate { get; set; }
         public string BodyTemplate { get; set; }
         public string HeaderTemplate { get; set; }

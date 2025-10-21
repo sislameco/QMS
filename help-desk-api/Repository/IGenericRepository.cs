@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models.Entities;
+using Models.Entities.Notification;
 using Models.Enum;
 using Repository.Db;
 using System.Linq.Expressions;
@@ -14,6 +15,7 @@ namespace Repository
         Task<List<TDto>> GetAllAsync<TDto>(Expression<Func<T, TDto>> selector);
         Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> predicate);
         Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize);
+        Task<(IEnumerable<NotificationScheduleModel> Items, int TotalCount)> GetNotificationPagedAsync(int pageNumber, int pageSize);
         Task AddAsync(T entity);
         Task AddAndSaveAsync(T entity);
         Task UpdateAsync(T entity); // Changed to async for consistency
@@ -142,6 +144,17 @@ namespace Repository
         public async Task BulkInsertAsync(IEnumerable<T> entities)
         {
             await _dbSet.AddRangeAsync(entities);
+        }
+
+        public async Task<(IEnumerable<NotificationScheduleModel> Items, int TotalCount)> GetNotificationPagedAsync(int pageNumber, int pageSize)
+        {
+            var unReadQuery = _context.NotificationSchedules.Where(e => e.RStatus == EnumRStatus.Active && e.IsRead == true && e.CreatedDate >= DateTime.UtcNow.AddDays(2));
+
+            var readQuery = _context.NotificationSchedules.Where(e => e.RStatus == EnumRStatus.Active && e.IsRead == false);
+            var query = unReadQuery.Union(readQuery).OrderByDescending(e => e.CreatedDate);
+            var total = await query.CountAsync();
+            var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            return (items, total);
         }
     }
 }

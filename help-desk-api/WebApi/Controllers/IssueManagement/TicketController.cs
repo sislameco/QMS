@@ -110,5 +110,6 @@ namespace WebApi.Controllers.IssueManagement
             var result = await _ticketService.CreateTicket(input);
             return Ok(new { ticketId = result });
         }
+
     }
 }

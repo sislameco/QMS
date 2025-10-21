@@ -13,9 +13,9 @@ namespace WebApi.Controllers.Org
     [AllowAnonymous]
     public class NotificationConfigurationController : ControllerBase
     {
-        private readonly INotificationService _notificationService;
+        private readonly INotificationTemplateService _notificationService;
 
-        public NotificationConfigurationController(INotificationService notificationService)
+        public NotificationConfigurationController(INotificationTemplateService notificationService)
         {
             _notificationService = notificationService;
         }
