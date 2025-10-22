@@ -1,16 +1,20 @@
 using Microsoft.AspNetCore.Http;
+using Models.AppSettings;
 using Models.Dto.Auth;
 using Models.Dto.GlobalDto;
 using Models.Dto.Menus;
 using Models.Entities.Audit;
+using Models.Entities.Auth;
 using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
 using Repository.Repo.Permission;
+using Services.Email;
 using StackExchange.Redis;
 using System.Net;
 using Utilities.Redis;
 using Utils;
+using Utils.EmailUtil;
 using Utils.Exceptions;
 using Utils.LoginData;
 
@@ -20,7 +24,7 @@ namespace Services.AuthService
     {
         Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskLoginDto dto, HttpContext httpContext, HttpRequest request);
         bool SignOut();
-        Task<HelpDeskLoginResponseDto> RefreshToken(string token,  HttpContext httpContext, HttpRequest request);
+        Task<HelpDeskLoginResponseDto> RefreshToken(string token, HttpContext httpContext, HttpRequest request);
         Task<string> ForgotPassword(ForgotPasswordInputDto model);
         Task<ObjectResponse<bool>> UpdatePassword(ChangePasswordInputDto data, int userId);
     }
@@ -31,12 +35,14 @@ namespace Services.AuthService
         private readonly IJwtGenerator _jwtGenerator;
         private readonly IUserInfos _user;
         private readonly IMenuRepository _menuRepository;
-        public HelpDeskAuthService(IUnitOfWork unitOfWork, IJwtGenerator jwtGenerator, IUserInfos user, IMenuRepository menuRepository)
+        private readonly IEmailNotificationService _emailNotificationService;
+        public HelpDeskAuthService(IUnitOfWork unitOfWork, IJwtGenerator jwtGenerator, IUserInfos user, IMenuRepository menuRepository, IEmailNotificationService emailNotificationService)
         {
             _unitOfWork = unitOfWork;
             _jwtGenerator = jwtGenerator;
             _user = user;
             _menuRepository = menuRepository;
+            _emailNotificationService = emailNotificationService;
         }
         //*7wTu/0DUo
         public async Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskLoginDto dto, HttpContext httpContext, HttpRequest request)
@@ -70,7 +76,7 @@ namespace Services.AuthService
             var UserHostAddress = dto.Browser.Item2.ToString();
             var loginId = await SaveUserLogin(user.Id, UserHostAddress, Browser, machine_user);
 
-            string token="";
+            string token = "";
             string refreshToken = "";
 
             int tokenValidaty = 480; //minutes;
@@ -129,7 +135,7 @@ namespace Services.AuthService
             if (currentToken == null)
                 throw new SessionExpiredException("Invalid token request!");
 
-            UserModel userInfo = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(s=> s.Id == currentToken.FkUserId && s.RStatus == EnumRStatus.Active);
+            UserModel userInfo = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(s => s.Id == currentToken.FkUserId && s.RStatus == EnumRStatus.Active);
             if (userInfo == null)
                 throw new SessionExpiredException("Invalid token request!");
             /*
@@ -144,7 +150,7 @@ namespace Services.AuthService
             if (menus.Count == 0)
                 throw new SessionExpiredException("Invalid token request!");
 
-          //  AuthCacheUtil.SetPermittedMenu($"{userInfo.Id}", menus);
+            //  AuthCacheUtil.SetPermittedMenu($"{userInfo.Id}", menus);
 
             var refreshToken = await CreateRefreshToken(userInfo.Id, userHostAddress, currentToken.FkLoginId);
             DeleteRefreshToken(currentToken);
@@ -183,7 +189,7 @@ namespace Services.AuthService
 
         public async Task<string> ForgotPassword(ForgotPasswordInputDto model)
         {
-            UserModel user = await _unitOfWork.Repository<UserModel,int>().FirstOrDefaultAsync(u => u.UserName == model.UserName) ?? throw new BadRequestException("");
+            UserModel user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.UserName == model.UserName) ?? throw new BadRequestException("");
 
             if (user == null || string.IsNullOrEmpty(user.Email))
                 throw new BadRequestException("No User Found");
@@ -192,6 +198,9 @@ namespace Services.AuthService
 
             if (user.RStatus == EnumRStatus.Active)
             {
+                // get template and generate token
+
+                return await CreateTokenOtpAndSendEmail(user, model);
                 // send opt in email
             }
             else
@@ -204,7 +213,7 @@ namespace Services.AuthService
         {
             var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(x => x.Id == userId) ?? throw new BadRequestException("") ?? throw new BadRequestException("Requested user does not exist.");
 
-  
+
             if (Common.DecryptText(user.PasswordHash) != data.CurrentPassword)
                 throw new BadRequestException("Entered Current password is not valid.");
 
@@ -212,6 +221,26 @@ namespace Services.AuthService
             //send an email notification
 
             return new ObjectResponse<bool> { Data = true };
+        }
+        private async Task<string> CreateTokenOtpAndSendEmail(UserModel user, ForgotPasswordInputDto model)
+        {
+            var UserHostAddress = model.Browser.Item2.ToString();
+            Random generator = new Random();
+            string otpCode = generator.Next(0, 100000).ToString("D6");
+            var token = _jwtGenerator.GenerateJWT(user, UserHostAddress, user.Id, 15);
+            RecoverPasswordTokenModel recoverPasswordToken = new RecoverPasswordTokenModel
+            {
+                FkUserId = user.Id,
+                IsVarified = false,
+                OtpCode = otpCode,
+                UserToken = token
+            };
+
+            // Use UnitOfWork to add and save the token
+            await _unitOfWork.WithOutRepository<RecoverPasswordTokenModel, int>().AddAsync(recoverPasswordToken);
+            await _unitOfWork.CommitAsync();
+            await _emailNotificationService.SendUserPasswordRecoverEmail(user, otpCode);
+            return token;
         }
     }
 }

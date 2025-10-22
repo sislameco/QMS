@@ -118,6 +118,13 @@ HttpRequest request)
             }
             return Tuple.Create(client, ip);
         }
-
+        public static string ReplaceTextWithContent(string text, Dictionary<string, string> replaceContent)
+        {
+            if (text == null) return "";
+            foreach (var key in replaceContent.Keys)
+            {
+            }
+            return text;
+        }
     }
 }

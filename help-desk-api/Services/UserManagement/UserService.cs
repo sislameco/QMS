@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Models.Dto.GlobalDto;
+using Models.Dto.Org;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
 using Repository.Repo.UserManagement;
+using Utils;
 
 namespace Services.UserManagement
 {
@@ -12,12 +14,13 @@ namespace Services.UserManagement
     {
         Task<UserModel?> GetByIdAsync(int id);
         Task<List<UserOutPutDto>> GetAllAsync(UserFilterDto inputDto);
-        Task AddAsync(UserModel user);
-        Task UpdateAsync(UserModel user);
+        Task AddAsync(HostUserInputDto user);
+        Task UpdateAsync(int userId, HostUserUpdateInputDto user);
         Task DeleteAsync(int id);
         UserModel GetSystemUser();
         Task<List<UserDropdownDto>> GetUserSelectedList(int companyId);
         Task<bool> SendInvitation(int userId);
+        Task<bool> AcceptRequest(int userId);
     }
     public class UserService : IUserService
     {
@@ -38,14 +41,34 @@ namespace Services.UserManagement
             return await data.ToListAsync();
         }
 
-        public async Task AddAsync(UserModel user)
+        public async Task AddAsync(HostUserInputDto user)
         {
-            await _unitOfWork.Repository<UserModel, int>().AddAsync(user);
+            // assign HostUserInputDto to UserModel
+            UserModel add = new UserModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                FullName = $"{user.FirstName} {user.LastName}",
+                UserName = user.UserName,
+                Email = user.Email,
+                Phone = user.Phone,
+                PasswordHash = Common.EncryptText(user.PasswordHash),
+                FkCompanyId = null,
+                IsActive = false
+            };
+            await _unitOfWork.Repository<UserModel, int>().AddAsync(add);
+            // send A invitation email logic will be here
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task UpdateAsync(UserModel user)
+        public async Task UpdateAsync(int userId, HostUserUpdateInputDto input)
         {
+            var user = await _unitOfWork.Repository<UserModel, int>().GetByIdAsync(userId);
+            if (user == null) throw new Exception("User not found");
+            user.FirstName = input.FirstName;
+            user.LastName = input.LastName;
+            user.FullName = $"{user.FirstName} {user.LastName}";
+
             await _unitOfWork.Repository<UserModel, int>().UpdateAsync(user);
             await _unitOfWork.CommitAsync();
         }
@@ -73,6 +96,11 @@ namespace Services.UserManagement
         {
             // an emails sending logic will be here
             return true;
+        }
+
+        public Task<bool> AcceptRequest(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

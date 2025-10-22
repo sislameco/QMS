@@ -15,6 +15,8 @@ namespace Models.Entities.UserManagement
         public string PasswordHash { get; set; } = string.Empty;
         public DateTime LastLoginDate { get; set; }
         public DateTime LastPasswordChange { get; set; }
+        public bool IsSystemUser { get; set; }
+        public bool IsActive { get; set; }
         public bool IsReportingManager { get; set; }
         public int? IntegrationsPrimaryId { get; set; }
         public int? FkCompanyId { get; set; }
@@ -24,4 +26,6 @@ namespace Models.Entities.UserManagement
         public DepartmentModel Department { get; set; }
         public ICollection<UserRoleModel> UserRoles { get; set; } = new List<UserRoleModel>();
     }
+
+
 }

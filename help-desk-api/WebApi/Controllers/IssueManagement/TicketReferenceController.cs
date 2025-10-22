@@ -6,7 +6,7 @@ using Services.IssueManagement;
 namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
-    [Route("ticket")]
+    [Route("ticket-reference")]
     public class TicketReferenceController : ControllerBase
     {
         private readonly ITicketReferenceService _ticketReferenceService;

@@ -38,4 +38,18 @@ namespace Models.Dto.Org
         public int RoleId { get; set; }
         public EnumRStatus Status { get; set; }
     }
+
+    public class HostUserInputDto : HostUserUpdateInputDto
+    {
+        public string UserName { get; set; } = string.Empty;
+        public string PasswordHash { get; set; }
+    }
+
+    public class HostUserUpdateInputDto
+    {
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+    }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.GlobalDto;
+using Models.Dto.Org;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Models.Enum;
@@ -35,18 +36,17 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(UserModel user)
+        public async Task<ActionResult> Add(HostUserInputDto user)
         {
             await _userService.AddAsync(user);
-            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+            return Ok(true);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(long id, UserModel user)
+        public async Task<ActionResult> Update(int id, HostUserUpdateInputDto user)
         {
-            if (id != user.Id) return BadRequest();
-            await _userService.UpdateAsync(user);
-            return NoContent();
+            await _userService.UpdateAsync(id ,user);
+            return Ok(true);
         }
 
         [HttpDelete("{id}")]
@@ -74,6 +74,12 @@ namespace WebApi.Controllers.Auth
         public async Task<ActionResult> SendInvitationEmail(int userId)
         {
             return Ok(await _userService.SendInvitation(userId));
+        }
+
+        [HttpPost("{userId}/request-accept")]
+        public async Task<ActionResult> RequestAccept(int userId)
+        {
+            return Ok(await _userService.AcceptRequest(userId));
         }
 
 

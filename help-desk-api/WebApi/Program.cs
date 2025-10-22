@@ -133,7 +133,7 @@ var app = builder.Build();
 
 // Register Middlewares
 app.UseMiddleware<ErrorHandlingMiddleware>();
-app.UseMiddleware<AuditLogMiddleware>();
+//app.UseMiddleware<AuditLogMiddleware>();
 
 // Route Conf
 app.UsePathBase("/api");
