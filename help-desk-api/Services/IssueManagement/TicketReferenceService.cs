@@ -12,7 +12,7 @@ namespace Services.IssueManagement
 {
     public interface ITicketReferenceService
     {
-        List<DropdownOutputDto<int,string>> GetTickets(int fkCompanyId);
+        List<DropdownOutputDto<int, string>> GetTickets(int fkCompanyId);
         List<DropdownOutputDto<int, string>> GetDepartments(int fkCompanyId);
         List<TicketTypeDDL> GetTicketTypes(int fkCompanyId);
         List<DropdownOutputDto<int, string>> GetRootCauses(int fkCompanyId);
@@ -33,10 +33,10 @@ namespace Services.IssueManagement
 
         public List<DropdownOutputDto<int, string>> GetTickets(int fkCompanyId)
         {
-            var data = _unitOfWork.Repository<TicketModel,int>().FindByConditionOneColumn(x=> x.FKCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active,x=> new {x.Id,x.TicketNumber});
+            var data = _unitOfWork.Repository<TicketModel, int>().FindByConditionOneColumn(x => x.FKCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active, x => new { x.Id, x.TicketNumber });
 
             return data
-                .Select(t => new DropdownOutputDto<int,string>
+                .Select(t => new DropdownOutputDto<int, string>
                 {
                     Id = t.Id,
                     Name = t.TicketNumber,
@@ -67,7 +67,7 @@ namespace Services.IssueManagement
             var data = _unitOfWork.Repository<TicketTypeModel, int>()
                 .FindByConditionOneColumn(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
-                    x => new { x.Id, x.Title , x.QmsType, x.Priority}
+                    x => new { x.Id, x.Title, x.QmsType, x.Priority, x.FKAssignedUserId, x.FKDepartmentIds }
                 );
 
             return data
@@ -75,8 +75,10 @@ namespace Services.IssueManagement
                 {
                     Id = tt.Id,
                     Title = tt.Title,
-                     QmsType = tt.QmsType,
-                     Priority = tt.Priority
+                    QmsType = tt.QmsType,
+                    Priority = tt.Priority,
+                    DefaultAssignUserId = tt.FKAssignedUserId,
+                    DefaultDepartmentIds = tt.FKDepartmentIds
                 })
                 .ToList();
         }
@@ -129,7 +131,7 @@ namespace Services.IssueManagement
                     Id = c.Id,
                     Email = c.Email,
                     Phone = c.Phone,
-                    FullName = string.Concat(c.CustomerFirstName, " ", c.CustomerLastName, "| ", c.Email , "| ", c.Phone)
+                    FullName = string.Concat(c.CustomerFirstName, " ", c.CustomerLastName, "| ", c.Email, "| ", c.Phone)
                 }).ToList();
         }
 
@@ -138,7 +140,7 @@ namespace Services.IssueManagement
             var projects = _unitOfWork.Repository<CompanyProjectModel, int>()
             .FindByConditionOneColumn(
                 x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
-                x => new { x.Id, x.ReferenceNumber, x.ProjectAddress}
+                x => new { x.Id, x.ReferenceNumber, x.ProjectAddress }
             );
 
             return projects
@@ -146,7 +148,7 @@ namespace Services.IssueManagement
                 {
                     Id = p.Id,
                     ProjectAddress = p.ProjectAddress,
-                    ReferenceNumber = string.Concat(p.ReferenceNumber, " Address: ",p.ProjectAddress),
+                    ReferenceNumber = string.Concat(p.ReferenceNumber, " Address: ", p.ProjectAddress),
                 }).ToList();
         }
 
@@ -169,7 +171,7 @@ namespace Services.IssueManagement
 
         public List<FieldOutputDto> GetSubforms(int ticketTypeId)
         {
-            var data = _unitOfWork.Repository<CustomFieldModel,int>().FindByConditionOneColumn(x=> x.FkTicketTypeId == ticketTypeId && x.RStatus == EnumRStatus.Active, x=> new { x.IsRequired, x.DisplayName, x.DataType, x.Id, x.DDLValue })
+            var data = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionOneColumn(x => x.FkTicketTypeId == ticketTypeId && x.RStatus == EnumRStatus.Active, x => new { x.IsRequired, x.DisplayName, x.DataType, x.Id, x.DDLValue })
                 .Select(s => new FieldOutputDto
                 {
                     Id = s.Id,

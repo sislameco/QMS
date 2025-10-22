@@ -14,7 +14,7 @@ namespace Models.Dto.Org
         public int? FKAssignedUserId { get; set; }
         public EnumPriority Priority { get; set; }
         public bool IsEnabled { get; set; }
-        public int[] FKDepartmentIds { get; set; }
+        public int?[] FKDepartmentIds { get; set; }
         public int FKCompanyId { get; set; }
     }
     public class TicketTypeOutputDto: TicketTypeCommonDto

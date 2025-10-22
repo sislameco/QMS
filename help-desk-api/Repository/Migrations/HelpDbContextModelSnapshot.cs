@@ -804,7 +804,7 @@ namespace Repository.Migrations
                     b.Property<int>("FKCompanyId")
                         .HasColumnType("integer");
 
-                    b.PrimitiveCollection<int[]>("FKDepartmentIds")
+                    b.PrimitiveCollection<int?[]>("FKDepartmentIds")
                         .HasColumnType("integer[]");
 
                     b.Property<bool>("IsEnabled")

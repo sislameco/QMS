@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class type : Migration
+    public partial class start : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -697,7 +697,7 @@ namespace Repository.Migrations
                     IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     Priority = table.Column<int>(type: "integer", nullable: false),
                     FKAssignedUserId = table.Column<int>(type: "integer", nullable: true),
-                    FKDepartmentIds = table.Column<int[]>(type: "integer[]", nullable: true),
+                    FKDepartmentIds = table.Column<int?[]>(type: "integer[]", nullable: true),
                     FKCompanyId = table.Column<int>(type: "integer", nullable: false),
                     QmsType = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -823,17 +823,17 @@ namespace Repository.Migrations
                 {
                     table.PrimaryKey("PK_Ticket", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Ticket_Companies_FKCompanyId",
+                        column: x => x.FKCompanyId,
+                        principalSchema: "Org",
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Ticket_TicketType_FKTicketTypeId",
                         column: x => x.FKTicketTypeId,
                         principalSchema: "issue",
                         principalTable: "TicketType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Ticket_Ticket_FKCompanyId",
-                        column: x => x.FKCompanyId,
-                        principalSchema: "issue",
-                        principalTable: "Ticket",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -858,6 +858,7 @@ namespace Repository.Migrations
                     Subject = table.Column<string>(type: "text", nullable: true),
                     Body = table.Column<string>(type: "text", nullable: true),
                     NotificationType = table.Column<int>(type: "integer", nullable: false),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false),
                     FKEmailConfigurationId = table.Column<int>(type: "integer", nullable: true),
                     ScheduledTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     SentTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),

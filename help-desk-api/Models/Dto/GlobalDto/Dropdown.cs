@@ -37,5 +37,7 @@ namespace Models.Dto.GlobalDto
         public string Title { get; set; }
         public EnumQMSType QmsType { get; set; } 
         public EnumPriority Priority { get; set; }
+        public int? DefaultAssignUserId { get; set; }
+        public int?[] DefaultDepartmentIds { get; set; }
     }
 }
