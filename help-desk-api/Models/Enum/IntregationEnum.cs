@@ -32,6 +32,7 @@ namespace Models.Enum
     }
     public enum EnumRootResolutionType
     {
+        All=0,
         RootCause = 1,
         Resolution = 2
     }

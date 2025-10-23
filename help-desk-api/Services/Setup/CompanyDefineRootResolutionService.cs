@@ -33,7 +33,7 @@ namespace Services.Setup
             var query = await repo.GetAllAsync();
             return query
                 .Where(x => x.FKCompanyId == companyId
-                    && x.Type == type
+                    && (type == EnumRootResolutionType.All || x.Type == type)
                     && (x.RStatus == EnumRStatus.Active))
                 .Select(x => new RootCauseOutDto
                 {

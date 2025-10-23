@@ -33,6 +33,7 @@ namespace Repository.Repo.UserManagement
                 group new { user, role } by user.Id into g
                 select new UserOutPutDto
                 {
+                    Id = g.Key,
                     FullName = g.First().user.FullName,
                     Email = g.First().user.Email,
                     Phone = g.First().user.Phone ?? "",

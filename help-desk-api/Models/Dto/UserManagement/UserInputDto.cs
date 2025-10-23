@@ -24,7 +24,7 @@ namespace Models.Dto.UserManagement
 
     public class UserOutPutDto
     {
-
+        public int Id { get; set; }
         public string FullName { get; set; } = string.Empty;
         public string FirstName { get; set; }
         public string Lastname { get; set; }    
