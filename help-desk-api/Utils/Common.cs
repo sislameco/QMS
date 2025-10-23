@@ -123,6 +123,7 @@ HttpRequest request)
             if (text == null) return "";
             foreach (var key in replaceContent.Keys)
             {
+                text = text.Replace(key, replaceContent[key]);
             }
             return text;
         }

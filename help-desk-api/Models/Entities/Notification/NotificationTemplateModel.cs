@@ -12,8 +12,6 @@ namespace Models.Entities.Notification
         public int? EmailConfigurationId { get; set; }
         public string SubjectTemplate { get; set; }
         public string BodyTemplate { get; set; }
-        public string HeaderTemplate { get; set; }
-        public string FooterTemplate { get; set; }
         public bool IsEnabled { get; set; }
         public string[] Variables { get; set; }
     }

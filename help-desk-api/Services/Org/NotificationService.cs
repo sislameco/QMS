@@ -11,7 +11,7 @@ namespace Services.Org
     {
         Task<bool> UpdateTemplateAsync(NotificationInputDto input);
         Task<bool> UpdateIsEnabledAsync(int id, bool isEnabled);
-        Task<List<NotificationTemplateModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId);
+        Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId);
     }
     public class NotificationTemplateService : INotificationTemplateService
     {
@@ -28,8 +28,6 @@ namespace Services.Org
             var entity = await _unitOfWork.Repository<NotificationTemplateModel, int>().GetByIdAsync(input.Id);
             if (entity == null)
                 throw new System.Exception("NotificationTemplate not found");
-
-            entity.EmailConfigurationId = input.EmailConfigurationId;
             entity.SubjectTemplate = input.SubjectTemplate;
             entity.BodyTemplate = input.BodyTemplate;
 
@@ -50,11 +48,23 @@ namespace Services.Org
             return await _unitOfWork.CommitAsync() > 0;
         }
 
-        public async Task<List<NotificationTemplateModel>> GetAllActiveByCompanyIdAsync(int fkCompanyId)
+        public async Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId)
         {
             var repo = _unitOfWork.Repository<NotificationTemplateModel, int>();
-            var entities = await repo.FindByConditionAsync(x => x.FkCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active);
-            return entities.ToList();
+            var entities = repo.FindByConditionOneColumn(
+                x => x.FkCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active,
+                x => new { x.Id, x.BodyTemplate, x.SubjectTemplate, x.Variables, x.IsEnabled, x.Event, x.EmailConfigurationId, x.NotificationType });
+
+            return entities.Select(x => new NotificationOutputDto
+            {
+                Id = x.Id,
+                Event = x.Event,
+                NotificationType = x.NotificationType,
+                BodyTemplate = x.BodyTemplate,
+                SubjectTemplate = x.SubjectTemplate,
+                IsEnabled = x.IsEnabled,
+                Variables = x.Variables
+            }).ToList();
         }
     }
 }

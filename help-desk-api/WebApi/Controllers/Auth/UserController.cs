@@ -77,9 +77,10 @@ namespace WebApi.Controllers.Auth
             return Ok(await _userService.SendInvitation(userId));
         }
 
-        [HttpPost("{userId}/request-accept")]
+        [HttpGet("{userId}/request-accept")]
         public async Task<ActionResult> RequestAccept(int userId)
         {
+            // return a view for accepting request
             return Ok(await _userService.AcceptRequest(userId));
         }
 

@@ -35,7 +35,7 @@ namespace WebApi.Controllers.Org
         }
 
         [HttpGet("all/{fkCompanyId}")]
-        public async Task<ActionResult<List<NotificationTemplateModel>>> GetAllActiveByCompanyId(int fkCompanyId)
+        public async Task<ActionResult<List<NotificationOutputDto>>> GetAllActiveByCompanyId(int fkCompanyId)
         {
             var result = await _notificationService.GetAllActiveByCompanyIdAsync(fkCompanyId);
             return Ok(result);

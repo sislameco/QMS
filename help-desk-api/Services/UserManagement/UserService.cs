@@ -9,6 +9,7 @@ using Repository;
 using Repository.Repo.UserManagement;
 using Services.Email;
 using Utils;
+using Utils.Exceptions;
 
 namespace Services.UserManagement
 {
@@ -72,7 +73,7 @@ namespace Services.UserManagement
                     CreatedBy = -1,
                     CreatedDate = DateTime.UtcNow
                 };
-            await _emailNotificationService.SendInfitation(add, string.Concat(AppSettings.QMSApi.BaseUrl ,$"/api/user/{add.Id}/send-invitation"));
+            await _emailNotificationService.SendInfitation(add, string.Concat(AppSettings.QMSApi.BaseUrl ,$"/api/user/{add.Id}/request-accept"));
             await _unitOfWork.Repository<UserRoleModel, int>().AddAsync(userRole);
             await _unitOfWork.CommitAsync();
         }
@@ -110,13 +111,27 @@ namespace Services.UserManagement
 
         public async Task<bool> SendInvitation(int userId)
         {
-            // an emails sending logic will be here
-            return true;
+            var user = await _unitOfWork.Repository<UserModel, int>().GetByIdAsync(userId);
+            if (user == null)
+                throw new BadRequestException("Invalid Request");
+
+            var invitationUrl = string.Concat(AppSettings.QMSApi.BaseUrl, $"/api/user/{user.Id}/request-accept");
+            var result = await _emailNotificationService.SendInfitation(user, invitationUrl);
+            return result;
         }
 
-        public Task<bool> AcceptRequest(int userId)
+        public async Task<bool> AcceptRequest(int userId)
         {
-            throw new NotImplementedException();
+            var user = await _unitOfWork.Repository<UserModel, int>().GetByIdAsync(userId);
+            if (user == null)
+                throw new BadRequestException("Invalid Request");
+
+            user.IsActive = true;
+            user.RStatus = EnumRStatus.Active;
+            user.UpdatedDate = DateTime.UtcNow;
+            user.UpdatedBy = userId;
+            await _unitOfWork.Repository<UserModel, int>().UpdateAsync(user);
+            return await _unitOfWork.CommitAsync() > 0;
         }
     }
 }

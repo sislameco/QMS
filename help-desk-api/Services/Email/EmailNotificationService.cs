@@ -90,7 +90,7 @@ namespace Services.Email
 
 
             var properties = new Dictionary<string, string>();
-            properties.Add("[user_full_name]", user.FirstName + " " + user.LastName);
+            properties.Add("[user_name]", user.FirstName + " " + user.LastName);
             properties.Add("[otp_code]", otpCode);
 
             return await _emailService.SendEmailAsync(
