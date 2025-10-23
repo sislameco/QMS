@@ -19,6 +19,7 @@ namespace Models.AppSettings
         public static string TemporaryFilePath { get; set; }
         public static string TicketPath { get; set; }
         public static Slack Slack { get; set; }
+        public static ApiConf QMSApi { get; set; }
     }
     public class Redis
     {

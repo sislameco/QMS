@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Models.AppSettings;
 using Models.Dto.GlobalDto;
 using Models.Dto.Org;
 using Models.Dto.UserManagement;
@@ -6,6 +7,7 @@ using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
 using Repository.Repo.UserManagement;
+using Services.Email;
 using Utils;
 
 namespace Services.UserManagement
@@ -26,10 +28,12 @@ namespace Services.UserManagement
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserMGtRepository _userMGtRepository;
-        public UserService(IUnitOfWork unitOfWork, IUserMGtRepository userMGtRepository)
+        private readonly IEmailNotificationService _emailNotificationService;
+        public UserService(IUnitOfWork unitOfWork, IUserMGtRepository userMGtRepository, IEmailNotificationService emailNotificationService)
         {
             _unitOfWork = unitOfWork;
             _userMGtRepository = userMGtRepository;
+            _emailNotificationService = emailNotificationService;
         }
 
         public async Task<UserModel?> GetByIdAsync(int id)
@@ -68,7 +72,7 @@ namespace Services.UserManagement
                     CreatedBy = -1,
                     CreatedDate = DateTime.UtcNow
                 };
-
+            await _emailNotificationService.SendInfitation(add, string.Concat(AppSettings.QMSApi.BaseUrl ,$"/api/user/{add.Id}/send-invitation"));
             await _unitOfWork.Repository<UserRoleModel, int>().AddAsync(userRole);
             await _unitOfWork.CommitAsync();
         }

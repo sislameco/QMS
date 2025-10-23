@@ -18,7 +18,7 @@ namespace Services.Email
 {
     public interface IEmailNotificationService
     {
-        Task<bool> SendInfitation(UserModel user, string otpCode);
+        Task<bool> SendInfitation(UserModel user, string url);
         Task<bool> SendUserPasswordRecoverEmail(UserModel user, string otpCode);
     }
     public class EmailNotificationService: IEmailNotificationService
@@ -31,7 +31,7 @@ namespace Services.Email
             _emailService = emailService;
         }
 
-        public async Task<bool> SendInfitation(UserModel user, string otpCode)
+        public async Task<bool> SendInfitation(UserModel user, string invitationUrl)
         {
             NotificationTemplateModel emailTemplate = await _unitOfWork.Repository<NotificationTemplateModel, int>().FirstOrDefaultAsync(s => s.Event == NotificationEvent.UserInvitation && s.NotificationType == EnumNotificationType.Email) ?? throw new BadRequestException("No Template found");
             EmailConfigurationModel mailClient = await _unitOfWork.Repository<EmailConfigurationModel, int>().FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.Id == emailTemplate.EmailConfigurationId) ?? throw new BadRequestException("No Email Configuration found");
@@ -54,8 +54,8 @@ namespace Services.Email
 
 
             var properties = new Dictionary<string, string>();
-            properties.Add("[user_full_name]", user.FirstName + " " + user.LastName);
-            properties.Add("[otp_code]", otpCode);
+            properties.Add("[user_name]", user.FirstName + " " + user.LastName);
+            properties.Add("[invitation_url]", invitationUrl);
 
             return await _emailService.SendEmailAsync(
                 new EmailSendDto
