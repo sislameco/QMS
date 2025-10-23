@@ -9,7 +9,6 @@ namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("permission")]
-    [AllowAnonymous]
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService _permissionService;
@@ -28,7 +27,6 @@ namespace WebApi.Controllers.Auth
 
 
         [HttpGet("menu")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetMenuAccess(int roleId = 1)
         {
 
@@ -36,14 +34,12 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpPut]
-        [AllowAnonymous]
         public async Task<IActionResult> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> FKMenuActionIds)
         {
             return Ok(await _permissionService.SetMenuPermission(roleId, FKMenuActionIds));
         }
 
         [HttpGet()]
-        [AllowAnonymous]
         public async Task<IActionResult> GetRoles(int userId)
         {
             var result = await _permissionService.GetUserRolesAsync(userId);
@@ -59,7 +55,6 @@ namespace WebApi.Controllers.Auth
 
         [HttpGet]
         [Route("get-menus")]
-        [AllowAnonymous]
         [ProducesResponseType(typeof(PermittedMenuDto), 200)]
         public async Task<IActionResult> PermittedMenus()
         {

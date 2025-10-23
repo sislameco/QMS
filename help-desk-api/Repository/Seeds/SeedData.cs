@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Models.Entities.Notification;
 using Models.Entities.Org;
 using Models.Entities.Setup;
@@ -114,6 +115,22 @@ namespace Repository.Seeds
             //    CreatedDate = DateTime.UtcNow,
             //    CreatedBy = 1
             //}
+        };
+    }
+
+    public static class UserRoleSeedData
+    {
+        public static readonly UserRoleModel[] userRoles =
+        {
+            new UserRoleModel
+            {
+                Id=1,
+                FKRoleId = 1,
+                FKUserId = -1,
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            }
         };
     }
 
@@ -394,7 +411,7 @@ namespace Repository.Seeds
             },
             new MenuModel
             {
-                Id = 8,
+                Id = 9,
                 Name = "Capa Center",
                 ParentId = 7,
                 //Url = "pages/tickets",
@@ -605,7 +622,7 @@ namespace Repository.Seeds
 
              new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 1,
@@ -613,7 +630,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 2,
@@ -621,7 +638,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 3,
@@ -629,7 +646,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 4,
@@ -637,7 +654,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 5,
@@ -648,7 +665,7 @@ namespace Repository.Seeds
 
                 new MenuActionMapModel
             {
-                FKMenuId = 8,
+                FKMenuId = 9,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 1,
@@ -656,7 +673,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 8,
+                FKMenuId = 9,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 2,
@@ -664,7 +681,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 8,
+                FKMenuId = 9,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 3,
@@ -672,7 +689,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 8,
+                FKMenuId = 9,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 4,
@@ -680,7 +697,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 8,
+                FKMenuId = 9,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 5,
@@ -690,6 +707,39 @@ namespace Repository.Seeds
 
 
     }
+
+
+    public static class AssociateActionRouteSeedData
+    {
+        public static readonly AssociateActionRouteModel[] associateActionRoutes =
+      {
+            new AssociateActionRouteModel
+            {
+                FkMenuActionMapId=17,
+                ApiUrl = "api/ticket/list"
+            },
+
+            new AssociateActionRouteModel
+            {
+                FkMenuActionMapId=17,
+                ApiUrl = " api/ticket/get"
+            },
+
+            new AssociateActionRouteModel
+            {
+                FkMenuActionMapId=18,
+                ApiUrl = "api/ticket/create"
+            },
+
+            new AssociateActionRouteModel
+            {
+                FkMenuActionMapId=17,
+                ApiUrl = "api/ticket/{id}"
+            },
+    };
+    }
+
+
 
 
     public static class EmailConfigurationSeedData

@@ -12,6 +12,7 @@ namespace Models.Entities.UserManagement
     [Table("AssociateActionRoutes", Schema = "menu")]
     public class AssociateActionRouteModel
     {
+        public int Id { get; set; }
         public int? FkMenuActionMapId { get; set; }
         [ForeignKey("FkMenuActionMapId")]
         public MenuActionMapModel MenuActionMap { get; set; }

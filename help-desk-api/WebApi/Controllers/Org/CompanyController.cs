@@ -11,7 +11,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("company")]
-    [AllowAnonymous]
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService _companyService;

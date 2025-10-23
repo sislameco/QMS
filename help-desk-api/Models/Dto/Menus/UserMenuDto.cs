@@ -75,7 +75,6 @@ namespace Models.Dto.Menus
         public int MenuId { get; set; }
         public int MapId { get; set; }
         public string MenuName { get; set; }
-        public string SystemMenuName { get; set; }
         public string HttpVerb { get; set; }
         public string ApiUrl { get; set; }
     }

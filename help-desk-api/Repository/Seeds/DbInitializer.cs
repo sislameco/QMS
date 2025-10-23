@@ -13,7 +13,12 @@ namespace Repository.Seeds
                 await context.Users.AddRangeAsync(SeedData.Users);
                 await context.SaveChangesAsync();
             }
-            if(!await context.Companies.AnyAsync())
+            if (!await context.UserRoles.AnyAsync())
+            {
+                await context.UserRoles.AddRangeAsync(UserRoleSeedData.userRoles);
+                await context.SaveChangesAsync();
+            }
+            if (!await context.Companies.AnyAsync())
             {
                 await context.Companies.AddRangeAsync(CompanySeedData.companies);
                 await context.SaveChangesAsync();
@@ -36,6 +41,11 @@ namespace Repository.Seeds
             if (!await context.MenuActionMaps.AnyAsync())
             {
                 await context.MenuActionMaps.AddRangeAsync(MenuActionMapModelSeedData.menuActionMaps);
+                await context.SaveChangesAsync();
+            }
+            if (!await context.AssociateActionRoutes.AnyAsync())
+            {
+                await context.AssociateActionRoutes.AddRangeAsync(AssociateActionRouteSeedData.associateActionRoutes);
                 await context.SaveChangesAsync();
             }
             if (!await context.CompanyDefineDataSources.AnyAsync())

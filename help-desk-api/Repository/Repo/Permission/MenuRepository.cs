@@ -12,6 +12,7 @@ namespace Repository.Repo.Permission
         Task<List<PerMenuDto>> GetUserPermittedMenusAsync(long userId);
         Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId);
         Task<List<MenuAccessDto>> GetDepartmentPermittedMenusAsync(int departementId);
+        Task<List<PermittedActionsOutputDto>> GetPermittedActions(int userId);
     }
 
     public class MenuRepository : IMenuRepository
@@ -22,72 +23,77 @@ namespace Repository.Repo.Permission
         {
             _dbContext = dbContext;
         }
+        private bool IsSuperAdminUser(int userId)
+        {
+            var isSuperAdmin = (from userRole in _dbContext.UserRoles
+                                join role in _dbContext.Roles
+                                    on userRole.FKRoleId equals role.Id
+                                where userRole.FKUserId == userId
+                                      && userRole.RStatus == Models.Enum.EnumRStatus.Active
+                                      && role.RStatus == Models.Enum.EnumRStatus.Active
+                                select role.IsSuperAdmin)
+                                .FirstOrDefault();
+
+            return isSuperAdmin;
+        }
 
         public async Task<List<PerMenuDto>> GetUserPermittedMenusAsync(long userId)
         {
-
             List<UserMenuDto> flatMenus = null;
-            var isSuperAdmin = (from userRole in _dbContext.UserRoles
-                       join role in _dbContext.Roles
-                       on userRole.FKRoleId equals role.Id
-                       where userRole.FKUserId == userId && userRole.RStatus == Models.Enum.EnumRStatus.Active && role.RStatus == Models.Enum.EnumRStatus.Active
-                       select role.IsSuperAdmin == true).FirstOrDefault();
-
-
-
+            bool isSuperAdmin = IsSuperAdminUser((int)userId);
             if (!isSuperAdmin)
             {
-                 flatMenus = await (
-                       from m in _dbContext.Menus
-                       join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
-                       join menuRoles in _dbContext.MenuActionRoleMappings on map.Id equals menuRoles.FKMenuActionMapId into menuRoleJoin
+                flatMenus = await (
+                      from m in _dbContext.Menus
+                      join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
+                      join menuRoles in _dbContext.MenuActionRoleMappings on map.Id equals menuRoles.FKMenuActionMapId into menuRoleJoin
 
-                       from menuRoles in menuRoleJoin.DefaultIfEmpty()
-                       join userRole in _dbContext.UserRoles on menuRoles.FKRoleId equals userRole.Id into userRoleJoin
-                       from userRole in userRoleJoin.DefaultIfEmpty()
-                       join users in _dbContext.Users on userRole.FKUserId equals users.Id into userJoin
-                       from user in userJoin.DefaultIfEmpty()
-                       join role in _dbContext.Roles on userRole.FKRoleId equals role.Id into roleJoin
-                       from role in roleJoin.DefaultIfEmpty()
+                      from menuRoles in menuRoleJoin.DefaultIfEmpty()
+                      join userRole in _dbContext.UserRoles on menuRoles.FKRoleId equals userRole.Id into userRoleJoin
+                      from userRole in userRoleJoin.DefaultIfEmpty()
+                      join users in _dbContext.Users on userRole.FKUserId equals users.Id into userJoin
+                      from user in userJoin.DefaultIfEmpty()
+                      join role in _dbContext.Roles on userRole.FKRoleId equals role.Id into roleJoin
+                      from role in roleJoin.DefaultIfEmpty()
 
-                       where user.Id == userId
+                      where user.Id == userId
 
-                       select new UserMenuDto
-                       {
-                           Id = m.Id,
-                           MenuName = m.Name ?? string.Empty,
-                           Route = m.Route ?? string.Empty,
-                           ParentId = m.ParentId,
-                           DisplayOrder = m.DisplayOrder,
-                           Icon = m.IconClass ?? string.Empty
-                       }
-                )
-                .Distinct()
-                .OrderBy(x => x.DisplayOrder)
-                .ToListAsync();
+                      select new UserMenuDto
+                      {
+                          Id = m.Id,
+                          MenuName = m.Name ?? string.Empty,
+                          Route = m.Route ?? string.Empty,
+                          ParentId = m.ParentId,
+                          DisplayOrder = m.DisplayOrder,
+                          Icon = m.IconClass ?? string.Empty
+                      }
+               )
+               .Distinct()
+               .OrderBy(x => x.DisplayOrder)
+               .ToListAsync();
             }
             else
             {
-                 flatMenus = await (
-                       from m in _dbContext.Menus
-                       join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId into mapJoin
-                       from role in mapJoin.DefaultIfEmpty()
-                       select new UserMenuDto
-                       {
-                           Id = m.Id,
-                           MenuName = m.Name ?? string.Empty,
-                           Route = m.Route ?? string.Empty,
-                           ParentId = m.ParentId,
-                           DisplayOrder = m.DisplayOrder,
-                           Icon = m.IconClass ?? string.Empty
-                       }
-                )
-                .Distinct()
-                .OrderBy(x => x.DisplayOrder)
-                .ToListAsync();
+                flatMenus = await (
+                      from m in _dbContext.Menus
+                      join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId into mapJoin
+                      from role in mapJoin.DefaultIfEmpty()
+                      select new UserMenuDto
+                      {
+                          Id = m.Id,
+                          MenuName = m.Name ?? string.Empty,
+                          Route = m.Route ?? string.Empty,
+                          ParentId = m.ParentId,
+                          DisplayOrder = m.DisplayOrder,
+                          Icon = m.IconClass ?? string.Empty
+                      }
+               )
+               .Distinct()
+               .OrderBy(x => x.DisplayOrder)
+               .ToListAsync();
             }
 
-                return BuildUserMenuTree(flatMenus);
+            return BuildUserMenuTree(flatMenus);
         }
 
         public async Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId)
@@ -211,6 +217,51 @@ namespace Repository.Repo.Permission
             ).ToListAsync();
 
             return BuildRoleMenuTree(flatList);
+        }
+
+        public async Task<List<PermittedActionsOutputDto>> GetPermittedActions(int userId)
+        {
+            bool isSuperAdmin = IsSuperAdminUser((int)userId);
+
+            if (isSuperAdmin)
+            {
+                return (from map in _dbContext.MenuActionMaps
+                        join m in _dbContext.Menus on map.FKMenuId equals m.Id
+                        join act in _dbContext.MenuActions on map.FKMenuActionId equals act.Id
+                        join asso in _dbContext.AssociateActionRoutes on map.Id equals asso.FkMenuActionMapId
+                        where m.Name == "Ticket Center"
+                        select new PermittedActionsOutputDto
+                        {
+                            MapId = map.Id,
+                            MenuName = m.Name,
+                            MenuId = m.Id,
+                            HttpVerb = act.HttpVerb,
+                            ApiUrl = asso.ApiUrl,
+                            UserId = userId
+                        }).ToList();
+            }
+            else
+            {
+                return (from map in _dbContext.MenuActionMaps
+                        join m in _dbContext.Menus on map.FKMenuId equals m.Id
+                        join act in _dbContext.MenuActions on map.FKMenuActionId equals act.Id
+                        join menuRoles in _dbContext.MenuActionRoleMappings on map.Id equals menuRoles.FKMenuActionMapId
+                        join userRole in _dbContext.UserRoles on menuRoles.FKRoleId equals userRole.FKRoleId
+                        join asso in _dbContext.AssociateActionRoutes on map.Id equals asso.FkMenuActionMapId
+                        where userRole.FKUserId == userId
+                              && menuRoles.IsAllowed
+                        select new PermittedActionsOutputDto
+                        {
+                            MapId = map.Id,
+                            MenuName = m.Name,
+                            MenuId = m.Id,
+                            HttpVerb = act.HttpVerb,
+                            ApiUrl = asso.ApiUrl,
+                            UserId = userId
+                        }).ToList();
+            }
+
+
         }
     }
 }

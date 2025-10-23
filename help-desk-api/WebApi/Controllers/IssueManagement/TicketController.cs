@@ -36,19 +36,15 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(response);
         }
 
-        [AllowAnonymous]
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateTicket([FromBody] AddTicketInputDto input)
         {
             var result = await _ticketService.CreateTicket(input);
             return Ok(new { ticketId = result });
         }
-
-
-
-        [AllowAnonymous]
-        [HttpGet()]
-        public async Task<IActionResult> CreateTicket(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> TicketView(int id)
         {
             var result = await _ticketService.TicketView(id);
             return Ok(new { ticketId = result });

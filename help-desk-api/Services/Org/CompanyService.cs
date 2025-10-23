@@ -52,6 +52,7 @@ namespace Services.Org
         }
         public async Task<List<CompanyDto>> GetActiveCompaniesAsync()
         {
+            var userid = _userInfos.GetCurrentUserId();
             var companies = await _unitOfWork.Repository<CompanyModel, int>()
                 .FindByConditionAsync(c => c.RStatus == EnumRStatus.Active);
             var companyDefinSources = await _unitOfWork.Repository<CompanyDefineDataSourceModel, int>()
