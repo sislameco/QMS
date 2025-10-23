@@ -12,6 +12,7 @@ namespace Services.IssueManagement
     public interface ITicketService
     {
         public Task<string> CreateTicket(AddTicketInputDto input);
+        public Task<string> TicketView(int id);
     }
     public class TicketService : ITicketService
     {
@@ -22,138 +23,147 @@ namespace Services.IssueManagement
         }
         public async Task<string> CreateTicket(AddTicketInputDto input)
         {
-            var ticketNumber = await GenerateNextTicketNumberAsync(input.FKCompanyId);
-            var departments = await _unitOfWork.Repository<DepartmentModel, int>().FindByConditionAsync(d => d.RStatus == EnumRStatus.Active && input.FKDepartmentId.Contains(d.Id));
-            departments.ToList();
-            #region Ticket Creation
-            TicketModel ticket = new TicketModel
+            try
             {
 
-                TicketNumber = ticketNumber,
-                Subject = input.Description,
-                Description = "Open",
-                SubmittedByUserId = 1, // ??
-                FKCompanyId = 1,
-                RootCauseId = input.FkRootCauseId,
-                ResolutionId = input.FkRelocationId,
-                TicketCategory = EnumQMSType.Ticket, // default ticket category
-                Status = EnumTicketStatus.Open, // Its comFrom Ticket type
-                FKTicketTypeId = input.FkTicketTypeId,
-                AssignedUserId = input.FKAssignUser,
-                Priority = EnumPriority.Medium, // default priority from ticket type
-                RStatus = EnumRStatus.Active,
-                CreatedBy = 1, // ??
-                CreatedDate = DateTime.UtcNow,
-                Guid = Guid.NewGuid().ToString("N").Substring(0, 8),
-                DueDate = DateTime.UtcNow, // todo: calculate due date based on ticket type and priority,
-                EstimatedTime = "2h", // todo: get estimated time from ticket type and priority,
-
-            };
-            await _unitOfWork.Repository<TicketModel, int>().AddAsync(ticket);
-            await _unitOfWork.CommitAsync();
-            #endregion
-            #region Department Map
-            foreach (var deptId in input.FKDepartmentId)
-            {
-                TicketDepartmentMapModel departmentMap = new TicketDepartmentMapModel
+                var ticketNumber = await GenerateNextTicketNumberAsync(input.FKCompanyId);
+                var departments = await _unitOfWork.Repository<DepartmentModel, int>().FindByConditionAsync(d => d.RStatus == EnumRStatus.Active && input.FKDepartmentId.Contains(d.Id));
+                departments.ToList();
+                #region Ticket Creation
+                TicketModel ticket = new TicketModel
                 {
-                    FKDepartmentId = deptId,
+
+                    TicketNumber = ticketNumber,
+                    Subject = input.Description,
+                    Description = "Open",
+                    SubmittedByUserId = 1, // ??
+                    FKCompanyId = 1,
+                    RootCauseId = input.FkRootCauseId,
+                    ResolutionId = input.FkResolutionId,
+                    TicketCategory = EnumQMSType.Ticket, // default ticket category
+                    Status = EnumTicketStatus.Open, // Its comFrom Ticket type
+                    FKTicketTypeId = input.FkTicketTypeId,
+                    AssignedUserId = input.FKAssignUser,
+                    Priority = EnumPriority.Medium, // default priority from ticket type
                     RStatus = EnumRStatus.Active,
                     CreatedBy = 1, // ??
                     CreatedDate = DateTime.UtcNow,
-                    FKTicketId = ticket.Id
-                };
-                await _unitOfWork.Repository<TicketDepartmentMapModel, int>().AddAsync(departmentMap);
-            }
-            #endregion
-            #region Custom field
-            foreach (var customField in input.SubFrom)
-            {
-                TicketCustomFieldValue ticketCustomField = new TicketCustomFieldValue
-                {
-                    Value = customField.Value,
-                    RStatus = EnumRStatus.Active,
-                    TicketTypeCustomFieldId = customField.Id,
-                    CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow,
-                    FkTicketId = ticket.Id
+                    Guid = Guid.NewGuid().ToString("N").Substring(0, 8),
+                    DueDate = DateTime.UtcNow, // todo: calculate due date based on ticket type and priority,
+                    EstimatedTime = "2h", // todo: get estimated time from ticket type and priority,
 
                 };
-                
-                await _unitOfWork.Repository<TicketCustomFieldValue, int>().AddAsync(ticketCustomField);
-
-            }
-            #endregion
-            #region Attachments
-            var tempFiles = await GetAndMoveAttachments(input.Files.ToList(), ticket.TicketNumber);
-            foreach (var file in tempFiles)
-            {
-                TicketAttachmentModel attachments = new TicketAttachmentModel
+                await _unitOfWork.Repository<TicketModel, int>().AddAsync(ticket);
+                await _unitOfWork.CommitAsync();
+                #endregion
+                #region Department Map
+                foreach (var deptId in input.FKDepartmentId)
                 {
-                    FileName = file.Name,
-                    FilePath = file.Path,
-                    FileExtension = Path.GetExtension(file.Path),
-                    CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow,
-                    FKTicketId = ticket.Id
-                };
-                await _unitOfWork.Repository<TicketAttachmentModel, int>().AddAsync(attachments);
-
-            }
-            #endregion
-            #region WatchList
-            // Supervisor and Assigned user should be added to watchlist by default
-            foreach (var department in departments)
-            {
-                if (department.FKManagerId > 0)
-                {
-                    TicketWatchListModel assign = new TicketWatchListModel
+                    TicketDepartmentMapModel departmentMap = new TicketDepartmentMapModel
                     {
-                        FKUserId = input.FKAssignUser,
+                        FKDepartmentId = deptId,
                         RStatus = EnumRStatus.Active,
                         CreatedBy = 1, // ??
                         CreatedDate = DateTime.UtcNow,
                         FKTicketId = ticket.Id
                     };
-                    await _unitOfWork.Repository<TicketWatchListModel, int>().AddAsync(assign);
+                    await _unitOfWork.Repository<TicketDepartmentMapModel, int>().AddAsync(departmentMap);
+                }
+                #endregion
+                #region Custom field
+                foreach (var customField in input.SubFrom)
+                {
+                    TicketCustomFieldValue ticketCustomField = new TicketCustomFieldValue
+                    {
+                        Value = customField.Value,
+                        RStatus = EnumRStatus.Active,
+                        TicketTypeCustomFieldId = customField.Id,
+                        CreatedBy = 1, // ??
+                        CreatedDate = DateTime.UtcNow,
+                        FkTicketId = ticket.Id
+
+                    };
+
+                    await _unitOfWork.Repository<TicketCustomFieldValue, int>().AddAsync(ticketCustomField);
 
                 }
-            }
-            TicketWatchListModel watchListModel = new TicketWatchListModel
-            {
-                FKUserId = input.FKAssignUser,
-                RStatus = EnumRStatus.Active
-            };
-            ticket.WatchList.Add(watchListModel);
-            #endregion
-            #region Customer/Lead Map
-            if (input.IsCustomer && input.FKCustomerId.HasValue)
-            {
-                TicketCustomerMapModel customerMap = new TicketCustomerMapModel
+                #endregion
+                #region Attachments
+                var tempFiles = await GetAndMoveAttachments(input.Files.ToList(), ticket.TicketNumber);
+                foreach (var file in tempFiles)
                 {
-                    FkCustomerId = input.FKCustomerId.Value,
-                    RStatus = EnumRStatus.Active,
-                    CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow,
-                    FKTicketId = ticket.Id
-                };
-                await _unitOfWork.Repository<TicketCustomerMapModel, int>().AddAsync(customerMap);
-            }
-            else if (!input.IsCustomer && input.FKProjectId.HasValue)
-            {
+                    TicketAttachmentModel attachments = new TicketAttachmentModel
+                    {
+                        FileName = file.Name,
+                        FilePath = file.Path,
+                        FileExtension = Path.GetExtension(file.Path),
+                        CreatedBy = 1, // ??
+                        CreatedDate = DateTime.UtcNow,
+                        FKTicketId = ticket.Id
+                    };
+                    await _unitOfWork.Repository<TicketAttachmentModel, int>().AddAsync(attachments);
 
-                TicketProjectMapModel projectMap = new TicketProjectMapModel
+                }
+                #endregion
+                #region WatchList
+                // Supervisor and Assigned user should be added to watchlist by default
+                foreach (var department in departments)
                 {
-                    FkProjectId = input.FKProjectId.Value,
-                    RStatus = EnumRStatus.Active,
-                    CreatedBy = 1, // ??
-                    CreatedDate = DateTime.UtcNow,
-                    FKTicketId = ticket.Id
+                    if (department.FKManagerId > 0)
+                    {
+                        TicketWatchListModel assign = new TicketWatchListModel
+                        {
+                            FKUserId = input.FKAssignUser,
+                            RStatus = EnumRStatus.Active,
+                            CreatedBy = 1, // ??
+                            CreatedDate = DateTime.UtcNow,
+                            FKTicketId = ticket.Id
+                        };
+                        await _unitOfWork.Repository<TicketWatchListModel, int>().AddAsync(assign);
+
+                    }
+                }
+                TicketWatchListModel watchListModel = new TicketWatchListModel
+                {
+                    FKUserId = input.FKAssignUser,
+                    RStatus = EnumRStatus.Active
                 };
-                await _unitOfWork.Repository<TicketProjectMapModel, int>().AddAsync(projectMap);
+                ticket.WatchList.Add(watchListModel);
+                #endregion
+                #region Customer/Lead Map
+                if (input.IsCustomer && input.FKCustomerId.HasValue)
+                {
+                    TicketCustomerMapModel customerMap = new TicketCustomerMapModel
+                    {
+                        FkCustomerId = input.FKCustomerId.Value,
+                        RStatus = EnumRStatus.Active,
+                        CreatedBy = 1, // ??
+                        CreatedDate = DateTime.UtcNow,
+                        FKTicketId = ticket.Id
+                    };
+                    await _unitOfWork.Repository<TicketCustomerMapModel, int>().AddAsync(customerMap);
+                }
+                else if (!input.IsCustomer && input.FKProjectId.HasValue)
+                {
+
+                    TicketProjectMapModel projectMap = new TicketProjectMapModel
+                    {
+                        FkProjectId = input.FKProjectId.Value,
+                        RStatus = EnumRStatus.Active,
+                        CreatedBy = 1, // ??
+                        CreatedDate = DateTime.UtcNow,
+                        FKTicketId = ticket.Id
+                    };
+                    await _unitOfWork.Repository<TicketProjectMapModel, int>().AddAsync(projectMap);
+                }
+                #endregion
+                return ticketNumber;
             }
-            #endregion
-            return "";
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
         private async Task<List<AttachmentDto>> GetAndMoveAttachments(
            List<int> attachments,
@@ -204,7 +214,7 @@ namespace Services.IssueManagement
             {
                 foreach (var attachFile in attachFiles)
                 {
-                    if(attachFile == null)
+                    if (attachFile == null)
                         continue;
                     await _unitOfWork.Repository<TempFileModel, int>().SoftDeleteAsync(attachFile);
                 }
@@ -239,5 +249,9 @@ namespace Services.IssueManagement
             return ticketNumber;
         }
 
+        public Task<string> TicketView(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

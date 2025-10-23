@@ -46,6 +46,16 @@ namespace WebApi.Controllers.IssueManagement
 
 
 
+        [AllowAnonymous]
+        [HttpGet()]
+        public async Task<IActionResult> CreateTicket(int id)
+        {
+            var result = await _ticketService.TicketView(id);
+            return Ok(new { ticketId = result });
+        }
+
+
+
         // add/update comment NgxEditorModule
         // add/revove wattcher
         // add/remove

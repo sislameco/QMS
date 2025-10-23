@@ -35,9 +35,13 @@ namespace Repository.Repo.UserManagement
                 {
                     FullName = g.First().user.FullName,
                     Email = g.First().user.Email,
-                    Phone = g.First().user.Phone ?? g.First().user.UserName,
+                    Phone = g.First().user.Phone ?? "",
                     Status = g.First().user.RStatus,
                     Roles = string.Join(", ", g.Select(x => x.role.Name).Distinct()),
+                    RoleId = g.First().role.Id,
+                    FirstName = g.First().user.FirstName,
+                    Lastname = g.First().user.LastName,
+                     UserName = g.First().user.UserName
 
                 };
 

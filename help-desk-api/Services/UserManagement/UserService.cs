@@ -88,6 +88,35 @@ namespace Services.UserManagement
 
             await _unitOfWork.Repository<UserModel, int>().UpdateAsync(user);
             await _unitOfWork.CommitAsync();
+
+
+
+            var userRole = await _unitOfWork.Repository<UserRoleModel, int>()
+                .FirstOrDefaultAsync(ur => ur.FKUserId == userId && ur.RStatus == EnumRStatus.Active);
+            if (userRole == null)
+            {
+
+                UserRoleModel addUserRole =
+             new UserRoleModel
+             {
+                 FKRoleId = input.RoleId,
+                 FKUserId = userId,
+                 RStatus = EnumRStatus.Active,
+                 CreatedBy = -1,
+                 CreatedDate = DateTime.UtcNow
+             };
+                await _unitOfWork.Repository<UserRoleModel, int>().AddAsync(addUserRole);
+
+            }
+            else
+            {
+                userRole.FKRoleId = input.RoleId;
+                userRole.UpdatedDate = DateTime.UtcNow;
+                userRole.UpdatedBy = -1;
+                await _unitOfWork.Repository<UserRoleModel, int>().UpdateAsync(userRole);
+
+            }
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task DeleteAsync(int id)

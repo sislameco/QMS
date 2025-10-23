@@ -26,6 +26,10 @@ namespace Models.Dto.UserManagement
     {
 
         public string FullName { get; set; } = string.Empty;
+        public string FirstName { get; set; }
+        public string Lastname { get; set; }    
+        public int RoleId { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Roles { get; set; } = string.Empty;
