@@ -11,6 +11,7 @@ namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("user")]
+    [AllowAnonymous]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

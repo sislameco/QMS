@@ -16,6 +16,7 @@ using Utilities.Redis;
 using Utils;
 using Utils.EmailUtil;
 using Utils.Exceptions;
+using Utils.JWT;
 using Utils.LoginData;
 
 namespace Services.AuthService
@@ -27,6 +28,7 @@ namespace Services.AuthService
         Task<HelpDeskLoginResponseDto> RefreshToken(string token, HttpContext httpContext, HttpRequest request);
         Task<string> ForgotPassword(ForgotPasswordInputDto model);
         Task<ObjectResponse<bool>> UpdatePassword(ChangePasswordInputDto data, int userId);
+        Task<bool> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model);
     }
 
     public class HelpDeskAuthService : IHelpDeskAuthService
@@ -222,6 +224,27 @@ namespace Services.AuthService
 
             return new ObjectResponse<bool> { Data = true };
         }
+
+        public async Task<bool> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model)
+        {
+            JwtTokenParse userJwtToken = JwtTokenDecode.GetTokenDecode(model.UserToken, true);
+            var userId = Convert.ToInt32(userJwtToken.UserId);
+
+            var recoverPasswordToken = await _unitOfWork.Repository<RecoverPasswordTokenModel,int>().FirstOrDefaultAsync(r => r.FkUserId == userId && r.OtpCode == model.Code);
+
+            if (recoverPasswordToken != null)
+            {
+                recoverPasswordToken.IsVarified = true;
+                await _unitOfWork.Repository<RecoverPasswordTokenModel, int>().UpdateAsync(recoverPasswordToken);
+                await _unitOfWork.CommitAsync();
+                return true;
+            }
+            else
+            {
+                throw new BadRequestException("Invalid OTP!");
+            }
+        }
+
         private async Task<string> CreateTokenOtpAndSendEmail(UserModel user, ForgotPasswordInputDto model)
         {
             var UserHostAddress = model.Browser.Item2.ToString();

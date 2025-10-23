@@ -49,6 +49,14 @@ namespace WebApi.Controllers.Auth
             return Ok(await _authService.RefreshToken(token, HttpContext, Request));
         }
 
+        [AllowAnonymous]
+        [HttpPost("password-recovery-otp-verification")]
+        public async Task<ObjectResponse<bool>> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model)
+        {
+            model.Browser = Common.GetBrowserIpInformation(HttpContext, Request);
+            var res = await _authService.RecoverPasswordVerification(model);
+            return new ObjectResponse<bool>() { Data = res, Message = res ? "Successfully verified" : "Verification failed" };
+        }
 
         [AllowAnonymous]
         [HttpPost("forgot-password")]

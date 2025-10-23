@@ -35,4 +35,14 @@ namespace Models.Dto.Auth
         [JsonIgnore]
         public Tuple<ClientInfo, IPAddress> Browser { get; set; }
     }
+
+    public class RecoverPasswordVerificationInputDto
+    {
+        [Required]
+        public string Code { get; set; }
+        [Required]
+        public string UserToken { get; set; }
+        [JsonIgnore]
+        public Tuple<ClientInfo, IPAddress> Browser { get; set; }
+    }
 }

@@ -57,7 +57,19 @@ namespace Services.UserManagement
                 IsActive = false
             };
             await _unitOfWork.Repository<UserModel, int>().AddAsync(add);
-            // send A invitation email logic will be here
+            await _unitOfWork.CommitAsync();
+
+            UserRoleModel userRole =
+                new UserRoleModel
+                {
+                    FKRoleId = user.RoleId,
+                    FKUserId = add.Id,
+                    RStatus = EnumRStatus.Active,
+                    CreatedBy = -1,
+                    CreatedDate = DateTime.UtcNow
+                };
+
+            await _unitOfWork.Repository<UserRoleModel, int>().AddAsync(userRole);
             await _unitOfWork.CommitAsync();
         }
 
@@ -86,10 +98,10 @@ namespace Services.UserManagement
             return result;
         }
 
-        public  async Task<List<UserDropdownDto>> GetUserSelectedList(int companyId)
+        public async Task<List<UserDropdownDto>> GetUserSelectedList(int companyId)
         {
-            var data = await _unitOfWork.Repository<UserModel,int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active);
-            return data.Select(s=> new UserDropdownDto { Id = s.Id, FullName = s.FullName}).ToList();
+            var data = await _unitOfWork.Repository<UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active);
+            return data.Select(s => new UserDropdownDto { Id = s.Id, FullName = s.FullName }).ToList();
         }
 
         public async Task<bool> SendInvitation(int userId)
