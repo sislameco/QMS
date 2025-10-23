@@ -87,7 +87,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     // Use configuration binding instead of static property
-    var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+    var redisConnectionString = AppSettings.Redis.ConnectionString;
     options.Configuration = redisConnectionString;
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();

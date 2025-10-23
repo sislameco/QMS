@@ -73,9 +73,11 @@ namespace Services.UserManagement
                     CreatedBy = -1,
                     CreatedDate = DateTime.UtcNow
                 };
-            await _emailNotificationService.SendInfitation(add, string.Concat(AppSettings.QMSApi.BaseUrl ,$"/api/user/{add.Id}/request-accept"));
+
             await _unitOfWork.Repository<UserRoleModel, int>().AddAsync(userRole);
             await _unitOfWork.CommitAsync();
+
+            await _emailNotificationService.SendInfitation(add, string.Concat(AppSettings.QMSApi.BaseUrl, $"/api/user/{add.Id}/request-accept"));
         }
 
         public async Task UpdateAsync(int userId, HostUserUpdateInputDto input)

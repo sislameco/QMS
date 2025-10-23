@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 using Models.Dto.Ticket;
 using Models.Dto.Ticket.Models.Dto.Tickets;
 using Services.IssueManagement;
+using WebApi.Helper.Security;
 
 namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
     [Route("ticket")]
+    [CustomAuthorization]
     public class TicketController : ControllerBase
     {
         private readonly ITicketReferenceService _ticketReferenceService;
@@ -19,7 +21,6 @@ namespace WebApi.Controllers.IssueManagement
             _ticketService = ticketService;
         }
         // generate create endpoint _ticketService.CreateTicket
-        [AllowAnonymous]
         [HttpGet("list")]
         public IActionResult GetTickets(int fkCompanyId)
         {

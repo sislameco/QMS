@@ -43,13 +43,15 @@ namespace Repository.Repo.Permission
             bool isSuperAdmin = IsSuperAdminUser((int)userId);
             if (!isSuperAdmin)
             {
+                
                 flatMenus = await (
                       from m in _dbContext.Menus
                       join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
                       join menuRoles in _dbContext.MenuActionRoleMappings on map.Id equals menuRoles.FKMenuActionMapId into menuRoleJoin
 
                       from menuRoles in menuRoleJoin.DefaultIfEmpty()
-                      join userRole in _dbContext.UserRoles on menuRoles.FKRoleId equals userRole.Id into userRoleJoin
+
+                      join userRole in _dbContext.UserRoles on menuRoles.FKRoleId equals userRole.FKRoleId into userRoleJoin
                       from userRole in userRoleJoin.DefaultIfEmpty()
                       join users in _dbContext.Users on userRole.FKUserId equals users.Id into userJoin
                       from user in userJoin.DefaultIfEmpty()

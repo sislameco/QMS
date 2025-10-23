@@ -51,7 +51,7 @@ namespace Services.AuthService
         {
             string Password = Common.EncryptText(dto.Password);
             // 1. Fetch user by email
-            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password);
+            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password && u.IsActive == true);
 
             if (user == null)
             {
@@ -62,13 +62,13 @@ namespace Services.AuthService
             //if (user.LastPasswordChange.AddDays(90) <= DateTime.UtcNow)
             //    return new HelpDeskLoginResponseDto { IsPasswordChange = false, UserId = user.Id };
 
-            var menus = await _menuRepository.GetUserPermittedMenusAsync(user.Id);
+            var menus = await _menuRepository.GetPermittedActions(user.Id);
 
             //if (!menus.Any())
             //    throw new BadRequestException("You have no permitted menus!");
 
             var menu_cache_key = $"{user.Id}";
-            //AuthCacheUtil.SetPermittedMenu(menu_cache_key, menus);
+            AuthCacheUtil.SetPermittedMenu(menu_cache_key, menus);
 
             //// 3. Verify password
             dto.Browser = Common.GetBrowserIpInformation(httpContext, request);
