@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("AssociateActionRoutes")]
-    public class AssociateActionRouteModel : BaseEntity<int>
+    [Table("AssociateActionRoutes", Schema = "menu")]
+    public class AssociateActionRouteModel
     {
-        // Static property to hold current user id (set from HttpContext in your service/repository)
-        public static int CurrentUserId { get; set; }
         public int? FkMenuActionMapId { get; set; }
         [ForeignKey("FkMenuActionMapId")]
         public MenuActionMapModel MenuActionMap { get; set; }
@@ -21,27 +19,5 @@ namespace Models.Entities.UserManagement
         public string ApiUrl { get; set; }
         [MaxLength(20)]
         public string HttpVerb { get; set; }
-
-        public override void OnEntityCreated()
-        {
-            base.OnEntityCreated();
-            CreatedDate = DateTime.UtcNow;
-            CreatedBy = CurrentUserId; // Set from static property
-        }
-
-        public override void OnEntityUpdated()
-        {
-            base.OnEntityUpdated();
-            UpdatedDate = DateTime.UtcNow;
-            UpdatedBy = CurrentUserId;
-        }
-
-        public override void OnEntityDeleted()
-        {
-            base.OnEntityDeleted();
-            DeletedDate = DateTime.UtcNow;
-            DeletedBy = CurrentUserId;
-            RStatus = EnumRStatus.Deleted; // soft delete
-        }
     }
 }

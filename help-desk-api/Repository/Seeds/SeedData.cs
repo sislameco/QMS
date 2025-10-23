@@ -104,11 +104,11 @@ namespace Repository.Seeds
             //new UserModel
             //{
             //    Id = 83,
-            //    FirstName = "Khalid",
+            //    FirstName = "KhalId",
             //    LastName = "Bin Awlad",
-            //    FullName = "Khalid Bin Awlad",
-            //    UserName = "khalid.awlad@efficientsoftwaresolutions.com",
-            //    Email = "abc+khalid.awlad@efficientsoftwaresolutions.com",
+            //    FullName = "KhalId Bin Awlad",
+            //    UserName = "khalId.awlad@efficientsoftwaresolutions.com",
+            //    Email = "abc+khalId.awlad@efficientsoftwaresolutions.com",
             //    PasswordHash = "n|Kb6PwNwTfug2W9ZNGq7w==",
             //    RStatus = EnumRStatus.Active,
             //    CreatedDate = DateTime.UtcNow,
@@ -139,7 +139,7 @@ namespace Repository.Seeds
                 Name = "OMS",
                 ShortName = "OMS",
                 Description = "Updated OMS Description",
-                RStatus = EnumRStatus.Active,
+                RStatus = EnumRStatus.Inactive,
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1,
                 AccessKey = "OMS",
@@ -150,7 +150,7 @@ namespace Repository.Seeds
                 Id=3,
                 Name = "Smart Lotto",
                 Description = "Updated Smart Lotto Description",
-                RStatus = EnumRStatus.Active,
+                RStatus = EnumRStatus.Inactive,
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1
             }
@@ -224,137 +224,7 @@ namespace Repository.Seeds
         };
     }
 
-    public static class MenuSeedData
-    {
-        public static readonly MenuModel[] menus =
-        {
-            new MenuModel
-            {
-                Name = "DashBoard",
-                ParentId = null,
-                Url = "#",
-                DisplayOrder = 1,
-                Route = "/",
-                IconClass = "svg-menu-home",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "User Management",
-                ParentId = null,
-                Url = "#",
-                DisplayOrder = 2,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "Company Management",
-                ParentId = null,
-                Url = "#",
-                DisplayOrder = 3,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "RBAC",
-                ParentId = null,
-                Url = "#",
-                DisplayOrder = 4,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-             new MenuModel
-            {
-                Name = "Ticket Center",
-                ParentId = 4,
-                Url = "#",
-                DisplayOrder = 1,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "Users",
-                ParentId = 2,
-                Url = "#",
-                Route = "/pages/user-management/users/list",
-                DisplayOrder = 1,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "Roles",
-                ParentId = 2,
-                Url = "#",
-                Route = "/pages/user-management/roles",
-                DisplayOrder = 2,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "Company Config",
-                ParentId = 3,
-                Url = "#",
-                Route = "/pages/company-configuration/list",
-                DisplayOrder = 1,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "Issue Prefix",
-                ParentId = 3,
-                //Url = "pages/tickets",
-                Route = "pages/tickets",
-                DisplayOrder = 2,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            },
-            new MenuModel
-            {
-                Name = "Notification Templates",
-                ParentId = 3,
-                Url = "#",
-                DisplayOrder = 3,
-                IconClass = "#",
-                IconViewBox = "#",
-                RStatus = EnumRStatus.Active,
-                CreatedDate = DateTime.UtcNow,
-                CreatedBy = 1
-            }
-        };
-    }
+
 
     public static class RoleSeedData
     {
@@ -400,6 +270,138 @@ namespace Repository.Seeds
                 HomeUrl = "#",
                 IsSuperAdmin = false,
                 IsSystemGenerated = true,
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            }
+        };
+    }
+
+    public static class MenuSeedData
+    {
+        public static readonly MenuModel[] menus =
+        {
+            new MenuModel
+            {
+                Id = 1,
+                Name = "DashBoard",
+                ParentId = null,
+                Url = "#",
+                DisplayOrder = 1,
+                Route = "/",
+                IconClass = "svg-menu-home",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel // no
+            {
+                Id = 2,
+                Name = "User Management",
+                ParentId = null,
+                Url = "#",
+                DisplayOrder = 2,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+
+            new MenuModel
+            {
+                Id = 3,
+                Name = "Users",
+                ParentId = 2,
+                Url = "#",
+                Route = "/pages/user-management/users/list",
+                DisplayOrder = 1,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel
+            {
+                Id = 4,
+                Name = "Roles",
+                ParentId = 2,
+                Url = "#",
+                Route = "/pages/user-management/roles",
+                DisplayOrder = 2,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+             new MenuModel // no 
+            {
+                Id = 5,
+                Name = "Admin Panel",
+                ParentId = null,
+                Url = "#",
+                DisplayOrder = 3,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel
+            {
+                Id = 6,
+                Name = "Tenent Configuration",
+                ParentId = 5,
+                Url = "#",
+                Route = "/pages/company-configuration/list",
+                DisplayOrder = 1,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+               new MenuModel
+            {
+                Id = 7,
+                Name = "Quality Management",
+                ParentId = null,
+                //Url = "pages/tickets",
+                Route = "pages/tickets",
+                DisplayOrder = 2,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel
+            {
+                Id = 8,
+                Name = "Ticket Center",
+                ParentId = 7,
+                //Url = "pages/tickets",
+                Route = "pages/tickets",
+                DisplayOrder = 2,
+                IconClass = "#",
+                IconViewBox = "#",
+                RStatus = EnumRStatus.Active,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = 1
+            },
+            new MenuModel
+            {
+                Id = 8,
+                Name = "Capa Center",
+                ParentId = 7,
+                //Url = "pages/tickets",
+                Route = "pages/tickets",
+                DisplayOrder = 2,
+                IconClass = "#",
+                IconViewBox = "#",
                 RStatus = EnumRStatus.Active,
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = 1
@@ -468,6 +470,55 @@ namespace Repository.Seeds
     {
         public static readonly MenuActionMapModel[] menuActionMaps =
         {
+             new MenuActionMapModel
+            {
+                FKMenuId = 1,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 3,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 1,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 3,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 2 ,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 3,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 3 ,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 3,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 4 ,
+                 RStatus = EnumRStatus.Active,
+            },
+            new MenuActionMapModel
+            {
+                FKMenuId = 3,
+                ApiUrl = "#",
+                RoutePath = "#",
+                FKMenuActionId = 5 ,
+                 RStatus = EnumRStatus.Active,
+            },
+
             new MenuActionMapModel
             {
                 FKMenuId = 4,
@@ -508,9 +559,11 @@ namespace Repository.Seeds
                 FKMenuActionId = 5 ,
                  RStatus = EnumRStatus.Active,
             },
+
+
             new MenuActionMapModel
             {
-                FKMenuId = 5,
+                FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 1,
@@ -518,7 +571,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 5,
+                FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 2,
@@ -526,7 +579,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 5,
+                FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 3,
@@ -534,7 +587,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 5,
+                FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 4,
@@ -542,15 +595,17 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 5,
+                FKMenuId = 6,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 5,
                  RStatus = EnumRStatus.Active,
             },
+
+
              new MenuActionMapModel
             {
-                FKMenuId = 6,
+                FKMenuId = 7,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 1,
@@ -558,7 +613,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 6,
+                FKMenuId = 7,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 2,
@@ -566,7 +621,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 6,
+                FKMenuId = 7,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 3,
@@ -574,7 +629,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 6,
+                FKMenuId = 7,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 4,
@@ -582,7 +637,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 6,
+                FKMenuId = 7,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 5,
@@ -593,7 +648,7 @@ namespace Repository.Seeds
 
                 new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 1,
@@ -601,7 +656,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 2,
@@ -609,7 +664,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 3,
@@ -617,7 +672,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 4,
@@ -625,7 +680,7 @@ namespace Repository.Seeds
             },
             new MenuActionMapModel
             {
-                FKMenuId = 7,
+                FKMenuId = 8,
                 ApiUrl = "#",
                 RoutePath = "#",
                 FKMenuActionId = 5,

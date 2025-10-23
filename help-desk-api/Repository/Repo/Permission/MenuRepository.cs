@@ -2,6 +2,7 @@
 using Models.Dto.Menus;
 using Models.Dto.UserManagement;
 using Repository.Db;
+using StackExchange.Redis;
 using System;
 
 namespace Repository.Repo.Permission
@@ -24,25 +25,69 @@ namespace Repository.Repo.Permission
 
         public async Task<List<PerMenuDto>> GetUserPermittedMenusAsync(long userId)
         {
-            var flatMenus = await (
-                from m in _dbContext.Menus
-                join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId into menuActions
-                from ma in menuActions.DefaultIfEmpty()
-                select new UserMenuDto
-                {
-                    Id = m.Id,
-                    MenuName = m.Name ?? string.Empty,
-                    Route = m.Route ?? string.Empty,
-                    ParentId = m.ParentId,
-                    DisplayOrder = m.DisplayOrder,
-                    Icon = m.IconClass ?? string.Empty
-                }
-            )
-            .Distinct()
-            .OrderBy(x => x.DisplayOrder)
-            .ToListAsync();
 
-            return BuildUserMenuTree(flatMenus);
+            List<UserMenuDto> flatMenus = null;
+            var isSuperAdmin = (from userRole in _dbContext.UserRoles
+                       join role in _dbContext.Roles
+                       on userRole.FKRoleId equals role.Id
+                       where userRole.FKUserId == userId && userRole.RStatus == Models.Enum.EnumRStatus.Active && role.RStatus == Models.Enum.EnumRStatus.Active
+                       select role.IsSuperAdmin == true).FirstOrDefault();
+
+
+
+            if (!isSuperAdmin)
+            {
+                 flatMenus = await (
+                       from m in _dbContext.Menus
+                       join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
+                       join menuRoles in _dbContext.MenuActionRoleMappings on map.Id equals menuRoles.FKMenuActionMapId into menuRoleJoin
+
+                       from menuRoles in menuRoleJoin.DefaultIfEmpty()
+                       join userRole in _dbContext.UserRoles on menuRoles.FKRoleId equals userRole.Id into userRoleJoin
+                       from userRole in userRoleJoin.DefaultIfEmpty()
+                       join users in _dbContext.Users on userRole.FKUserId equals users.Id into userJoin
+                       from user in userJoin.DefaultIfEmpty()
+                       join role in _dbContext.Roles on userRole.FKRoleId equals role.Id into roleJoin
+                       from role in roleJoin.DefaultIfEmpty()
+
+                       where user.Id == userId
+
+                       select new UserMenuDto
+                       {
+                           Id = m.Id,
+                           MenuName = m.Name ?? string.Empty,
+                           Route = m.Route ?? string.Empty,
+                           ParentId = m.ParentId,
+                           DisplayOrder = m.DisplayOrder,
+                           Icon = m.IconClass ?? string.Empty
+                       }
+                )
+                .Distinct()
+                .OrderBy(x => x.DisplayOrder)
+                .ToListAsync();
+            }
+            else
+            {
+                 flatMenus = await (
+                       from m in _dbContext.Menus
+                       join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId into mapJoin
+                       from role in mapJoin.DefaultIfEmpty()
+                       select new UserMenuDto
+                       {
+                           Id = m.Id,
+                           MenuName = m.Name ?? string.Empty,
+                           Route = m.Route ?? string.Empty,
+                           ParentId = m.ParentId,
+                           DisplayOrder = m.DisplayOrder,
+                           Icon = m.IconClass ?? string.Empty
+                       }
+                )
+                .Distinct()
+                .OrderBy(x => x.DisplayOrder)
+                .ToListAsync();
+            }
+
+                return BuildUserMenuTree(flatMenus);
         }
 
         public async Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId)

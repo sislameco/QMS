@@ -8,7 +8,7 @@ using Models.Entities;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("Menu", Schema = "UserMgmt")]
+    [Table("Menu", Schema = "menu")]
     public class MenuModel : BaseEntity<int>
     {
         public required string Name { get; set; }

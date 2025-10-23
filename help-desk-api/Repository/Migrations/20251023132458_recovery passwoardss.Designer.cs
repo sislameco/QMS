@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20251022130203_CreateTableInit")]
-    partial class CreateTableInit
+    [Migration("20251023132458_recovery passwoardss")]
+    partial class recoverypasswoardss
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,6 +198,61 @@ namespace Repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserLogins", "log");
+                });
+
+            modelBuilder.Entity("Models.Entities.Auth.RecoverPasswordTokenModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(106);
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(107);
+
+                    b.Property<int>("FkUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsVarified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OtpCode")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RStatus")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(105);
+
+                    b.Property<string>("UserToken")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FkUserId");
+
+                    b.ToTable("RecoverPasswordTokens", "auth");
                 });
 
             modelBuilder.Entity("Models.Entities.File.TempFileModel", b =>
@@ -1015,12 +1070,6 @@ namespace Repository.Migrations
                     b.Property<int>("FkCompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("FooterTemplate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeaderTemplate")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
@@ -1600,7 +1649,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FkMenuActionMapId");
 
-                    b.ToTable("AssociateActionRoutes");
+                    b.ToTable("AssociateActionRoutes", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionDepartmentMappingModel", b =>
@@ -1654,7 +1703,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FkDepartmentId");
 
-                    b.ToTable("MenuActionDepartmentMapping", "UserMgmt");
+                    b.ToTable("MenuActionDepartmentMapping", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionMapModel", b =>
@@ -1713,7 +1762,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FKMenuId");
 
-                    b.ToTable("MenuActionMap", "UserMgmt");
+                    b.ToTable("MenuActionMap", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionModel", b =>
@@ -1763,7 +1812,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MenuAction", "UserMgmt");
+                    b.ToTable("MenuAction", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionRoleMappingModel", b =>
@@ -1817,7 +1866,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FKRoleId");
 
-                    b.ToTable("MenuActionRoleMapping", "UserMgmt");
+                    b.ToTable("MenuActionRoleMapping", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuModel", b =>
@@ -1879,7 +1928,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menu", "UserMgmt");
+                    b.ToTable("Menu", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.RoleModel", b =>
@@ -2088,6 +2137,17 @@ namespace Repository.Migrations
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Models.Entities.Auth.RecoverPasswordTokenModel", b =>
+                {
+                    b.HasOne("Models.Entities.UserManagement.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("FkUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

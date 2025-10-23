@@ -4,7 +4,7 @@ using Models.Entities;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("MenuAction", Schema = "UserMgmt")]
+    [Table("MenuAction", Schema = "menu")]
     public class MenuActionModel : BaseEntity<int>
     {
         public string Name { get; set; }

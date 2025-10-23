@@ -1067,12 +1067,6 @@ namespace Repository.Migrations
                     b.Property<int>("FkCompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("FooterTemplate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeaderTemplate")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
@@ -1652,7 +1646,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FkMenuActionMapId");
 
-                    b.ToTable("AssociateActionRoutes");
+                    b.ToTable("AssociateActionRoutes", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionDepartmentMappingModel", b =>
@@ -1706,7 +1700,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FkDepartmentId");
 
-                    b.ToTable("MenuActionDepartmentMapping", "UserMgmt");
+                    b.ToTable("MenuActionDepartmentMapping", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionMapModel", b =>
@@ -1765,7 +1759,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FKMenuId");
 
-                    b.ToTable("MenuActionMap", "UserMgmt");
+                    b.ToTable("MenuActionMap", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionModel", b =>
@@ -1815,7 +1809,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MenuAction", "UserMgmt");
+                    b.ToTable("MenuAction", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuActionRoleMappingModel", b =>
@@ -1869,7 +1863,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("FKRoleId");
 
-                    b.ToTable("MenuActionRoleMapping", "UserMgmt");
+                    b.ToTable("MenuActionRoleMapping", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.MenuModel", b =>
@@ -1931,7 +1925,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menu", "UserMgmt");
+                    b.ToTable("Menu", "menu");
                 });
 
             modelBuilder.Entity("Models.Entities.UserManagement.RoleModel", b =>

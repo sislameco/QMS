@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("MenuActionMap", Schema = "UserMgmt")]
+    [Table("MenuActionMap", Schema = "menu")]
     public class MenuActionMapModel : BaseEntity<int>
     {
         public int FKMenuId { get; set; }

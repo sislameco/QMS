@@ -4,7 +4,7 @@ using Models.Entities.Org;
 
 namespace Models.Entities.UserManagement
 {
-    [Table("MenuActionRoleMapping", Schema = "UserMgmt")]
+    [Table("MenuActionRoleMapping", Schema = "menu")]
     public class MenuActionRoleMappingModel : BaseEntity<int>
     {
         public int FKRoleId { get; set; }
@@ -15,7 +15,7 @@ namespace Models.Entities.UserManagement
         public MenuActionMapModel MenuActionMap { get; set; }
         public bool IsAllowed { get; set; }
     }
-    [Table("MenuActionDepartmentMapping", Schema = "UserMgmt")]
+    [Table("MenuActionDepartmentMapping", Schema = "menu")]
     public class MenuActionDepartmentMappingModel : BaseEntity<int>
     {
         public int FkDepartmentId { get; set; }

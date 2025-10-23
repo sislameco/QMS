@@ -7,11 +7,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTableInit : Migration
+    public partial class recoverypasswoardss : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "menu");
+
             migrationBuilder.EnsureSchema(
                 name: "log");
 
@@ -25,10 +28,13 @@ namespace Repository.Migrations
                 name: "setup");
 
             migrationBuilder.EnsureSchema(
-                name: "UserMgmt");
+                name: "notification");
 
             migrationBuilder.EnsureSchema(
-                name: "notification");
+                name: "auth");
+
+            migrationBuilder.EnsureSchema(
+                name: "UserMgmt");
 
             migrationBuilder.EnsureSchema(
                 name: "file");
@@ -120,7 +126,7 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Menu",
-                schema: "UserMgmt",
+                schema: "menu",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -147,7 +153,7 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateTable(
                 name: "MenuAction",
-                schema: "UserMgmt",
+                schema: "menu",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -188,8 +194,6 @@ namespace Repository.Migrations
                     EmailConfigurationId = table.Column<int>(type: "integer", nullable: true),
                     SubjectTemplate = table.Column<string>(type: "text", nullable: true),
                     BodyTemplate = table.Column<string>(type: "text", nullable: true),
-                    HeaderTemplate = table.Column<string>(type: "text", nullable: true),
-                    FooterTemplate = table.Column<string>(type: "text", nullable: true),
                     IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     Variables = table.Column<string[]>(type: "text[]", nullable: true)
                 },
@@ -412,7 +416,7 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateTable(
                 name: "MenuActionMap",
-                schema: "UserMgmt",
+                schema: "menu",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -435,14 +439,14 @@ namespace Repository.Migrations
                     table.ForeignKey(
                         name: "FK_MenuActionMap_MenuAction_FKMenuActionId",
                         column: x => x.FKMenuActionId,
-                        principalSchema: "UserMgmt",
+                        principalSchema: "menu",
                         principalTable: "MenuAction",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MenuActionMap_Menu_FKMenuId",
                         column: x => x.FKMenuId,
-                        principalSchema: "UserMgmt",
+                        principalSchema: "menu",
                         principalTable: "Menu",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -450,6 +454,7 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AssociateActionRoutes",
+                schema: "menu",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -471,14 +476,14 @@ namespace Repository.Migrations
                     table.ForeignKey(
                         name: "FK_AssociateActionRoutes_MenuActionMap_FkMenuActionMapId",
                         column: x => x.FkMenuActionMapId,
-                        principalSchema: "UserMgmt",
+                        principalSchema: "menu",
                         principalTable: "MenuActionMap",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "MenuActionRoleMapping",
-                schema: "UserMgmt",
+                schema: "menu",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -500,7 +505,7 @@ namespace Repository.Migrations
                     table.ForeignKey(
                         name: "FK_MenuActionRoleMapping_MenuActionMap_FKMenuActionMapId",
                         column: x => x.FKMenuActionMapId,
-                        principalSchema: "UserMgmt",
+                        principalSchema: "menu",
                         principalTable: "MenuActionMap",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -604,7 +609,7 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateTable(
                 name: "MenuActionDepartmentMapping",
-                schema: "UserMgmt",
+                schema: "menu",
                 columns: table => new
                 {
                     RStatus = table.Column<int>(type: "integer", nullable: false),
@@ -633,7 +638,7 @@ namespace Repository.Migrations
                     table.ForeignKey(
                         name: "FK_MenuActionDepartmentMapping_MenuActionMap_FKMenuActionMapId",
                         column: x => x.FKMenuActionMapId,
-                        principalSchema: "UserMgmt",
+                        principalSchema: "menu",
                         principalTable: "MenuActionMap",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -678,6 +683,37 @@ namespace Repository.Migrations
                         principalSchema: "Org",
                         principalTable: "Department",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecoverPasswordTokens",
+                schema: "auth",
+                columns: table => new
+                {
+                    RStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FkUserId = table.Column<int>(type: "integer", nullable: false),
+                    OtpCode = table.Column<string>(type: "text", nullable: true),
+                    UserToken = table.Column<string>(type: "text", nullable: true),
+                    IsVarified = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecoverPasswordTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RecoverPasswordTokens_Users_FkUserId",
+                        column: x => x.FkUserId,
+                        principalSchema: "UserMgmt",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1160,6 +1196,7 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_AssociateActionRoutes_FkMenuActionMapId",
+                schema: "menu",
                 table: "AssociateActionRoutes",
                 column: "FkMenuActionMapId");
 
@@ -1213,37 +1250,37 @@ namespace Repository.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuActionDepartmentMapping_FkDepartmentId",
-                schema: "UserMgmt",
+                schema: "menu",
                 table: "MenuActionDepartmentMapping",
                 column: "FkDepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuActionDepartmentMapping_FKMenuActionMapId",
-                schema: "UserMgmt",
+                schema: "menu",
                 table: "MenuActionDepartmentMapping",
                 column: "FKMenuActionMapId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuActionMap_FKMenuActionId",
-                schema: "UserMgmt",
+                schema: "menu",
                 table: "MenuActionMap",
                 column: "FKMenuActionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuActionMap_FKMenuId",
-                schema: "UserMgmt",
+                schema: "menu",
                 table: "MenuActionMap",
                 column: "FKMenuId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuActionRoleMapping_FKMenuActionMapId",
-                schema: "UserMgmt",
+                schema: "menu",
                 table: "MenuActionRoleMapping",
                 column: "FKMenuActionMapId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuActionRoleMapping_FKRoleId",
-                schema: "UserMgmt",
+                schema: "menu",
                 table: "MenuActionRoleMapping",
                 column: "FKRoleId");
 
@@ -1258,6 +1295,12 @@ namespace Repository.Migrations
                 schema: "setup",
                 table: "NotificationSchedule",
                 column: "FKTicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecoverPasswordTokens_FkUserId",
+                schema: "auth",
+                table: "RecoverPasswordTokens",
+                column: "FkUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SLAConfiguration_FKCompanyId",
@@ -1423,7 +1466,8 @@ namespace Repository.Migrations
                 table: "Department");
 
             migrationBuilder.DropTable(
-                name: "AssociateActionRoutes");
+                name: "AssociateActionRoutes",
+                schema: "menu");
 
             migrationBuilder.DropTable(
                 name: "AuditLog",
@@ -1443,11 +1487,11 @@ namespace Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "MenuActionDepartmentMapping",
-                schema: "UserMgmt");
+                schema: "menu");
 
             migrationBuilder.DropTable(
                 name: "MenuActionRoleMapping",
-                schema: "UserMgmt");
+                schema: "menu");
 
             migrationBuilder.DropTable(
                 name: "NotificationSchedule",
@@ -1456,6 +1500,10 @@ namespace Repository.Migrations
             migrationBuilder.DropTable(
                 name: "NotificationTemplate",
                 schema: "notification");
+
+            migrationBuilder.DropTable(
+                name: "RecoverPasswordTokens",
+                schema: "auth");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens",
@@ -1511,7 +1559,7 @@ namespace Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "MenuActionMap",
-                schema: "UserMgmt");
+                schema: "menu");
 
             migrationBuilder.DropTable(
                 name: "EmailConfiguration",
@@ -1539,11 +1587,11 @@ namespace Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "MenuAction",
-                schema: "UserMgmt");
+                schema: "menu");
 
             migrationBuilder.DropTable(
                 name: "Menu",
-                schema: "UserMgmt");
+                schema: "menu");
 
             migrationBuilder.DropTable(
                 name: "TicketType",

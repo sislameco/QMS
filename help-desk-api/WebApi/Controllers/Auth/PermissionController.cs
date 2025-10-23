@@ -63,8 +63,7 @@ namespace WebApi.Controllers.Auth
         [ProducesResponseType(typeof(PermittedMenuDto), 200)]
         public async Task<IActionResult> PermittedMenus()
         {
-           // return Ok(await _permissionService.GetUserMenus());
-            return Ok(await _permissionService.GetUserMenus(77));
+            return Ok(await _permissionService.GetLoginUserMenus());
         }
 
     }
