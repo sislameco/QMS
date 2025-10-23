@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models.Entities.Audit;
+using Models.Entities.Auth;
 using Models.Entities.File;
 using Models.Entities.Issue;
 using Models.Entities.Notification;
@@ -17,6 +18,7 @@ namespace Repository.Db
         public DbSet<UserRoleModel> UserRoles => Set<UserRoleModel>();
         public DbSet<UserLoginModel> UserLogins => Set<UserLoginModel>();
         public DbSet<RefreshTokenModel> RefreshTokens => Set<RefreshTokenModel>();
+        public DbSet<RecoverPasswordTokenModel> RecoverPasswordTokens => Set<RecoverPasswordTokenModel>();
         public DbSet<MenuModel> Menus => Set<MenuModel>();
         public DbSet<MenuActionModel> MenuActions => Set<MenuActionModel>();
         public DbSet<MenuActionMapModel> MenuActionMaps => Set<MenuActionMapModel>();
