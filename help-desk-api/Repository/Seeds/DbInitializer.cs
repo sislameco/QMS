@@ -13,6 +13,11 @@ namespace Repository.Seeds
                 await context.Users.AddRangeAsync(SeedData.Users);
                 await context.SaveChangesAsync();
             }
+            if (!await context.Roles.AnyAsync())
+            {
+                await context.Roles.AddRangeAsync(RoleSeedData.menus);
+                await context.SaveChangesAsync();
+            }
             if (!await context.UserRoles.AnyAsync())
             {
                 await context.UserRoles.AddRangeAsync(UserRoleSeedData.userRoles);
@@ -26,11 +31,6 @@ namespace Repository.Seeds
             if (!await context.Menus.AnyAsync())
             {
                 await context.Menus.AddRangeAsync(MenuSeedData.menus);
-                await context.SaveChangesAsync();
-            }
-            if (!await context.Roles.AnyAsync())
-            {
-                await context.Roles.AddRangeAsync(RoleSeedData.menus);
                 await context.SaveChangesAsync();
             }
             if (!await context.MenuActions.AnyAsync())

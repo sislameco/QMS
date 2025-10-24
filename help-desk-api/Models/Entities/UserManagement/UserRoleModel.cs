@@ -7,8 +7,10 @@ namespace Models.Entities.UserManagement
     public class UserRoleModel : BaseEntity<int>
     {
         public int FKUserId { get; set; }
+        [ForeignKey("FKUserId")]
         public UserModel User { get; set; } = default!;
         public int FKRoleId { get; set; }
+        [ForeignKey("FKRoleId")]
         public RoleModel Role { get; set; } = default!;
     }
 }

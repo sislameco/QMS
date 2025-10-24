@@ -12,8 +12,8 @@ using Repository.Db;
 namespace Repository.Migrations
 {
     [DbContext(typeof(HelpDbContext))]
-    [Migration("20251023132458_recovery passwoardss")]
-    partial class recoverypasswoardss
+    [Migration("20251024061602_CreateTableInit")]
+    partial class CreateTableInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1610,40 +1610,12 @@ namespace Repository.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(102);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(103);
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(106);
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(107);
-
                     b.Property<int?>("FkMenuActionMapId")
                         .HasColumnType("integer");
 
                     b.Property<string>("HttpVerb")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
-
-                    b.Property<int>("RStatus")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(101);
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("integer")
-                        .HasColumnOrder(104);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(105);
 
                     b.HasKey("Id");
 
@@ -2109,9 +2081,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
                         .HasColumnOrder(104);
@@ -2120,14 +2089,11 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(105);
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("FKRoleId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FKUserId");
 
                     b.ToTable("UserRole", "UserMgmt");
                 });
@@ -2487,11 +2453,15 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.UserManagement.RoleModel", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("FKRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("FKUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
 

@@ -2078,9 +2078,6 @@ namespace Repository.Migrations
                         .HasColumnType("integer")
                         .HasColumnOrder(101);
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
                         .HasColumnOrder(104);
@@ -2089,14 +2086,11 @@ namespace Repository.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(105);
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("FKRoleId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FKUserId");
 
                     b.ToTable("UserRole", "UserMgmt");
                 });
@@ -2456,11 +2450,15 @@ namespace Repository.Migrations
                 {
                     b.HasOne("Models.Entities.UserManagement.RoleModel", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("FKRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Models.Entities.UserManagement.UserModel", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("FKUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
 

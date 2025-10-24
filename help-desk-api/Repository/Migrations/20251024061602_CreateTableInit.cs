@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class recoverypasswoardss : Migration
+    public partial class CreateTableInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -457,13 +457,6 @@ namespace Repository.Migrations
                 schema: "menu",
                 columns: table => new
                 {
-                    RStatus = table.Column<int>(type: "integer", nullable: false),
-                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "integer", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<int>(type: "integer", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FkMenuActionMapId = table.Column<int>(type: "integer", nullable: true),
@@ -765,25 +758,25 @@ namespace Repository.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FKUserId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: true),
-                    FKRoleId = table.Column<int>(type: "integer", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true)
+                    FKRoleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRole_Role_RoleId",
-                        column: x => x.RoleId,
+                        name: "FK_UserRole_Role_FKRoleId",
+                        column: x => x.FKRoleId,
                         principalSchema: "UserMgmt",
                         principalTable: "Role",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRole_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserRole_Users_FKUserId",
+                        column: x => x.FKUserId,
                         principalSchema: "UserMgmt",
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1411,16 +1404,16 @@ namespace Repository.Migrations
                 column: "FKUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId",
+                name: "IX_UserRole_FKRoleId",
                 schema: "UserMgmt",
                 table: "UserRole",
-                column: "RoleId");
+                column: "FKRoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId",
+                name: "IX_UserRole_FKUserId",
                 schema: "UserMgmt",
                 table: "UserRole",
-                column: "UserId");
+                column: "FKUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_FkDepartmentId",
