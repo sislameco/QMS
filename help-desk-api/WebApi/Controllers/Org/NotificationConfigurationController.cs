@@ -11,7 +11,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("notification-configuration")]
-    [AllowAnonymous]
     public class NotificationConfigurationController : ControllerBase
     {
         private readonly INotificationTemplateService _notificationService;

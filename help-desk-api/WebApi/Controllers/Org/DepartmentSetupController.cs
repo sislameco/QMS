@@ -9,7 +9,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("department-setting")]
-    [AllowAnonymous]
     public class DepartmentSetupController : ControllerBase
     {
         private readonly ICompanyService _companyService;

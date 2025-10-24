@@ -8,7 +8,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("email-configuration")]
-    [AllowAnonymous]
     public class EmailConfigurationController : ControllerBase
     {
         private readonly IEmailConfigurationService _emailConfigurationService;

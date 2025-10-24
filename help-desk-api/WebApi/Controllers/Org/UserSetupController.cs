@@ -8,7 +8,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("tenant-user")]
-    [AllowAnonymous]
     public class UserSetupController : ControllerBase
     {
         private readonly ITenantUserService _tenantUserService;

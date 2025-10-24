@@ -13,7 +13,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("notification")]
-    [AllowAnonymous]
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _notificationService;

@@ -8,7 +8,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("root-resolution")]
-    [AllowAnonymous]
     public class CompanyDefineDataSourceController : ControllerBase
     {
         private readonly ICompanyDefineRootResolutionService _rootResolutionService;

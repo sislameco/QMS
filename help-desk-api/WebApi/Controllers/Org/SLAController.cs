@@ -9,7 +9,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("sla")]
-    [AllowAnonymous]
     public class SLAController : ControllerBase
     {
         private readonly ISLAService _slaService;

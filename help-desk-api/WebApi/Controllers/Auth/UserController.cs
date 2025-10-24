@@ -11,7 +11,7 @@ namespace WebApi.Controllers.Auth
 {
     [ApiController]
     [Route("user")]
-    [AllowAnonymous]
+
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,7 +21,7 @@ namespace WebApi.Controllers.Auth
         }
 
         [HttpGet]
-        [AllowAnonymous]
+
         public async Task<ActionResult> GetAll([FromForm] UserFilterDto input)
         {
             var users = await _userService.GetAllAsync(input);
@@ -61,7 +61,7 @@ namespace WebApi.Controllers.Auth
         /// Returns a list of users for dropdowns (Id & FullName only).
         /// </summary>
         [HttpGet("dropdown")]
-        [AllowAnonymous]
+
         public async Task<ActionResult<IEnumerable<UserDropdownDto>>> GetUserDropdown(int companyId)
         {
             var users = await _userService.GetUserSelectedList(companyId);

@@ -7,7 +7,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("field")]
-    [AllowAnonymous]
     public class FieldConfigController : ControllerBase
     {
         private readonly ICustomFieldService _customFieldService;

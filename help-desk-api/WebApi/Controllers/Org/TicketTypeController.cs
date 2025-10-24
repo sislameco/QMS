@@ -7,7 +7,6 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("ticket-type")]
-    [AllowAnonymous]
     public class TicketTypeController : ControllerBase
     {
         private readonly ITicketTypeService _ticketTypeService;
