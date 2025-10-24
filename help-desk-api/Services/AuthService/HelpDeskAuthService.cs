@@ -51,7 +51,9 @@ namespace Services.AuthService
         {
             string Password = Common.EncryptText(dto.Password);
             // 1. Fetch user by email
-            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password && u.IsActive == true);
+            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.UserName == dto.Email && u.PasswordHash == Password 
+           //&& u.IsActive == true
+            );
 
             if (user == null)
             {
