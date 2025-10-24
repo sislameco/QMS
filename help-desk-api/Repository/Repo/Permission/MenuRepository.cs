@@ -73,6 +73,29 @@ namespace Repository.Repo.Permission
                .Distinct()
                .OrderBy(x => x.DisplayOrder)
                .ToListAsync();
+                var parentMenus = await (
+                      from m in _dbContext.Menus
+                      join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId into mapJoin
+                      from role in mapJoin.DefaultIfEmpty()
+                      where flatMenus.Select(s=> s.ParentId).Contains(m.Id)
+
+                      select new UserMenuDto
+                      {
+                          Id = m.Id,
+                          MenuName = m.Name ?? string.Empty,
+                          Route = m.Route ?? string.Empty,
+                          ParentId = m.ParentId,
+                          DisplayOrder = m.DisplayOrder,
+                          Icon = m.IconClass ?? string.Empty
+                      }
+               )
+               .Distinct()
+               .OrderBy(x => x.DisplayOrder)
+               .ToListAsync();
+
+                flatMenus.AddRange(parentMenus);
+
+
             }
             else
             {
