@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Org;
 using Models.Entities.Notification;
+using Models.Enum;
 using Services.Org;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -35,9 +36,9 @@ namespace WebApi.Controllers.Org
         }
 
         [HttpGet("all/{fkCompanyId}")]
-        public async Task<ActionResult<List<NotificationOutputDto>>> GetAllActiveByCompanyId(int fkCompanyId)
+        public async Task<ActionResult<List<NotificationOutputDto>>> GetAllActiveByCompanyId(int fkCompanyId, EnumNotificationType type)
         {
-            var result = await _notificationService.GetAllActiveByCompanyIdAsync(fkCompanyId);
+            var result = await _notificationService.GetAllActiveByCompanyIdAsync(fkCompanyId, type);
             return Ok(result);
         }
     }

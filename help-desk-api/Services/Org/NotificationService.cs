@@ -11,7 +11,7 @@ namespace Services.Org
     {
         Task<bool> UpdateTemplateAsync(NotificationInputDto input);
         Task<bool> UpdateIsEnabledAsync(int id, bool isEnabled);
-        Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId);
+        Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId, EnumNotificationType type);
     }
     public class NotificationTemplateService : INotificationTemplateService
     {
