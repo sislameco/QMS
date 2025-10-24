@@ -370,7 +370,7 @@ namespace Repository.Seeds
             new MenuModel
             {
                 Id = 6,
-                Name = "Tenent Configuration",
+                Name = "Tenant Configuration",
                 ParentId = 5,
                 Url = "#",
                 Route = "/pages/company-configuration/list",

@@ -38,7 +38,7 @@ namespace Services.Org
         {
             var addField = new CustomFieldModel
             {
-                FkTicketTypeId = 1,
+                FkTicketTypeId = input.FkTicketTypeId,
                 DisplayName = input.DisplayName,
                 DataType = input.DataType,
                 IsRequired = input.IsRequired,
@@ -83,6 +83,7 @@ namespace Services.Org
             return new CustomFieldInputDto
             {
                 FkTicketTypeId = model.FkTicketTypeId,
+                //Type = model.TicketType.Title,
                 DisplayName = model.DisplayName,
                 DataType = model.DataType,
                 IsRequired = model.IsRequired,

@@ -1,25 +1,35 @@
-﻿using System;
+﻿using Models.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Dto.Ticket
-{
-    using System;
-    using System.Collections.Generic;
-
     namespace Models.Dto.Tickets
     {
-        public class TicketListView
+    public class TicketListOutputView
+    {
+        public int Id { get; set; }
+        public string TicketNumber { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public EnumTicketStatus Status { get; set; }
+        public EnumPriority Priority { get; set; }
+        public string Assignee { get; set; } = string.Empty;
+        public string Reporter { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
+    }
+    public class TicketListView
         {
             public int Id { get; set; }
             public string TicketNumber { get; set; } = string.Empty;
             public string Subject { get; set; } = string.Empty;
             public string Title { get; set; } = string.Empty;
             public string Description { get; set; } = string.Empty;
-            public string Status { get; set; } = string.Empty;
-            public string Priority { get; set; } = string.Empty;
+            public string Status { get; set; } 
+            public string Priority { get; set; }
             public string Assignee { get; set; } = string.Empty;
             public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
             public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
@@ -66,4 +76,4 @@ namespace Models.Dto.Ticket
         }
     }
 
-}
+

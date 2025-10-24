@@ -44,7 +44,8 @@ namespace Services.File
 
                 if (result > 0)
                 {
-                    return files.Select(s => s.Id).ToList();
+                    var ids = files.Select(s => s.Id).ToList();
+                    return ids;
                 }
                 else
                 {

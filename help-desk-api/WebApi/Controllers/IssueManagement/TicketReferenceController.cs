@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Dto.Ticket.Models.Dto.Tickets;
 using Services.IssueManagement;
 
 namespace WebApi.Controllers.IssueManagement
@@ -13,22 +12,6 @@ namespace WebApi.Controllers.IssueManagement
         public TicketReferenceController(ITicketReferenceService ticketReferenceService)
         {
             _ticketReferenceService = ticketReferenceService;
-        }
-        [AllowAnonymous]
-        [HttpGet("list")]
-        public IActionResult GetTickets(int fkCompanyId=1)
-        {
-            var tickets = TicketSeed.GetTickets();
-
-            var response = new
-            {
-                items = tickets,
-                total = tickets.Count,
-                page = 1,
-                pageSize = tickets.Count
-            };
-
-            return Ok(response);
         }
 
         [AllowAnonymous]

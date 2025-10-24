@@ -1,5 +1,6 @@
 ﻿using Models.AppSettings;
 using Models.Dto.Ticket;
+using Models.Dto.Tickets;
 using Models.Entities.File;
 using Models.Entities.Issue;
 using Models.Entities.Org;
@@ -13,6 +14,7 @@ namespace Services.IssueManagement
     {
         public Task<string> CreateTicket(AddTicketInputDto input);
         public Task<string> TicketView(int id);
+        public Task<List<TicketListOutputView>> GetTicketLists();
     }
     public class TicketService : ITicketService
     {
@@ -128,7 +130,7 @@ namespace Services.IssueManagement
                     FKUserId = input.FKAssignUser,
                     RStatus = EnumRStatus.Active
                 };
-                ticket.WatchList.Add(watchListModel);
+                await _unitOfWork.Repository<TicketWatchListModel, int>().AddAsync(watchListModel);
                 #endregion
                 #region Customer/Lead Map
                 if (input.IsCustomer && input.FKCustomerId.HasValue)
@@ -252,6 +254,27 @@ namespace Services.IssueManagement
         public Task<string> TicketView(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<TicketListOutputView>> GetTicketLists()
+        {
+            var ticket = await  _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active);
+            var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active);
+            var tickets = ticket.Select(s => new TicketListOutputView
+            {
+                Assignee = users.Where(x=> x.Id == s.AssignedUserId).FirstOrDefault().FirstName,
+                Reporter = users.Where(x => x.Id == s.CreatedBy).FirstOrDefault().FirstName,
+                CreatedDate = s.CreatedDate,
+                Description = s.Description,
+                Id = s.Id,
+                LastUpdate = s.UpdatedDate.HasValue ? s.UpdatedDate.Value : s.CreatedDate,
+                Title = s.Subject,
+                TicketNumber = s.TicketNumber,
+                Status = s.Status,
+                Priority = s.Priority,
+                Subject = s.Subject
+            });
+            return tickets.ToList();
         }
     }
 }

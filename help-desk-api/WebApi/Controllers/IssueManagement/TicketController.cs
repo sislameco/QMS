@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Models.Dto.Ticket;
-using Models.Dto.Ticket.Models.Dto.Tickets;
 using Services.IssueManagement;
 using WebApi.Helper.Security;
 
@@ -22,10 +21,10 @@ namespace WebApi.Controllers.IssueManagement
         }
         // generate create endpoint _ticketService.CreateTicket
         [HttpGet("list")]
-        public IActionResult GetTickets(int fkCompanyId)
+        public async Task<IActionResult> GetTickets(int fkCompanyId)
         {
-            var tickets = TicketSeed.GetTickets();
-
+            //var tickets = TicketSeed.GetTickets();
+            var tickets = await _ticketService.GetTicketLists();
             var response = new
             {
                 items = tickets,
