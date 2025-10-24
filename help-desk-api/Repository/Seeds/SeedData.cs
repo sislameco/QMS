@@ -934,10 +934,10 @@ namespace Repository.Seeds
             Event = NotificationEvent.RecoveryPassword,
             NotificationType = EnumNotificationType.Email,
             EmailConfigurationId = 6,
-            SubjectTemplate = "SLA Overdue - {{TicketId}}",
-            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            SubjectTemplate = "Recovery Password",
+            BodyTemplate = "",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+            Variables = new[] { "[user_name]", "[otp_code]" },
                                RStatus = EnumRStatus.Active
         },
           new NotificationTemplateModel
@@ -946,10 +946,9 @@ namespace Repository.Seeds
             Event = NotificationEvent.UserInvitation,
             NotificationType = EnumNotificationType.Email,
             EmailConfigurationId = 6,
-            SubjectTemplate = "SLA Overdue - {{TicketId}}",
-            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            SubjectTemplate = "",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+            Variables = new[] { "[invitation_url", "[user_name]" },
                                RStatus = EnumRStatus.Active
         },
 
@@ -1036,7 +1035,7 @@ namespace Repository.Seeds
             SubjectTemplate = "SLA Overdue - {{TicketId}}",
             BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+            Variables = new[] { "[user_name]", "[otp_code]" },
                                RStatus = EnumRStatus.Active
         },
           new NotificationTemplateModel
@@ -1048,7 +1047,7 @@ namespace Repository.Seeds
             SubjectTemplate = "SLA Overdue - {{TicketId}}",
             BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+            Variables = new[] {"[invitation_url", "[user_name]" },
                                RStatus = EnumRStatus.Active
         },
 
@@ -1135,7 +1134,7 @@ namespace Repository.Seeds
             SubjectTemplate = "SLA Overdue - {{TicketId}}",
             BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+            Variables = new[] {"[user_name]", "[otp_code]"},
                                RStatus = EnumRStatus.Active
         },
           new NotificationTemplateModel
@@ -1147,7 +1146,7 @@ namespace Repository.Seeds
             SubjectTemplate = "SLA Overdue - {{TicketId}}",
             BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
             IsEnabled = true,
-            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+            Variables = new[] { "[invitation_url", "[user_name]" },
                                RStatus = EnumRStatus.Active
         }
     };

@@ -48,11 +48,11 @@ namespace Services.Org
             return await _unitOfWork.CommitAsync() > 0;
         }
 
-        public async Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId)
+        public async Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId, EnumNotificationType type)
         {
             var repo = _unitOfWork.Repository<NotificationTemplateModel, int>();
             var entities = repo.FindByConditionOneColumn(
-                x => x.FkCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active,
+                x => x.FkCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active && x.NotificationType == type,
                 x => new { x.Id, x.BodyTemplate, x.SubjectTemplate, x.Variables, x.IsEnabled, x.Event, x.EmailConfigurationId, x.NotificationType });
 
             return entities.Select(x => new NotificationOutputDto
