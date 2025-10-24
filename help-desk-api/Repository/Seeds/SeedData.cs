@@ -927,6 +927,229 @@ namespace Repository.Seeds
             Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
                                RStatus = EnumRStatus.Active
         }
+        ,
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.RecoveryPassword,
+            NotificationType = EnumNotificationType.Email,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+          new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.UserInvitation,
+            NotificationType = EnumNotificationType.Email,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+
+          // App 
+             new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Created,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 1,
+            SubjectTemplate = "New Ticket Created - {{TicketId}}",
+            BodyTemplate = "Hello {{AssigneeName}},<br/>A new ticket ({{TicketId}}) has been created by {{CreatedBy}}.<br/>Subject: {{Subject}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Updated,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 2,
+            SubjectTemplate = "Ticket Updated - {{TicketId}}",
+            BodyTemplate = "Hello {{AssigneeName}},<br/>Ticket {{TicketId}} has been updated.<br/>Updated By: {{UpdatedBy}}<br/>Remarks: {{Remarks}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Resolved,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 3,
+            SubjectTemplate = "Ticket Resolved - {{TicketId}}",
+            BodyTemplate = "Hello {{CreatedBy}},<br/>Ticket {{TicketId}} has been resolved by {{ResolvedBy}}.<br/>Resolution: {{ResolutionSummary}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Closed,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 4,
+            SubjectTemplate = "Ticket Closed - {{TicketId}}",
+            BodyTemplate = "Dear {{CreatedBy}},<br/>Your ticket {{TicketId}} has been closed.<br/>Closed By: {{ClosedBy}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.SLADue,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 5,
+            SubjectTemplate = "SLA Due - {{TicketId}}",
+            BodyTemplate = "Reminder: Ticket {{TicketId}} assigned to {{AssigneeName}} is approaching SLA deadline ({{SLADate}}).",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.SLAOverdue,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        }
+        ,
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.RecoveryPassword,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+          new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.UserInvitation,
+            NotificationType = EnumNotificationType.App,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+
+          // system notification 
+             new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Created,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 1,
+            SubjectTemplate = "New Ticket Created - {{TicketId}}",
+            BodyTemplate = "Hello {{AssigneeName}},<br/>A new ticket ({{TicketId}}) has been created by {{CreatedBy}}.<br/>Subject: {{Subject}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "CreatedBy", "Subject" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Updated,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 2,
+            SubjectTemplate = "Ticket Updated - {{TicketId}}",
+            BodyTemplate = "Hello {{AssigneeName}},<br/>Ticket {{TicketId}} has been updated.<br/>Updated By: {{UpdatedBy}}<br/>Remarks: {{Remarks}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "UpdatedBy", "Remarks" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Resolved,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 3,
+            SubjectTemplate = "Ticket Resolved - {{TicketId}}",
+            BodyTemplate = "Hello {{CreatedBy}},<br/>Ticket {{TicketId}} has been resolved by {{ResolvedBy}}.<br/>Resolution: {{ResolutionSummary}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "CreatedBy", "ResolvedBy", "ResolutionSummary" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.Closed,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 4,
+            SubjectTemplate = "Ticket Closed - {{TicketId}}",
+            BodyTemplate = "Dear {{CreatedBy}},<br/>Your ticket {{TicketId}} has been closed.<br/>Closed By: {{ClosedBy}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "CreatedBy", "ClosedBy" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.SLADue,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 5,
+            SubjectTemplate = "SLA Due - {{TicketId}}",
+            BodyTemplate = "Reminder: Ticket {{TicketId}} assigned to {{AssigneeName}} is approaching SLA deadline ({{SLADate}}).",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.SLAOverdue,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        }
+        ,
+        new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.RecoveryPassword,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        },
+          new NotificationTemplateModel
+        {
+            FkCompanyId = 1,
+            Event = NotificationEvent.UserInvitation,
+            NotificationType = EnumNotificationType.System,
+            EmailConfigurationId = 6,
+            SubjectTemplate = "SLA Overdue - {{TicketId}}",
+            BodyTemplate = "Attention: Ticket {{TicketId}} assigned to {{AssigneeName}} has exceeded the SLA limit.<br/>Due Date: {{SLADate}}",
+            IsEnabled = true,
+            Variables = new[] { "TicketId", "AssigneeName", "SLADate" },
+                               RStatus = EnumRStatus.Active
+        }
     };
     }
 }
