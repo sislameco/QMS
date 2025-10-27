@@ -19,6 +19,7 @@ namespace Models.Entities.UserManagement
         public bool IsActive { get; set; }
         public bool IsReportingManager { get; set; }
         public int? IntegrationsPrimaryId { get; set; }
+        public bool IsTenantAdmin { get; set; }
         public int? FkCompanyId { get; set; }
         [ForeignKey("FkCompanyId")]
         public int? FkDepartmentId { get; set; }

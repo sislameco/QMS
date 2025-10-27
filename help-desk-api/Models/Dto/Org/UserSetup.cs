@@ -20,6 +20,7 @@ namespace Models.Dto.Org
         public string RoleName { get; set; }
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
+        public bool IsAdmin { get; set; }
     }
     public class UserSetupInputDto
     {
@@ -30,7 +31,7 @@ namespace Models.Dto.Org
         public string EmailAddress { get; set; }
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
-        public int IsAdmin { get; set; }
+        public bool IsAdmin { get; set; }
     }
 
     public class HostUserInputDto : HostUserUpdateInputDto

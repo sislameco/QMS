@@ -59,7 +59,7 @@ namespace Services.Org
                 user.FullName = $"{input.FirstName} {input.LastName}";
                 user.Email = input.EmailAddress;
                 user.Phone = input.PhoneNumber;
-
+                user.IsTenantAdmin = input.IsAdmin;
                 var userRole = await _unitOfWork.Repository<UserRoleModel, int>().FirstOrDefaultAsync(s => s.FKRoleId == input.RoleId && s.FKUserId == input.Id);
                 if (userRole == null)
                 {

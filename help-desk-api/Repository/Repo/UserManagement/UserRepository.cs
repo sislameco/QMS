@@ -88,7 +88,8 @@ namespace Repository.Repo.UserManagement
                      Email = g.Select(s => s.user.Email).FirstOrDefault(),
                      PhoneNumber = g.Select(s => s.user.Phone).FirstOrDefault(),
                      RoleId = g.Select(s => s.role.Id).FirstOrDefault(),
-                     RoleName = g.Select(x => x.role.Name).FirstOrDefault()
+                     RoleName = g.Select(x => x.role.Name).FirstOrDefault(),
+                     IsAdmin = g.Select(s => s.user.IsTenantAdmin).FirstOrDefault()
                  }).Skip(skip).Take(inputDto.ItemsPerPage).ToList();
 
             return new PaginationResponse<UserSetupOutputDto>
@@ -121,7 +122,8 @@ namespace Repository.Repo.UserManagement
                      Email = g.Select(s => s.user.Email).FirstOrDefault(),
                      PhoneNumber = g.Select(s => s.user.Phone).FirstOrDefault(),
                      RoleId = g.Select(s => s.role.Id).FirstOrDefault(),
-                     RoleName = g.Select(x => x.role.Name).FirstOrDefault()
+                     RoleName = g.Select(x => x.role.Name).FirstOrDefault(),
+                     IsAdmin = g.Select(s => s.user.IsTenantAdmin).FirstOrDefault()
                  }).FirstOrDefault();
             return tenentUser == null ? throw new BadRequestException("User Not Found") : tenentUser;
         }
