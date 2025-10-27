@@ -60,5 +60,12 @@ namespace WebApi.Controllers.Org
             if (!deleted) return NotFound();
             return NoContent();
         }
+
+        [HttpGet("tiles")]
+        public async Task<IActionResult> GetTile(int fkCompanyId)
+        {
+            var slas = await _slaService.GetTile(fkCompanyId);
+            return Ok(slas);
+        }
     }
 }

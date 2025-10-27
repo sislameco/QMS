@@ -26,4 +26,11 @@ namespace Models.Dto.Org
         [JsonIgnore]
         public EnumRStatus Status { get; set; }
     }
+    public class SLATileViewOutputDto
+    {
+        public int TotalRules { get; set; }
+        public int ActiveRules { get; set; }
+        public int CriticalRules { get; set; }
+        public int AvgResponse { get; set; }
+    }
 }

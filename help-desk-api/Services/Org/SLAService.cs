@@ -18,6 +18,7 @@ namespace Services.Org
         Task<bool> CreateAsync(SLAInputDto dto);
         Task<bool> UpdateAsync(int id, SLAInputDto dto);
         Task<bool> DeleteAsync(int id);
+        public Task<SLATileViewOutputDto> GetTile(int companyId);
     }
 
     public class SLAService : ISLAService
@@ -31,7 +32,7 @@ namespace Services.Org
 
         public async Task<List<SLAOutputDto>> GetAllAsync(int fkCompanyId)
         {
-            var entities = await _unitOfWork.Repository<SLAConfigurationModel, int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == fkCompanyId, x=> x.TicketType);
+            var entities = await _unitOfWork.Repository<SLAConfigurationModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == fkCompanyId, x => x.TicketType);
             return entities.Select(MapToDto).ToList();
         }
 
@@ -93,7 +94,7 @@ namespace Services.Org
             EscalationTime = entity.ResolutionTime,
             Status = entity.RStatus,
             Priority = entity.TicketType != null ? entity.TicketType.Priority : default,
-            TypeTitle = entity.TicketType != null ? entity.TicketType.Title.ToString(): default ,
+            TypeTitle = entity.TicketType != null ? entity.TicketType.Title.ToString() : default,
             QmsType = entity.TicketType != null ? entity.TicketType.QmsType : default,
         };
 
@@ -116,6 +117,17 @@ namespace Services.Org
                 x.Id != id &&
                 x.RStatus == EnumRStatus.Active);
             return !exists;
+        }
+
+        public SLATileViewOutputDto GetTile(int companyId)
+        {
+            return new()
+            {
+                ActiveRules = 10,
+                AvgResponse = 10,
+                CriticalRules = 10,
+                TotalRules = 10
+            };
         }
     }
 }

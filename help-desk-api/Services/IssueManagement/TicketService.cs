@@ -14,7 +14,7 @@ namespace Services.IssueManagement
     {
         public Task<string> CreateTicket(AddTicketInputDto input);
         public Task<string> TicketView(int id);
-        public Task<List<TicketListOutputView>> GetTicketLists();
+        public Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input);
     }
     public class TicketService : ITicketService
     {
@@ -256,10 +256,15 @@ namespace Services.IssueManagement
             throw new NotImplementedException();
         }
 
-        public async Task<List<TicketListOutputView>> GetTicketLists()
+        public async Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input)
         {
-            var ticket = await  _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active);
+            var ticket = await  _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId);
+
+
             var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active);
+
+
+
             var tickets = ticket.Select(s => new TicketListOutputView
             {
                 Assignee = users.Where(x=> x.Id == s.AssignedUserId).FirstOrDefault().FirstName,

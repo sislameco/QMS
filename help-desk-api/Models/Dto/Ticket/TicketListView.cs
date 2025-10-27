@@ -20,6 +20,7 @@ using System.Threading.Tasks;
         public string Reporter { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
+        public DateTime OverDue { get; set; } = DateTime.UtcNow;
     }
     public class TicketListView
         {

@@ -12,19 +12,15 @@ namespace WebApi.Controllers.IssueManagement
     [CustomAuthorization]
     public class TicketController : ControllerBase
     {
-        private readonly ITicketReferenceService _ticketReferenceService;
         private readonly ITicketService _ticketService;
-        public TicketController(ITicketReferenceService ticketReferenceService, ITicketService ticketService)
+        public TicketController(ITicketService ticketService)
         {
-            _ticketReferenceService = ticketReferenceService;
             _ticketService = ticketService;
         }
-        // generate create endpoint _ticketService.CreateTicket
         [HttpGet("list")]
-        public async Task<IActionResult> GetTickets(int fkCompanyId)
+        public async Task<IActionResult> GetTickets(int companyId, TicketFilterInputDto input)
         {
-            //var tickets = TicketSeed.GetTickets();
-            var tickets = await _ticketService.GetTicketLists();
+            var tickets = await _ticketService.GetTicketLists(companyId, input);
             var response = new
             {
                 items = tickets,
@@ -32,10 +28,8 @@ namespace WebApi.Controllers.IssueManagement
                 page = 1,
                 pageSize = tickets.Count
             };
-
             return Ok(response);
         }
-
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateTicket([FromBody] AddTicketInputDto input)
