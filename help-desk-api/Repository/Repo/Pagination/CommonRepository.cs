@@ -60,47 +60,50 @@ namespace Repository.Repo.Pagination
             input.SearchText = string.IsNullOrWhiteSpace(input.SearchText) ? "" : input.SearchText;
             input.SearchText = input.SearchText?.Trim();
             var data =
-                from dep in _dbContext.Departments
-                join user in _dbContext.Users
-                    on dep.Id equals user.FkDepartmentId into users
-                join man in _dbContext.Users
-                    on dep.FKManagerId equals man.Id into managers
-                from man in managers.DefaultIfEmpty()
+                (from dep in _dbContext.Departments
+                 join user in _dbContext.Users
+                     on dep.Id equals user.FkDepartmentId into users
+                 from user in users.DefaultIfEmpty()
 
-                join menud in _dbContext.MenuActionDepartmentMapping
-                  on dep.Id equals menud.FkDepartmentId into module
-                from menud in module.DefaultIfEmpty()
+                 join man in _dbContext.Users
+                     on dep.FKManagerId equals man.Id into managers
+                 from man in managers.DefaultIfEmpty()
 
-
-                join menuAction in _dbContext.MenuActionMaps
-                on menud.FKMenuActionMapId equals menuAction.Id into menuActions
-                from menuAction in menuActions.DefaultIfEmpty()
+                 join menud in _dbContext.MenuActionDepartmentMapping
+                   on dep.Id equals menud.FkDepartmentId into module
+                 from menud in module.DefaultIfEmpty()
 
 
-                join menu in _dbContext.MenuActionMaps
-                on menud.FKMenuActionMapId equals menu.Id into menus
-                from menu in menus.DefaultIfEmpty()
+                 join menuAction in _dbContext.MenuActionMaps
+                 on menud.FKMenuActionMapId equals menuAction.Id into menuActions
+                 from menuAction in menuActions.DefaultIfEmpty()
 
 
+                 join action in _dbContext.MenuActions
+                 on menuAction.FKMenuActionId equals action.Id into actions
+                 from action in actions.DefaultIfEmpty()
+
+                 join menu in _dbContext.Menus
+                 on menuAction.FKMenuId equals menu.Id into menus
+                 from menu in menus.DefaultIfEmpty()
 
 
-                where dep.FKCompanyId == companyId 
-                && dep.RStatus == EnumRStatus.Active 
-                && users.Any(u => input.UserIds == null || input.UserIds.Count == 0 || input.UserIds.Contains(u.Id))
-                && users.Any(u => input.ModuleId == null || input.ModuleId.Length == 0 || input.ModuleId.Contains(menu.FKMenuId))
-                && input.SearchText == null 
-                    || dep.Name.Contains(input.SearchText)
-                    ||  ( users.Any(u => u.UserName.Contains(input.SearchText) || string.Concat(u.FirstName , u.LastName).Contains(input.SearchText))) 
-                    
-                select new
-                {
-                    Department = dep,
-                    Manager = man,
-                    Users = users,
-                    Menus = menu
-                };
+                 where dep.FKCompanyId == companyId
+                 && dep.RStatus == EnumRStatus.Active
+                 && (input.UserIds.Count() == 0 || input.UserIds.Contains(user.Id))
+                 && (input.ModuleIds.Count() == 0 || input.ModuleIds.Contains(menu.Id))
+                 && (input.SearchText == null || dep.Name.Contains(input.SearchText))
 
-            var result = await data
+                 select new
+                 {
+                     Department = dep,
+                     Manager = man,
+                     Users = user,
+                     Menus = menu,
+                     TotalUser = user == null ? 0 : 1
+                 }).ToList();
+
+            var result =  data
      .GroupBy(x => x.Department.Id)
      .Select(g => new DepartmentSettingOutputDto
      {
@@ -113,21 +116,19 @@ namespace Repository.Repo.Pagination
          ManagerName = g.First().Manager != null
              ? g.First().Manager.FirstName + " " + g.First().Manager.LastName
              : null,
-         TotalUsers = g.SelectMany(s => s.Users).Count(),
+         TotalUsers = g.Sum(s=> s.TotalUser) ,
          Moduls = g
-             .Where(s => s.Menus != null && s.Menus.Menu != null)
-             .Select(s => s.Menus.Menu.Name)
+             .Where(s => s.Menus != null && s.Menus != null)
+             .Select(s => s.Menus.Name)
              .Distinct()
              .ToArray(),
      })
-     .Skip((input.PageNo - 1) * input.PageNo)
-        .Take(input.ItemsPerPage)
-     .ToListAsync();
+     .ToList();
 
 
             return new PaginationResponse<DepartmentSettingOutputDto>
             {
-                Items = result,
+                Items = result.Skip((input.PageNo - 1) * input.PageNo).Take(input.ItemsPerPage).ToList(),
                 Total = result.Count
             };
         }
