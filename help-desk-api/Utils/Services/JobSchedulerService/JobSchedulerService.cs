@@ -1,4 +1,5 @@
 
+using JobSchedulerService;
 using Models.AppSettings;
 using Models.Dto.Notification;
 using Models.Enum;
@@ -6,7 +7,7 @@ using Newtonsoft.Json;
 using Serilog;
 using Utils.Integration.API;
 
-namespace omsService.JobSchedulerService
+namespace JobSchedulerService
 {
     public interface IJobSchedulerService
     {

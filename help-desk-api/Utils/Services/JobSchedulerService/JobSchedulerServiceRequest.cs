@@ -1,7 +1,7 @@
 ﻿
 using Utils.Integration.API;
 
-namespace omsService.JobSchedulerService
+namespace JobSchedulerService
 {
     public class JobSchedulerServiceRequest : ApiRequest
     {
