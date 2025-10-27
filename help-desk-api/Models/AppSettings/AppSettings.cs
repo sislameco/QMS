@@ -20,6 +20,8 @@ namespace Models.AppSettings
         public static string TicketPath { get; set; }
         public static Slack Slack { get; set; }
         public static ApiConf QMSApi { get; set; }
+        public static JobScheduler JobScheduler { get; set; }
+
     }
     public class Redis
     {
@@ -56,6 +58,11 @@ namespace Models.AppSettings
         public string EndPoint { get; set; }
         public string BaseUrl { get; set; }
 
+    }
+    public class JobScheduler
+    {
+        public string AuthorizationKey { get; set; }
+        public string BaseUrl { get; set; }
     }
 
 }

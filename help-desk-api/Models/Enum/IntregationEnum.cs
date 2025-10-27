@@ -9,7 +9,8 @@ namespace Models.Enum
     public enum EnumExternalServiceModules
     {
         QsmartAPI = 1,
-        HRAPI = 2
+        HRAPI = 2,
+        JobScheduler = 3
     }
     public enum EnumDataType
     {
