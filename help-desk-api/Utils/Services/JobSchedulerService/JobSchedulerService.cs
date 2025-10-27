@@ -7,20 +7,20 @@ using Newtonsoft.Json;
 using Serilog;
 using Utils.Integration.API;
 
-namespace JobSchedulerService
+namespace Job
 {
-    public interface IJobSchedulerService
+    public interface IJobService
     {
         Task<string> Create(JobSchedulerOutputDto jobScheduler);
         Task<bool> Update(JobSchedulerOutputDto jobScheduler);
         Task Delete(string schedulerId, string jobModuleId);
     }
-    public class JobSchedulerService : IJobSchedulerService
+    public class JobService : IJobService
     {
         string _baseUrl = AppSettings.JobScheduler.BaseUrl;
         IQsClient _qsClient;
         dynamic _response;
-        public JobSchedulerService(IQsClient qsClient)
+        public JobService(IQsClient qsClient)
         {
             _qsClient = qsClient;
         }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using Job;
+using JobSchedulerService;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models.AppSettings;
@@ -69,6 +71,8 @@ builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
 builder.Services.AddScoped<IHRService, HRService>();
 builder.Services.AddScoped<IQsClient, QsClient>();
 builder.Services.AddScoped<HttpClient, HttpClient>();
+builder.Services.AddScoped<IEmailScheduledService, EmailScheduledService>();
+builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddAllServices(typeof(IPermissionService).Assembly);
 builder.Services.AddAllRepositories(typeof(IDashboardRepository).Assembly);
 
@@ -93,7 +97,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddSingleton<IUserInfos, UserInfos>();
-builder.Services.AddSingleton<IEmailScheduledService, EmailScheduledService>();
+
 builder.Services.AddBearerHeader();
 var corsOrigins = builder.Configuration.GetSection("AppProperties:CorsOrigins").Get<string[]>();
 builder.Services.AddMvc(options =>{options.Filters.Add<AuthFilter>();});

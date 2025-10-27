@@ -1,5 +1,6 @@
-﻿using Models.Dto.Notification;
-using omsService.JobSchedulerService;
+﻿using Job;
+using JobSchedulerService;
+using Models.Dto.Notification;
 
 namespace Services.Notification
 {
@@ -9,8 +10,8 @@ namespace Services.Notification
     }
     public class EmailScheduledService : IEmailScheduledService
     {
-        private readonly IJobSchedulerService _jobSchedulerService;
-        public EmailScheduledService(IJobSchedulerService jobSchedulerService)
+        private readonly IJobService _jobSchedulerService;
+        public EmailScheduledService(IJobService jobSchedulerService)
         {
             _jobSchedulerService = jobSchedulerService;
         }
