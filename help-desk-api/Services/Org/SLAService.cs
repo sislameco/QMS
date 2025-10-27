@@ -18,7 +18,7 @@ namespace Services.Org
         Task<bool> CreateAsync(SLAInputDto dto);
         Task<bool> UpdateAsync(int id, SLAInputDto dto);
         Task<bool> DeleteAsync(int id);
-        public Task<SLATileViewOutputDto> GetTile(int companyId);
+        SLATileViewOutputDto GetTile(int companyId);
     }
 
     public class SLAService : ISLAService
