@@ -20,7 +20,7 @@ namespace WebApi.Controllers.Org
             return Ok(departments);
         }
 
-        [HttpGet("tiles/{companyId")]
+        [HttpGet("tiles/{companyId}")]
         public async Task<IActionResult> GetUserTiles(int companyId, [FromQuery] UserPaginationInputDto input)
         {
             var result = await _tenantUserService.GetUserTilesAsync(companyId, input);
