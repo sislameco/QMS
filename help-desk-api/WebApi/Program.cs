@@ -8,6 +8,7 @@ using Repository.Repo.UserManagement;
 using Repository.Seeds;
 using Services;
 using Services.AuthService;
+using Services.Notification;
 using Services.UserManagement;
 using Utilities.Redis;
 using Utils;
@@ -92,6 +93,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddSingleton<IUserInfos, UserInfos>();
+builder.Services.AddSingleton<IEmailScheduledService, EmailScheduledService>();
 builder.Services.AddBearerHeader();
 var corsOrigins = builder.Configuration.GetSection("AppProperties:CorsOrigins").Get<string[]>();
 builder.Services.AddMvc(options =>{options.Filters.Add<AuthFilter>();});
