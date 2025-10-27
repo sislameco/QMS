@@ -78,7 +78,7 @@ namespace Services.Org
             var entity = await repo.GetByIdAsync(id);
             if (entity == null) return false;
 
-            await repo.DeleteAsync(id);
+            await _unitOfWork.Repository<SLAConfigurationModel, int>().DeleteAsync(id);
             return await _unitOfWork.CommitAsync() > 0;
         }
 

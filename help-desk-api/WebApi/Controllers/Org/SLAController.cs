@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Org;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Services.Org;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WebApi.Controllers.Org
 {
@@ -56,15 +57,14 @@ namespace WebApi.Controllers.Org
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _slaService.DeleteAsync(id);
-            if (!deleted) return NotFound();
-            return NoContent();
+            bool deleted = await _slaService.DeleteAsync(id);
+            return Ok(deleted);
         }
 
         [HttpGet("tiles")]
-        public async Task<IActionResult> GetTile(int fkCompanyId)
+        public  IActionResult GetTile(int fkCompanyId)
         {
-            var slas = await _slaService.GetTile(fkCompanyId);
+            var slas = _slaService.GetTile(fkCompanyId);
             return Ok(slas);
         }
     }
