@@ -21,6 +21,12 @@ namespace WebApi.Controllers.Org
             var departments = await _companyService.GetAllDepartmentsAsync(companyId, input);
             return Ok(departments);
         }
+        [HttpGet("tiles/{companyId}")]
+        public async Task<IActionResult> GetDeparmentTiles(int companyId, [FromQuery] DepartmentSettingInputDto input)
+        {
+            var departments = await _companyService.GetDepartmentTilesAsync(companyId, input);
+            return Ok(departments);
+        }
         [HttpPatch("update")]
         public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentUpdateDto dto)
         {

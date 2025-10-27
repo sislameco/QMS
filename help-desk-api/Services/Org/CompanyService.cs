@@ -32,6 +32,7 @@ namespace Services.Org
         Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto);
         Task<DepartmentSetupOutputDto> GetDepartmentById(int id);
         Task<List<UserDropdownDto>> GetDepartmentSelectedList(int companyId);
+        Task<DepartmentTileDto> GetDepartmentTilesAsync(int companyId);
         #endregion
     }
     public class CompanyService : ICompanyService
