@@ -32,7 +32,7 @@ namespace Services.Org
         Task<bool> UpdateDepartmentAsync(DepartmentUpdateDto dto);
         Task<DepartmentSetupOutputDto> GetDepartmentById(int id);
         Task<List<UserDropdownDto>> GetDepartmentSelectedList(int companyId);
-        Task<DepartmentTileDto> GetDepartmentTilesAsync(int companyId);
+        Task<DepartmentTileDto> GetDepartmentTilesAsync(int companyId, DepartmentSettingInputDto input);
         #endregion
     }
     public class CompanyService : ICompanyService
@@ -468,7 +468,7 @@ namespace Services.Org
                 FullName = s.Name
             }).ToList();
         }
-        public async Task<DepartmentTileDto> GetDepartmentTilesAsync(int companyId)
+        public async Task<DepartmentTileDto> GetDepartmentTilesAsync(int companyId, DepartmentSettingInputDto input)
         {
             //var departments = await _dbContext.Departments
             //    .Where(d => d.FKCompanyId == companyId && d.RStatus != EnumRStatus.Deleted)
