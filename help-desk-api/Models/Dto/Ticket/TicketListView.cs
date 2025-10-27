@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-    namespace Models.Dto.Tickets
-    {
+namespace Models.Dto.Tickets
+{
     public class TicketListOutputView
     {
         public int Id { get; set; }
@@ -23,24 +23,31 @@ using System.Threading.Tasks;
         public DateTime OverDue { get; set; } = DateTime.UtcNow;
     }
     public class TicketListView
-        {
-            public int Id { get; set; }
-            public string TicketNumber { get; set; } = string.Empty;
-            public string Subject { get; set; } = string.Empty;
-            public string Title { get; set; } = string.Empty;
-            public string Description { get; set; } = string.Empty;
-            public string Status { get; set; } 
-            public string Priority { get; set; }
-            public string Assignee { get; set; } = string.Empty;
-            public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-            public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
-        }
+    {
+        public int Id { get; set; }
+        public string TicketNumber { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Status { get; set; }
+        public string Priority { get; set; }
+        public string Assignee { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
+    }
+    public class TicketTileView
+    {
+        public int TotalTicket { get; set; }
+        public int OpenTicket { get; set; }
+        public int InProgressTicket { get; set; }
+        public int ClosedTicket { get; set; }
+    }
 
-        public static class TicketSeed
+    public static class TicketSeed
+    {
+        public static List<TicketListView> GetTickets()
         {
-            public static List<TicketListView> GetTickets()
-            {
-                return new List<TicketListView>
+            return new List<TicketListView>
             {
                 new TicketListView { Id = 1, TicketNumber = "TKT-2025-001", Subject = "Customer Complaint", Title = "Product damaged on delivery", Description = "Customer reported broken product", Status = "Open", Priority = "High", Assignee = "Saiful", CreatedDate = DateTime.UtcNow.AddDays(-30), LastUpdate = DateTime.UtcNow.AddDays(-29) },
                 new TicketListView { Id = 2, TicketNumber = "TKT-2025-002", Subject = "Network Issue", Title = "VPN not working", Description = "Remote users cannot connect", Status = "In Progress", Priority = "Medium", Assignee = "Shamim", CreatedDate = DateTime.UtcNow.AddDays(-29), LastUpdate = DateTime.UtcNow.AddDays(-28) },
@@ -73,8 +80,8 @@ using System.Threading.Tasks;
                 new TicketListView { Id = 29, TicketNumber = "TKT-2025-029", Subject = "Integration Bug", Title = "Payment gateway error", Description = "Payments failing for VISA cards", Status = "In Progress", Priority = "High", Assignee = "Brian", CreatedDate = DateTime.UtcNow.AddDays(-2), LastUpdate = DateTime.UtcNow.AddDays(-1) },
                 new TicketListView { Id = 30, TicketNumber = "TKT-2025-030", Subject = "Email Bounce", Title = "Emails bouncing back", Description = "Customer emails rejected by mail server", Status = "Closed", Priority = "Low", Assignee = "Saiful", CreatedDate = DateTime.UtcNow.AddDays(-1), LastUpdate = DateTime.UtcNow }
             };
-            }
         }
     }
+}
 
 

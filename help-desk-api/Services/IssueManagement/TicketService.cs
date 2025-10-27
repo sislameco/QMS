@@ -12,9 +12,11 @@ namespace Services.IssueManagement
 {
     public interface ITicketService
     {
-        public Task<string> CreateTicket(AddTicketInputDto input);
-        public Task<string> TicketView(int id);
-        public Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input);
+        Task<string> CreateTicket(AddTicketInputDto input);
+        Task<string> TicketView(int id);
+        Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input);
+        TicketTileView GetTilesView(int companyId, TicketFilterInputDto input);
+
     }
     public class TicketService : ITicketService
     {
@@ -280,6 +282,18 @@ namespace Services.IssueManagement
                 Subject = s.Subject
             });
             return tickets.ToList();
+        }
+
+        public TicketTileView GetTilesView(int companyId, TicketFilterInputDto input)
+        {
+            var ticketTile = new TicketTileView()
+            {
+                ClosedTicket = 10,
+                InProgressTicket = 10,
+                OpenTicket = 10,
+                TotalTicket = 30
+            };
+            return ticketTile;
         }
     }
 }

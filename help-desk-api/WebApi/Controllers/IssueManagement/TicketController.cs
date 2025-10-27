@@ -43,6 +43,11 @@ namespace WebApi.Controllers.IssueManagement
             var result = await _ticketService.TicketView(id);
             return Ok(new { ticketId = result });
         }
+        public IActionResult GetTile(int companyId, TicketFilterInputDto input)
+        {
+            var result = _ticketService.GetTilesView(companyId,input);
+            return Ok(result);
+        }
 
 
 
