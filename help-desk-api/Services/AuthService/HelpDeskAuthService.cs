@@ -28,7 +28,7 @@ namespace Services.AuthService
         Task<HelpDeskLoginResponseDto> RefreshToken(string token, HttpContext httpContext, HttpRequest request);
         Task<string> ForgotPassword(ForgotPasswordInputDto model);
         Task<ObjectResponse<bool>> UpdatePassword(ChangePasswordInputDto data, int userId);
-        Task<bool> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model);
+        Task<int> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model);
     }
 
     public class HelpDeskAuthService : IHelpDeskAuthService
@@ -218,16 +218,16 @@ namespace Services.AuthService
             var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(x => x.Id == userId) ?? throw new BadRequestException("") ?? throw new BadRequestException("Requested user does not exist.");
 
 
-            if (Common.DecryptText(user.PasswordHash) != data.CurrentPassword)
-                throw new BadRequestException("Entered Current password is not valid.");
+            //if (Common.DecryptText(user.PasswordHash) != data.CurrentPassword)
+            //    throw new BadRequestException("Entered Current password is not valid.");
 
-            // update password
-            //send an email notification
-
+            user.PasswordHash = Common.EncryptText(data.NewPassword);
+            await _unitOfWork.Repository<UserModel, int>().UpdateAsync(user);
+            await _unitOfWork.CommitAsync();
             return new ObjectResponse<bool> { Data = true };
         }
 
-        public async Task<bool> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model)
+        public async Task<int> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model)
         {
             JwtTokenParse userJwtToken = JwtTokenDecode.GetTokenDecode(model.UserToken, true);
             var userId = Convert.ToInt32(userJwtToken.UserId);
@@ -239,7 +239,7 @@ namespace Services.AuthService
                 recoverPasswordToken.IsVarified = true;
                 await _unitOfWork.Repository<RecoverPasswordTokenModel, int>().UpdateAsync(recoverPasswordToken);
                 await _unitOfWork.CommitAsync();
-                return true;
+                return userId;
             }
             else
             {
@@ -258,7 +258,8 @@ namespace Services.AuthService
                 FkUserId = user.Id,
                 IsVarified = false,
                 OtpCode = otpCode,
-                UserToken = token
+                UserToken = token,
+                RStatus = EnumRStatus.Active
             };
 
             // Use UnitOfWork to add and save the token

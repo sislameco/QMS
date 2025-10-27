@@ -51,11 +51,11 @@ namespace WebApi.Controllers.Auth
 
         [AllowAnonymous]
         [HttpPost("password-recovery-otp-verification")]
-        public async Task<ObjectResponse<bool>> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model)
+        public async Task<ObjectResponse<int>> RecoverPasswordVerification(RecoverPasswordVerificationInputDto model)
         {
             model.Browser = Common.GetBrowserIpInformation(HttpContext, Request);
             var res = await _authService.RecoverPasswordVerification(model);
-            return new ObjectResponse<bool>() { Data = res, Message = res ? "Successfully verified" : "Verification failed" };
+            return new ObjectResponse<int>() { Data = res, Message = res >  0 ? "Successfully verified" : "Verification failed" };
         }
 
         [AllowAnonymous]

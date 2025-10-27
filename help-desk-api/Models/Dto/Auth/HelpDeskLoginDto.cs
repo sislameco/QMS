@@ -19,9 +19,9 @@ namespace Models.Dto.Auth
     }
     public class ChangePasswordInputDto
     {
-        [Required]
-        [DataType(DataType.Password)]
-        public string CurrentPassword { get; set; }
+        //[Required]
+        //[DataType(DataType.Password)]
+        //public string CurrentPassword { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
