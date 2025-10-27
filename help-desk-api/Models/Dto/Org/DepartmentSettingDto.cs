@@ -1,18 +1,13 @@
 ﻿using Models.Dto.GlobalDto;
 using Models.Dto.UserManagement;
 using Models.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models.Dto.Org
 {
     public class DepartmentSettingInputDto:PagedInputDto
     {
         public List<int> UserIds { get; set; }
-        public int[] ModuleId { get; set;} = new int[0];
+        public int[] ModuleId { get; set;}
     }
 
     public class DepartmentSettingOutputDto : PagedInputDto

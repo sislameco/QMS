@@ -38,7 +38,7 @@ namespace WebApi.Controllers.Org
                 return Ok();
             return BadRequest("Update failed");
         }
-        // generate department get by id
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserId(int id)
         {

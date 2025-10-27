@@ -1,16 +1,10 @@
 ﻿using Models.Dto.GlobalDto;
-using Models.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models.Dto.Org
 {
     public class UserPaginationInputDto : PagedInputDto
     {
-        public int DepartmentId { get; set; }
+        public int[] DepartmentId { get; set; }
         public int RoleId { get; set; }
 
     }

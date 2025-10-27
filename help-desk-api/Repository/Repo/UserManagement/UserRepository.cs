@@ -73,7 +73,7 @@ namespace Repository.Repo.UserManagement
                         && (userDept == null || userDept.RStatus == EnumRStatus.Active)
                         && user.FkCompanyId == companyId
                     && (inputDto.RoleId == 0 || role.Id == inputDto.RoleId)
-                    && (inputDto.DepartmentId == 0 || userDept.Id == inputDto.DepartmentId)
+                  //  && (inputDto.DepartmentIds == 0 || userDept.Id == inputDto.DepartmentIds)
                     && (string.IsNullOrEmpty(inputDto.SearchText) || user.UserName.Contains(inputDto.SearchText) || user.Email.Contains(inputDto.SearchText) || user.Phone.Contains(inputDto.SearchText))
                  group new { user, role, userDept } by new
                  {
