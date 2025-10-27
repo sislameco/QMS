@@ -79,18 +79,5 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(subforms);
         }
 
-        [AllowAnonymous]
-        [HttpGet("modules")]
-        public IActionResult GetModules()
-        {
-            List<DropdownOutputDto<int,string>> modules = new List<DropdownOutputDto<int, string>>()
-            {
-                new DropdownOutputDto<int,string>(){ Id=1, Name="Ticket Center", IsDefault=false },
-                new DropdownOutputDto<int,string>(){ Id=2, Name="Capa Center", IsDefault=false },
-                new DropdownOutputDto<int,string>(){ Id=3, Name="Customer Complaines", IsDefault=false },
-            };
-            return Ok(modules);
-        }
-
     }
 }

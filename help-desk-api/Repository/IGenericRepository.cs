@@ -26,7 +26,7 @@ namespace Repository
         Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync();
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
-        List<TResult> FindByConditionOneColumn<TResult>(
+        List<TResult> FindByConditionSelected<TResult>(
            Expression<Func<T, bool>> predicate,
            Expression<Func<T, TResult>> selector);
         Task BulkInsertAsync(IEnumerable<T> entities);
@@ -146,7 +146,7 @@ namespace Repository
             return await _dbSet.Where(predicate).Where(e => e.RStatus == EnumRStatus.Active).FirstOrDefaultAsync();
         }
 
-        public List<TResult> FindByConditionOneColumn<TResult>(
+        public List<TResult> FindByConditionSelected<TResult>(
            Expression<Func<T, bool>> predicate,
            Expression<Func<T, TResult>> selector)
         {

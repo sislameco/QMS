@@ -18,6 +18,7 @@ namespace Models.Entities.UserManagement
         public string IconClass { get; set; } = null!;
         public string IconViewBox { get; set; } = null!;
         public string Route { get; set; } = null!;
+        public bool IsModule { get; set; }
         public ICollection<MenuActionMapModel> MenuActionMaps { get; set; } = null!;
     }
 }

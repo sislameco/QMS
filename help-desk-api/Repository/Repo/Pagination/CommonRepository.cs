@@ -56,6 +56,9 @@ namespace Repository.Repo.Pagination
 
         public async Task<PaginationResponse<DepartmentSettingOutputDto>> GetDepartments(int companyId, DepartmentSettingInputDto input)
         {
+
+            input.SearchText = string.IsNullOrWhiteSpace(input.SearchText) ? "" : input.SearchText;
+            input.SearchText = input.SearchText?.Trim();
             var data =
                 from dep in _dbContext.Departments
                 join user in _dbContext.Users
@@ -81,7 +84,14 @@ namespace Repository.Repo.Pagination
 
 
 
-                where dep.FKCompanyId == companyId && dep.RStatus != EnumRStatus.Deleted
+                where dep.FKCompanyId == companyId 
+                && dep.RStatus == EnumRStatus.Active 
+                && users.Any(u => input.UserIds == null || input.UserIds.Count == 0 || input.UserIds.Contains(u.Id))
+                && users.Any(u => input.ModuleId == null || input.ModuleId.Length == 0 || input.ModuleId.Contains(menu.FKMenuId))
+                && input.SearchText == null 
+                    || dep.Name.Contains(input.SearchText)
+                    ||  ( users.Any(u => u.UserName.Contains(input.SearchText) || string.Concat(u.FirstName , u.LastName).Contains(input.SearchText))) 
+                    
                 select new
                 {
                     Department = dep,
@@ -110,6 +120,8 @@ namespace Repository.Repo.Pagination
              .Distinct()
              .ToArray(),
      })
+     .Skip((input.PageNo - 1) * input.PageNo)
+        .Take(input.ItemsPerPage)
      .ToListAsync();
 
 

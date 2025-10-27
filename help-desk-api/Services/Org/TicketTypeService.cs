@@ -31,10 +31,10 @@ namespace Services.Org
             entities.ToList();
 
             var departments = _unitOfWork.Repository<DepartmentModel, int>()
-                 .FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == 1, s => new { s.Id, s.Name });
+                 .FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == 1, s => new { s.Id, s.Name });
             entities = entities.ToList();
             var users = _unitOfWork.Repository<UserModel, int>()
-                 .FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active && s.FkCompanyId == 1, s => new { s.Id,s.FirstName,s.LastName });
+                 .FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FkCompanyId == 1, s => new { s.Id,s.FirstName,s.LastName });
             entities = entities.ToList();
 
             var data = (List<TicketTypeOutputDto>)entities.Select(MapToDto).ToList();
