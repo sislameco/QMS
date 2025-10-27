@@ -12,6 +12,7 @@ namespace Models.Dto.Org
     public class DepartmentSettingInputDto:PagedInputDto
     {
         public List<int> UserIds { get; set; }
+        public int[] ModuleId { get; set;} = new int[0];
     }
 
     public class DepartmentSettingOutputDto : PagedInputDto
@@ -42,4 +43,14 @@ namespace Models.Dto.Org
         public EnumRStatus Status { get; set; }
         public List<RoleSetWithMenuActoinDto> FKMenuActionIds { get; set; }
     }
+    public class DepartmentTileDto
+    {
+        public int Total { get; set; }
+        public int Active { get; set; }
+        public int TotalUser { get; set; }
+        public int AvgPerDept { get; set; }
+    }
+
+
+
 }

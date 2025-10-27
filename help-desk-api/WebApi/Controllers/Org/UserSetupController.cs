@@ -21,6 +21,15 @@ namespace WebApi.Controllers.Org
             var departments = await _tenantUserService.GetUsersByTenantAsync(companyId, input);
             return Ok(departments);
         }
+
+        [HttpGet("tiles")]
+        public async Task<IActionResult> GetUserTiles([FromQuery] int companyId, [FromQuery] UserPaginationInputDto input)
+        {
+            var result = await _tenantUserService.GetUserTilesAsync(companyId, input);
+            return Ok(result);
+        }
+
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateUser([FromBody] UserSetupInputDto dto)
         {

@@ -1,4 +1,5 @@
 ﻿using Amazon.SimpleEmailV2.Model;
+using Microsoft.EntityFrameworkCore;
 using Models.Dto.GlobalDto;
 using Models.Dto.Intregation;
 using Models.Dto.Menus;
@@ -466,5 +467,24 @@ namespace Services.Org
                 FullName = s.Name
             }).ToList();
         }
+        public async Task<DepartmentTileDto> GetDepartmentTilesAsync(int companyId)
+        {
+            //var departments = await _dbContext.Departments
+            //    .Where(d => d.FKCompanyId == companyId && d.RStatus != EnumRStatus.Deleted)
+            //    .ToListAsync();
+
+            //var users = await _dbContext.Users
+            //    .Where(u => u.FKCompanyId == companyId && u.RStatus != EnumRStatus.Deleted)
+            //    .ToListAsync();
+
+            return new DepartmentTileDto
+            {
+                Total = 10,
+                Active = 10,
+                TotalUser = 10,
+                AvgPerDept = 10
+            };
+        }
+
     }
 }

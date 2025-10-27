@@ -22,6 +22,7 @@ namespace Services.Org
         Task<UserSetupOutputDto> GetUserByIdAsync(int userId);
         Task<bool> UpdateUserAsync(UserSetupInputDto input);
         Task<bool> DeleteUserAsync(int userId);
+        Task<UserTilesDto> GetUserTilesAsync(int companyId, UserPaginationInputDto input);
     }
     public class TenantUserService : ITenantUserService
     {
@@ -41,20 +42,20 @@ namespace Services.Org
 
         public async Task<UserSetupOutputDto> GetUserByIdAsync(int userId)
         {
-            return  _userRepository.GetTenentUserById(userId);
+            return _userRepository.GetTenentUserById(userId);
         }
 
         public async Task<bool> UpdateUserAsync(UserSetupInputDto input)
         {
             try
             {
-                var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(s=> s.Id == input.Id);
-            if (user == null)
-                throw new BadRequestException("User not found");
+                var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(s => s.Id == input.Id);
+                if (user == null)
+                    throw new BadRequestException("User not found");
 
                 user.FkDepartmentId = input.DepartmentId;
                 user.FirstName = input.FirstName;
-                 user.LastName = input.LastName;
+                user.LastName = input.LastName;
                 user.FullName = $"{input.FirstName} {input.LastName}";
                 user.Email = input.EmailAddress;
                 user.Phone = input.PhoneNumber;
@@ -99,6 +100,18 @@ namespace Services.Org
                 return false;
             }
 
+        }
+
+        public async Task<UserTilesDto> GetUserTilesAsync(int companyId, UserPaginationInputDto input)
+        {
+            return new UserTilesDto
+            {
+                 ActiveUsers = 10,
+                 Admins = 5,
+                 Departments = 5,
+                 TotalUsers = 50
+
+            };
         }
     }
 

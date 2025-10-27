@@ -36,7 +36,7 @@ namespace Models.Dto.Org
         public string EmailAddress { get; set; }
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
-        public EnumRStatus Status { get; set; }
+        public int IsAdmin { get; set; }
     }
 
     public class HostUserInputDto : HostUserUpdateInputDto
@@ -54,4 +54,12 @@ namespace Models.Dto.Org
         public string Phone { get; set; } = string.Empty;
         public int RoleId { get; set; }
     }
+    public class UserTilesDto
+    {
+        public int TotalUsers { get; set; }
+        public int ActiveUsers { get; set; }
+        public int Admins { get; set; }
+        public int Departments { get; set; }
+    }
+
 }
