@@ -4,6 +4,8 @@ using Models.Dto.Pagination;
 using Models.Dto.UserManagement;
 using Models.Enum;
 using Repository.Db;
+using Repository.Seeds;
+using System;
 
 namespace Repository.Repo.Pagination
 {
@@ -61,30 +63,55 @@ namespace Repository.Repo.Pagination
                 join man in _dbContext.Users
                     on dep.FKManagerId equals man.Id into managers
                 from man in managers.DefaultIfEmpty()
+
+                join menud in _dbContext.MenuActionDepartmentMapping
+                  on dep.Id equals menud.FkDepartmentId into module
+                from menud in module.DefaultIfEmpty()
+
+
+                join menuAction in _dbContext.MenuActionMaps
+                on menud.FKMenuActionMapId equals menuAction.Id into menuActions
+                from menuAction in menuActions.DefaultIfEmpty()
+
+
+                join menu in _dbContext.MenuActionMaps
+                on menud.FKMenuActionMapId equals menu.Id into menus
+                from menu in menus.DefaultIfEmpty()
+
+
+
+
                 where dep.FKCompanyId == companyId && dep.RStatus != EnumRStatus.Deleted
                 select new
                 {
                     Department = dep,
                     Manager = man,
-                    Users = users
+                    Users = users,
+                    Menus = menu
                 };
 
             var result = await data
-                .GroupBy(x => x.Department.Id)
-                .Select(g => new DepartmentSettingOutputDto
-                {
-                    Id = g.Key,
-                    Name = g.First().Department.Name,
-                    Description = g.First().Department.Description,
-                    ManagerEmail = g.First().Manager != null
+     .GroupBy(x => x.Department.Id)
+     .Select(g => new DepartmentSettingOutputDto
+     {
+         Id = g.Key,
+         Name = g.First().Department.Name,
+         Description = g.First().Department.Description,
+         ManagerEmail = g.First().Manager != null
                         ? g.First().Manager.Email
                         : null,
-                    ManagerName = g.First().Manager != null
-                        ? g.First().Manager.FirstName + " " + g.First().Manager.LastName
-                        : null,
-                    TotalUsers = g.Select(s => s.Users) != null ? g.Select(s => s.Users).Count() : 0
-                })
-                .ToListAsync();
+         ManagerName = g.First().Manager != null
+             ? g.First().Manager.FirstName + " " + g.First().Manager.LastName
+             : null,
+         TotalUsers = g.SelectMany(s => s.Users).Count(),
+         Moduls = g
+             .Where(s => s.Menus != null && s.Menus.Menu != null)
+             .Select(s => s.Menus.Menu.Name)
+             .Distinct()
+             .ToArray(),
+     })
+     .ToListAsync();
+
 
             return new PaginationResponse<DepartmentSettingOutputDto>
             {

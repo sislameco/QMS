@@ -23,6 +23,7 @@ namespace Models.Dto.Org
         public string ManagerEmail { get; set; }
         public EnumRStatus Status { get; set; }
         public int TotalUsers { get; set; }
+        public string[] Moduls { get; set; }
     }
     public class DepartmentSetupOutputDto
     {
