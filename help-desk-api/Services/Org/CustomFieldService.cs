@@ -101,7 +101,8 @@ namespace Services.Org
                 IsRequired = model.IsRequired,
                 DDLValue = model.DDLValue,
                 Description = model.Description,
-                IsMultiSelect = model.IsMultiSelect
+                IsMultiSelect = model.IsMultiSelect,
+                DisplayOrder = model.DisplayOrder
                 // Add mapping for other properties if CustomFieldDto is extended
             };
         }

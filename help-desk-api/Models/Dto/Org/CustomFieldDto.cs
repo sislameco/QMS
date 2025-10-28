@@ -20,6 +20,7 @@ namespace Models.Dto.Org
         public bool IsRequired { get; set; }
         public string Description { get; set; }
         public bool IsMultiSelect { get; set; }
+        public int DisplayOrder { get; set; }
     }
     public class CustomFieldOutPutDto : CustomFieldInputDto
     {
