@@ -26,7 +26,6 @@ namespace Models.Dto.Ticket
         RootCause = 5,
         Resolution = 6,
         OverDue = 9,
-        TicketManager = 8,
 
         // Project/Customer Details = 11
         Project = 12,
