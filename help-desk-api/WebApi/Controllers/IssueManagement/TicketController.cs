@@ -16,7 +16,7 @@ namespace WebApi.Controllers.IssueManagement
             _ticketService = ticketService;
         }
         [HttpGet("list")]
-        public async Task<IActionResult> GetTickets(int companyId, TicketFilterInputDto input)
+        public async Task<IActionResult> GetTickets(int companyId, [FromQuery] TicketFilterInputDto input)
         {
             var tickets = await _ticketService.GetTicketLists(companyId, input);
             var response = new
