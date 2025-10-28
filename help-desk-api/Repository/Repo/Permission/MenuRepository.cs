@@ -216,12 +216,15 @@ namespace Repository.Repo.Permission
                 from menu in _dbContext.Menus
                 join action in _dbContext.MenuActionMaps on menu.Id equals action.FKMenuId into mapAction
                 from action in mapAction.DefaultIfEmpty()
+
                 join ac in _dbContext.MenuActions on action.FKMenuActionId equals ac.Id into actionDetails
                 from ac in actionDetails.DefaultIfEmpty()
-                join map in _dbContext.MenuActionDepartmentMapping
+
+                join map in _dbContext.MenuActionDepartmentMapping.Where(s=> s.FkDepartmentId == departementId)
                     on action.Id equals map.FKMenuActionMapId into actionMapJoin
                 from map in actionMapJoin.DefaultIfEmpty()
-                where (map != null && map.FkDepartmentId == departementId) || map == null
+
+                where  menu.IsModule == true
                 group new { ac, map, action } by new { menu.Id, menu.Name, menu.ParentId } into g
                 select new MenuAccessDto
                 {

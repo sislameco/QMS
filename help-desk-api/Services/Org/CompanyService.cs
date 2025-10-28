@@ -435,9 +435,9 @@ namespace Services.Org
                 data.Description = dto.Description;
                 data.FKManagerId = dto.ManagerId;
                 await _unitOfWork.Repository<DepartmentModel, int>().UpdateAsync(data);
-                if (dto.FKMenuActionIds != null && dto.FKMenuActionIds.Count > 0)
+                if (dto.Menus != null && dto.Menus.Count > 0)
                 {
-                    await SetMenuPermissionByDepartment(dto.Id, dto.FKMenuActionIds);
+                    await SetMenuPermissionByDepartment(dto.Id, dto.Menus);
                 }
                 await _unitOfWork.CommitAsync();
                 return true;

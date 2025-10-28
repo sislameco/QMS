@@ -1,9 +1,11 @@
-﻿using Models.Dto.Menus;
+﻿using Models.Dto.GlobalDto;
+using Models.Dto.Menus;
 using Models.Dto.UserManagement;
 using Models.Entities.UserManagement;
 using Models.Enum;
 using Repository;
 using Repository.Repo.Permission;
+using StackExchange.Redis;
 using Utilities.Redis;
 using Utils.Exceptions;
 using Utils.LoginData;
@@ -18,6 +20,7 @@ namespace Services.UserManagement
         Task<List<PerMenuDto>> GetLoginUserMenus();
         Task<MenuResourceDto> GetMenuAccess(int roleId);
         Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus);
+        Task<List<DropdownOutputDto<int,string>>> GetModules();
     }
     public class PermissionService : IPermissionService
     {
@@ -177,6 +180,13 @@ namespace Services.UserManagement
             }
             await _unitOfWork.CommitAsync();
             return true;
+        }
+
+        public async Task<List<DropdownOutputDto<int, string>>> GetModules()
+        {
+            return _unitOfWork.Repository<MenuModel, int>()
+         .FindByConditionSelected(s => s.IsModule == true && s.RStatus == EnumRStatus.Active, s => new DropdownOutputDto<int, string> { Id = s.Id, Name = s.Name }).ToList();
+           
         }
     }
 

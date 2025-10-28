@@ -6,8 +6,8 @@ namespace Models.Dto.Org
 {
     public class DepartmentSettingInputDto:PagedInputDto
     {
-        public List<int> UserIds { get; set; }
-        public int[] ModuleId { get; set;}
+        public List<int> UserIds { get; set; } = new List<int>();
+        public List<int> ModuleIds { get; set; } = new List<int>();
     }
 
     public class DepartmentSettingOutputDto : PagedInputDto
@@ -36,7 +36,7 @@ namespace Models.Dto.Org
         public string Description { get; set; }
         public int ManagerId { get; set; }
         public EnumRStatus Status { get; set; }
-        public List<RoleSetWithMenuActoinDto> FKMenuActionIds { get; set; }
+        public List<RoleSetWithMenuActoinDto> Menus { get; set; }
     }
     public class DepartmentTileDto
     {

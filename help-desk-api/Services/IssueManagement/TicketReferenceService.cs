@@ -33,7 +33,7 @@ namespace Services.IssueManagement
 
         public List<DropdownOutputDto<int, string>> GetTickets(int fkCompanyId)
         {
-            var data = _unitOfWork.Repository<TicketModel, int>().FindByConditionOneColumn(x => x.FKCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active, x => new { x.Id, x.TicketNumber });
+            var data = _unitOfWork.Repository<TicketModel, int>().FindByConditionSelected(x => x.FKCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active, x => new { x.Id, x.TicketNumber });
 
             return data
                 .Select(t => new DropdownOutputDto<int, string>
@@ -48,7 +48,7 @@ namespace Services.IssueManagement
         public List<DropdownOutputDto<int, string>> GetDepartments(int fkCompanyId)
         {
             var data = _unitOfWork.Repository<DepartmentModel, int>()
-                .FindByConditionOneColumn(
+                .FindByConditionSelected(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
                     x => new { x.Id, x.Name }
                 );
@@ -65,7 +65,7 @@ namespace Services.IssueManagement
         public List<TicketTypeDDL> GetTicketTypes(int fkCompanyId)
         {
             var data = _unitOfWork.Repository<TicketTypeModel, int>()
-                .FindByConditionOneColumn(
+                .FindByConditionSelected(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
                     x => new { x.Id, x.Title, x.QmsType, x.Priority, x.FKAssignedUserId, x.FKDepartmentIds }
                 );
@@ -86,7 +86,7 @@ namespace Services.IssueManagement
         public List<DropdownOutputDto<int, string>> GetRootCauses(int fkCompanyId)
         {
             var data = _unitOfWork.Repository<CompanyDefineRootResolutionModel, int>()
-                .FindByConditionOneColumn(
+                .FindByConditionSelected(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
                     x => new { x.Id, x.Name }
                 );
@@ -103,7 +103,7 @@ namespace Services.IssueManagement
         public List<DropdownOutputDto<int, string>> GetRelocations(int fkCompanyId)
         {
             var data = _unitOfWork.Repository<CompanyDefineRootResolutionModel, int>()
-                .FindByConditionOneColumn(
+                .FindByConditionSelected(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
                     x => new { x.Id, x.Name }
                 );
@@ -120,7 +120,7 @@ namespace Services.IssueManagement
         public List<CustomerOutputDto> GetCustomers(int fkCompanyId)
         {
             var customers = _unitOfWork.Repository<CompanyCustomerModel, int>()
-                .FindByConditionOneColumn(
+                .FindByConditionSelected(
                     x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
                     x => new { x.Id, x.CustomerFirstName, x.CustomerLastName, x.Email, x.Phone }
                 );
@@ -138,7 +138,7 @@ namespace Services.IssueManagement
         public List<ProjectOutputDto> GetProjects(int fkCompanyId)
         {
             var projects = _unitOfWork.Repository<CompanyProjectModel, int>()
-            .FindByConditionOneColumn(
+            .FindByConditionSelected(
                 x => x.RStatus == EnumRStatus.Active && x.FKCompanyId == fkCompanyId,
                 x => new { x.Id, x.ReferenceNumber, x.ProjectAddress }
             );
@@ -155,7 +155,7 @@ namespace Services.IssueManagement
         public List<DropdownOutputDto<int, string>> GetUsers(int fkCompanyId)
         {
             var data = _unitOfWork.Repository<UserModel, int>()
-                .FindByConditionOneColumn(
+                .FindByConditionSelected(
                     x => x.RStatus == EnumRStatus.Active && x.FkCompanyId == fkCompanyId,
                     x => new { x.Id, Name = string.Concat(x.FirstName, " ", x.LastName) }
                 );
@@ -171,7 +171,7 @@ namespace Services.IssueManagement
 
         public List<FieldOutputDto> GetSubforms(int ticketTypeId)
         {
-            var data = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionOneColumn(x => x.FkTicketTypeId == ticketTypeId && x.RStatus == EnumRStatus.Active, x => new { x.IsRequired, x.DisplayName, x.DataType, x.Id, x.DDLValue })
+            var data = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionSelected(x => x.FkTicketTypeId == ticketTypeId && x.RStatus == EnumRStatus.Active, x => new { x.IsRequired, x.DisplayName, x.DataType, x.Id, x.DDLValue })
                 .Select(s => new FieldOutputDto
                 {
                     Id = s.Id,

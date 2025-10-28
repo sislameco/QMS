@@ -51,7 +51,7 @@ namespace Services.Org
         public async Task<List<NotificationOutputDto>> GetAllActiveByCompanyIdAsync(int fkCompanyId, EnumNotificationType type)
         {
             var repo = _unitOfWork.Repository<NotificationTemplateModel, int>();
-            var entities = repo.FindByConditionOneColumn(
+            var entities = repo.FindByConditionSelected(
                 x => x.FkCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active && x.NotificationType == type,
                 x => new { x.Id, x.BodyTemplate, x.SubjectTemplate, x.Variables, x.IsEnabled, x.Event, x.EmailConfigurationId, x.NotificationType });
 
