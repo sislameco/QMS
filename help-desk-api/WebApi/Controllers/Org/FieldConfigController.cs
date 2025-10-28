@@ -68,6 +68,7 @@ namespace WebApi.Controllers.Org
 
         // GET: field
         [HttpGet("ticket-type")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CustomFieldInputDto>>> GetTicketTypes(int companyId)
         {
             var fields = await _customFieldService.GetTicketTypesByFiled(companyId);
