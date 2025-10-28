@@ -17,6 +17,13 @@ namespace Models.Dto.Auth
         [JsonIgnore]
         public Tuple<ClientInfo, IPAddress> Browser { get; set; }
     }
+    public class HelpDeskIntregationLoginDto
+    {
+        [Required]
+        public int UserId { get; set; }
+        [JsonIgnore]
+        public Tuple<ClientInfo, IPAddress> Browser { get; set; }
+    }
     public class ChangePasswordInputDto
     {
         //[Required]

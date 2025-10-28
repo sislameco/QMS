@@ -24,6 +24,7 @@ namespace Services.AuthService
     public interface IHelpDeskAuthService
     {
         Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskLoginDto dto, HttpContext httpContext, HttpRequest request);
+        Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskIntregationLoginDto userId, HttpContext httpContext, HttpRequest request);
         bool SignOut();
         Task<HelpDeskLoginResponseDto> RefreshToken(string token, HttpContext httpContext, HttpRequest request);
         Task<string> ForgotPassword(ForgotPasswordInputDto model);
@@ -78,6 +79,66 @@ namespace Services.AuthService
             var Browser = dto.Browser.Item1.UA.ToString();
             var machine_user = dto.Browser.Item1.Device.ToString();
             var UserHostAddress = dto.Browser.Item2.ToString();
+            var loginId = await SaveUserLogin(user.Id, UserHostAddress, Browser, machine_user);
+
+            string token = "";
+            string refreshToken = "";
+
+            int tokenValidaty = 480; //minutes;
+            int refreshTokenValidity = 1;
+
+            if (operatingSystem == "android" || operatingSystem == "ios")
+            {
+                tokenValidaty = 365 * 24 * 60; //minutes
+                refreshTokenValidity = tokenValidaty * 2;//days
+            }
+            if (user != null)
+            {
+                token = _jwtGenerator.GenerateJWT(user, UserHostAddress, loginId);
+                refreshToken = await CreateRefreshToken(user.Id, UserHostAddress, loginId, refreshTokenValidity);
+            }
+
+            // 4. Return success response with token placeholder
+            return new HelpDeskLoginResponseDto
+            {
+                Success = true,
+                Message = "Login successful.",
+                Token = token,
+                RefreshToken = refreshToken,
+                IsPasswordChange = true,
+                UserId = user.Id
+            };
+        }
+        public async Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskIntregationLoginDto input, HttpContext httpContext, HttpRequest request)
+        {
+            // 1. Fetch user by email
+            var user = await _unitOfWork.Repository<UserModel, int>().FirstOrDefaultAsync(u => u.IntegrationsPrimaryId == input.UserId
+            );
+
+            if (user == null)
+            {
+                // Qlogger.LogError("User not found for embaded login with userId: " + userId);
+                throw new BadRequestException("Invalid username or password.");
+            }
+
+            // 2. Check if password change is required
+            //if (user.LastPasswordChange.AddDays(90) <= DateTime.UtcNow)
+            //    return new HelpDeskLoginResponseDto { IsPasswordChange = false, UserId = user.Id };
+
+            var menus = await _menuRepository.GetPermittedActions(user.Id);
+
+            //if (!menus.Any())
+            //    throw new BadRequestException("You have no permitted menus!");
+
+            var menu_cache_key = $"{user.Id}";
+            AuthCacheUtil.SetPermittedMenu(menu_cache_key, menus);
+
+            //// 3. Verify password
+            input.Browser = Common.GetBrowserIpInformation(httpContext, request);
+            var operatingSystem = Convert.ToString(httpContext.Request?.Headers["OperatingSystem"]);
+            var Browser = input.Browser.Item1.UA.ToString();
+            var machine_user = input.Browser.Item1.Device.ToString();
+            var UserHostAddress = input.Browser.Item2.ToString();
             var loginId = await SaveUserLogin(user.Id, UserHostAddress, Browser, machine_user);
 
             string token = "";

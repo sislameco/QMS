@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Auth;
 using Models.Dto.GlobalDto;
+using Models.Enum;
 using Services.AuthService;
 using System.Threading.Tasks;
 using Utils;
@@ -34,15 +35,15 @@ namespace WebApi.Controllers.Auth
         }
 
 
-        //[HttpPost]
-        //[Route("embaded-login")]
-        //[AllowAnonymous]
-        //[ProducesResponseType(typeof(HelpDeskLoginResponseDto), 200)]
-        //public async Task<IActionResult> EmbadedLogin(int userId, )
-        //{
-        //    var response = await _authService.LoginAsync(data, HttpContext, Request);
-        //    return Ok(response);
-        //}
+        [HttpPost]
+        [Route("embedded-login")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(HelpDeskLoginResponseDto), 200)]
+        public async Task<IActionResult> EmbadedLogin(HelpDeskIntregationLoginDto input, EnumIntregationType app)
+        {
+            var response = await _authService.LoginAsync(input, HttpContext, Request);
+            return Ok(response);
+        }
 
 
         [HttpGet]
