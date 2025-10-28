@@ -16,7 +16,7 @@ namespace Services.Org
         Task<bool> CreateManyAsync(CustomFieldInputDto dtos);
         Task<CustomFieldInputDto?> UpdateAsync(int id, CustomFieldInputDto dto);
         Task<bool> DeleteAsync(int id);
-        Task<bool> DisplayOrder(FieldDisplayOrderInputDto type);
+        Task<bool> DisplayOrder(List<FieldDisplayOrderInputDto> type);
     }
 
     public class CustomFieldService : ICustomFieldService
@@ -106,19 +106,28 @@ namespace Services.Org
                 // Add mapping for other properties if CustomFieldDto is extended
             };
         }
-        public async Task<bool> DisplayOrder(FieldDisplayOrderInputDto type)
+        public async Task<bool> DisplayOrder(List<FieldDisplayOrderInputDto> types)
         {
-            var entities = await _unitOfWork.Repository<CustomFieldModel, int>().GetAllAsync();
-            foreach (var fieldId in type.FieldIds)
-            {
-                var entity = entities.FirstOrDefault(e => e.Id == fieldId && e.FkTicketTypeId == type.FkTicketTypeId);
-                if (entity == null)
-                {
-                    throw new Exception($"Field with ID {fieldId} not found for Ticket Type ID {type.FkTicketTypeId}");
-                }
+            List<int> ticketTypeIds = types.Select(s => s.FkTicketTypeId).ToList();
 
-                entity.DisplayOrder = type.FieldIds.IndexOf(fieldId) + 1; // +1 to start order from 1 instead of 0
-                _unitOfWork.Repository<CustomFieldModel, int>().Update(entity);
+
+            var entities = await _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && ticketTypeIds.Contains(s.FkTicketTypeId));
+
+
+            foreach (var type in types)
+            {
+                foreach (var field in type.FieldIds)
+                {
+                    var entity = entities.FirstOrDefault(e => e.Id == field);
+
+                    if (entity == null)
+                    {
+                        throw new Exception($"Field with ID {field} not found for Ticket Type ID {type.FkTicketTypeId}");
+                    }
+
+                    entity.DisplayOrder = type.FieldIds.IndexOf(field) + 1; // +1 to start order from 1 instead of 0
+                    _unitOfWork.Repository<CustomFieldModel, int>().Update(entity);
+                }
             }
             return await _unitOfWork.CommitAsync() > 0;
         }

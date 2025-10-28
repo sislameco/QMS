@@ -35,6 +35,8 @@ namespace WebApi.Controllers.IssueManagement
             var result = await _ticketService.CreateTicket(input);
             return Ok(new { ticketId = result });
         }
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> TicketView(int id)
         {
@@ -47,9 +49,6 @@ namespace WebApi.Controllers.IssueManagement
             var result = _ticketService.GetTilesView(companyId,input);
             return Ok(result);
         }
-
-
-
         // add/update comment NgxEditorModule
         // add/revove wattcher
         // add/remove

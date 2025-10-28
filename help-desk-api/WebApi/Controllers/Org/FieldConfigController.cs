@@ -63,7 +63,7 @@ namespace WebApi.Controllers.Org
 
 
         [HttpPatch("display-order")]
-        public async Task<IActionResult> ChangeDisplayOrder([FromBody]  FieldDisplayOrderInputDto input)
+        public async Task<IActionResult> ChangeDisplayOrder([FromBody]  List<FieldDisplayOrderInputDto> input)
         {
             return Ok(await _customFieldService.DisplayOrder(input));
         }

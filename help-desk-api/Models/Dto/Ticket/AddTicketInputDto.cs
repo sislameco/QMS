@@ -1,12 +1,45 @@
 ﻿using Models.Dto.Org;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Models.Enum;
 
 namespace Models.Dto.Ticket
 {
+    public enum EnumTicketField
+    {
+
+        // Full Page Mode
+        Company = 1,
+        TicketNumber = 2,
+        Subject = 3,
+        Description = 4,
+        LinkingItem = 5,
+
+        // Tab Page Mode
+        Watchers = 6,
+        Comments = 7,
+        ChangeLog = 8,
+        Files = 7,
+
+        // Ticket Specification Fields
+        TicketType = 2, 
+        Assignee = 4,
+        Departments = 3,
+        RootCause = 5,
+        Resolution = 6,
+        OverDue = 9,
+        TicketManager = 8,
+
+        // Project/Customer Details = 11
+        Project = 12,
+        Customer = 11,
+
+        // Aditional Info
+        SubForm = 10,  // Details
+
+
+
+
+
+    }
     public class AddTicketInputDto
     {
         // Screen 1
@@ -43,11 +76,54 @@ namespace Models.Dto.Ticket
         public TicketSingleView RootCause { get; set; }
         public TicketSingleView Resolution { get; set; }
         public List<FileDto> Files { get; set; }
+        public List<int> ChangeLog { get; set; }
+        public DateTime OverDue { get; set; }
+        public List<SubFromOutputDto> SubFrom { get; set; }
+        public bool IsCustomer { get; set; }
+        public ProjectViewDto Project { get; set; }
+        public CustomerViewDto Customer { get; set; }
+        public int LinkingItem { get; set; }
+        public List<TicketCommentOutputDto> Comments { get; set; }
+        public List<WatcherOutputDto> Watchers { get; set; }
+    }
+    public class WatcherOutputDto
+    {
+        public int Id { get; set; }
+        public int FkUserId { get; set; }
+        public string UserName { get; set; }
+    }
+    public class TicketCommentOutputDto
+    {
+        public int Id { get; set; }
+        public int FkTicketId { get; set; }
+        public int FkUserId { get; set; }
+        public string CommentText { get; set; }
+        public DateTime CommentedOn { get; set; }
+        public string CommentedBy { get; set; }
+    }
+    public class ProjectViewDto
+    {
+        public int Id { get; set; }
+        public string ProjectName { get; set; }
+    }
+    public class CustomerViewDto
+    {
+        public int Id { get; set; }
+        public string CustomaryDetail { get; set; }
     }
     public class TicketCompanyViewDto
     {
         public int Id { get; set; }
         public string CompanyName { get; set; }
+    }
+    public class SubFromOutputDto
+    {
+        public int FieldId { get; set; }
+        public string DisplayName { get; set; }
+        public int DisplayOrder { get; set; }
+        public EnumDataType DataType { get; set; }
+        public int Key { get; set; }
+        public string Value { get; set; }
     }
     public class TicketTicketTypeViewDto
     {
