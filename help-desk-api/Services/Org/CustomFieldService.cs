@@ -34,8 +34,8 @@ namespace Services.Org
         }
         public async Task<List<DropdownOutputDto<int, string>>> GetTicketTypesByFiled(int companyId)
         {
-            List<int> typeIds = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active, s => s.FkTicketTypeId).ToList();
-            var ticketTypes =  _unitOfWork.Repository<TicketTypeModel, int>().FindByConditionOneColumn(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId && typeIds.Contains(s.Id), s=> new DropdownOutputDto<int, string> { Id = s.Id, Name = s.Title}).ToList();
+            List<int> typeIds = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active, s => s.FkTicketTypeId).ToList();
+            var ticketTypes =  _unitOfWork.Repository<TicketTypeModel, int>().FindByConditionSelected(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId && typeIds.Contains(s.Id), s=> new DropdownOutputDto<int, string> { Id = s.Id, Name = s.Title}).ToList();
             return ticketTypes;
         }
         public async Task<CustomFieldInputDto?> GetByIdAsync(int id)
