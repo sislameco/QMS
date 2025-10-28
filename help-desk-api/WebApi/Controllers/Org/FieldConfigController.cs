@@ -7,6 +7,7 @@ namespace WebApi.Controllers.Org
 {
     [ApiController]
     [Route("field")]
+    [AllowAnonymous]
     public class FieldConfigController : ControllerBase
     {
         private readonly ICustomFieldService _customFieldService;
@@ -36,8 +37,6 @@ namespace WebApi.Controllers.Org
             return Ok(field);
         }
 
-        // POST: field
-        // Save multiple fields, input is List<CustomFieldDto> (ignore BaseEntity)
         [HttpPost]
         public async Task<ActionResult<bool>> CreateMany([FromBody] CustomFieldInputDto input)
         {
@@ -46,8 +45,7 @@ namespace WebApi.Controllers.Org
             return CreatedAtAction(nameof(GetAll), createdFields);
         }
 
-        // PUT: field/{id}
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<CustomFieldInputDto>> Update(int id, [FromBody] CustomFieldInputDto dto)
         {
             var updated = await _customFieldService.UpdateAsync(id, dto);
@@ -56,17 +54,20 @@ namespace WebApi.Controllers.Org
             return Ok(updated);
         }
 
-        // DELETE: field/{id}
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _customFieldService.DeleteAsync(id);
-            if (!deleted)
-                return NotFound();
-            return NoContent();
+            return Ok(deleted);
         }
 
-        // GET: field
+
+        [HttpPatch("display-order")]
+        public async Task<IActionResult> ChangeDisplayOrder([FromBody]  FieldDisplayOrderInputDto input)
+        {
+            return Ok(await _customFieldService.DisplayOrder(input));
+        }
+
         [HttpGet("ticket-type")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CustomFieldInputDto>>> GetTicketTypes(int companyId)

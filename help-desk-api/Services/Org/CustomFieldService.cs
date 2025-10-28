@@ -16,6 +16,7 @@ namespace Services.Org
         Task<bool> CreateManyAsync(CustomFieldInputDto dtos);
         Task<CustomFieldInputDto?> UpdateAsync(int id, CustomFieldInputDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<bool> DisplayOrder(FieldDisplayOrderInputDto type);
     }
 
     public class CustomFieldService : ICustomFieldService
@@ -35,7 +36,7 @@ namespace Services.Org
         public async Task<List<DropdownOutputDto<int, string>>> GetTicketTypesByFiled(int companyId)
         {
             List<int> typeIds = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active, s => s.FkTicketTypeId).ToList();
-            var ticketTypes =  _unitOfWork.Repository<TicketTypeModel, int>().FindByConditionSelected(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId && typeIds.Contains(s.Id), s=> new DropdownOutputDto<int, string> { Id = s.Id, Name = s.Title}).ToList();
+            var ticketTypes = _unitOfWork.Repository<TicketTypeModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId && typeIds.Contains(s.Id), s => new DropdownOutputDto<int, string> { Id = s.Id, Name = s.Title }).ToList();
             return ticketTypes;
         }
         public async Task<CustomFieldInputDto?> GetByIdAsync(int id)
@@ -58,7 +59,7 @@ namespace Services.Org
             };
 
             await _unitOfWork.Repository<CustomFieldModel, int>().AddAsync(addField);
-            return await _unitOfWork.CommitAsync() > 0 ? true: false;
+            return await _unitOfWork.CommitAsync() > 0 ? true : false;
 
         }
 
@@ -104,19 +105,21 @@ namespace Services.Org
                 // Add mapping for other properties if CustomFieldDto is extended
             };
         }
-
-        private static CustomFieldModel MapToModel(CustomFieldInputDto dto)
+        public async Task<bool> DisplayOrder(FieldDisplayOrderInputDto type)
         {
-            return new CustomFieldModel
+            var entities = await _unitOfWork.Repository<CustomFieldModel, int>().GetAllAsync();
+            foreach (var fieldId in type.FieldIds)
             {
-                FkTicketTypeId = dto.FkTicketTypeId,
-                DisplayName = dto.DisplayName,
-                DataType = dto.DataType,
-                IsRequired = dto.IsRequired,
-                 DDLValue = dto.DDLValue,
-                Description = dto.Description
-                // Add mapping for other properties if CustomFieldModel is extended
-            };
+                var entity = entities.FirstOrDefault(e => e.Id == fieldId && e.FkTicketTypeId == type.FkTicketTypeId);
+                if (entity == null)
+                {
+                    throw new Exception($"Field with ID {fieldId} not found for Ticket Type ID {type.FkTicketTypeId}");
+                }
+
+                entity.DisplayOrder = type.FieldIds.IndexOf(fieldId) + 1; // +1 to start order from 1 instead of 0
+                _unitOfWork.Repository<CustomFieldModel, int>().Update(entity);
+            }
+            return await _unitOfWork.CommitAsync() > 0;
         }
     }
 }

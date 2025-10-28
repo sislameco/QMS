@@ -23,6 +23,7 @@ namespace Models.Entities.Org
         public TicketTypeModel TicketType { get; set; }
         public string Description { get; set; }
         public bool IsMultiSelect { get; set; }
+        public int DisplayOrder { get; set; }
     }
     [Table("TicketCustomFields", Schema = "Org")]
     public class TicketCustomFieldValue : BaseEntity<int>

@@ -50,4 +50,9 @@ namespace Models.Dto.Org
         public string Description { get; set; }
         public bool IsMultiSelect { get; set; }
     }
+    public class FieldDisplayOrderInputDto
+    {
+        public int FkTicketTypeId { get; set; }
+        public List<int> FieldIds { get; set; }
+    }
 }
