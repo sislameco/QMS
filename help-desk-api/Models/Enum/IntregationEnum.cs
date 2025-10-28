@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Models.Enum
 {
+    public enum EnumIntregationType
+    {
+        QsmartAdmin = 1,
+        QsmartFrontend = 2
+    }
     public enum EnumExternalServiceModules
     {
         QsmartAPI = 1,

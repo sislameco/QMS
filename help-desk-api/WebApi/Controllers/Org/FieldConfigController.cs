@@ -24,6 +24,8 @@ namespace WebApi.Controllers.Org
             return Ok(fields);
         }
 
+
+
         // GET: field/{id}
         [HttpGet("{id:int}")]
         public async Task<ActionResult<CustomFieldOutPutDto>> GetById(int id)
@@ -62,6 +64,14 @@ namespace WebApi.Controllers.Org
             if (!deleted)
                 return NotFound();
             return NoContent();
+        }
+
+        // GET: field
+        [HttpGet("ticket-type")]
+        public async Task<ActionResult<IEnumerable<CustomFieldInputDto>>> GetTicketTypes(int companyId)
+        {
+            var fields = await _customFieldService.GetTicketTypesByFiled(companyId);
+            return Ok(fields);
         }
     }
 }

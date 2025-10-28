@@ -1,12 +1,17 @@
-﻿using Models.Dto.Org;
+﻿using Models.Dto.GlobalDto;
+using Models.Dto.Org;
+using Models.Entities.Issue;
 using Models.Entities.Org;
+using Models.Enum;
 using Repository;
+using System.Linq;
 
 namespace Services.Org
 {
     public interface ICustomFieldService
     {
         Task<IEnumerable<CustomFieldInputDto>> GetAllAsync();
+        Task<List<DropdownOutputDto<int, string>>> GetTicketTypesByFiled(int companyId);
         Task<CustomFieldInputDto?> GetByIdAsync(int id);
         Task<bool> CreateManyAsync(CustomFieldInputDto dtos);
         Task<CustomFieldInputDto?> UpdateAsync(int id, CustomFieldInputDto dto);
@@ -27,7 +32,12 @@ namespace Services.Org
             var entities = await _unitOfWork.Repository<CustomFieldModel, int>().GetAllAsync();
             return entities.ConvertAll(MapToDto);
         }
-
+        public async Task<List<DropdownOutputDto<int, string>>> GetTicketTypesByFiled(int companyId)
+        {
+            List<int> typeIds = _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionOneColumn(s => s.RStatus == EnumRStatus.Active, s => s.FkTicketTypeId).ToList();
+            var ticketTypes =  _unitOfWork.Repository<TicketTypeModel, int>().FindByConditionOneColumn(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId && typeIds.Contains(s.Id), s=> new DropdownOutputDto<int, string> { Id = s.Id, Name = s.Title}).ToList();
+            return ticketTypes;
+        }
         public async Task<CustomFieldInputDto?> GetByIdAsync(int id)
         {
             var entity = await _unitOfWork.Repository<CustomFieldModel, int>().GetByIdAsync(id);
@@ -82,8 +92,9 @@ namespace Services.Org
         {
             return new CustomFieldInputDto
             {
+                Id = model.Id,
                 FkTicketTypeId = model.FkTicketTypeId,
-                //Type = model.TicketType.Title,
+                TypeName = model.TicketType != null ? model.TicketType.Title : string.Empty,
                 DisplayName = model.DisplayName,
                 DataType = model.DataType,
                 IsRequired = model.IsRequired,

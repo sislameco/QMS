@@ -12,6 +12,7 @@ namespace Models.Dto.Org
     {
         public int Id { get; set; }
         public int FkTicketTypeId { get; set; }
+        public string TypeName { get; set; }
         public int Type { get; set; }
         public string DisplayName { get; set; }
         public EnumDataType DataType { get; set; }

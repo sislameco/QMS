@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Update.Internal;
+﻿using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Ticket;
 using Services.IssueManagement;
 using WebApi.Helper.Security;

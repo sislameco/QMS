@@ -34,6 +34,17 @@ namespace WebApi.Controllers.Auth
         }
 
 
+        //[HttpPost]
+        //[Route("embaded-login")]
+        //[AllowAnonymous]
+        //[ProducesResponseType(typeof(HelpDeskLoginResponseDto), 200)]
+        //public async Task<IActionResult> EmbadedLogin(int userId, )
+        //{
+        //    var response = await _authService.LoginAsync(data, HttpContext, Request);
+        //    return Ok(response);
+        //}
+
+
         [HttpGet]
         [Route("sign-out")]
         public async Task<IActionResult> SignOut()
