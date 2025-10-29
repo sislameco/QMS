@@ -295,14 +295,14 @@ namespace Services.IssueManagement
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId);
 
 
-            var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active);
+            var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && ticket.Select(x=> x.AssignedUserId).Contains(s.Id));
 
 
 
             var tickets = ticket.Select(s => new TicketListOutputView
             {
                 Assignee = users.Where(x => x.Id == s.AssignedUserId).FirstOrDefault().FirstName,
-                Reporter = users.Where(x => x.Id == s.CreatedBy).FirstOrDefault().FirstName,
+                Reporter ="Saiful",
                 CreatedDate = s.CreatedDate,
                 Description = s.Description,
                 Id = s.Id,

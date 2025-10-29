@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Ticket;
 using Services.IssueManagement;
+using WebApi.Helper.Security;
 
 namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
     [Route("ticket")]
-    [AllowAnonymous]
+    [CustomAuthorization]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
