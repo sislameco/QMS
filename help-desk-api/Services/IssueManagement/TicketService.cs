@@ -6,7 +6,6 @@ using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Enum;
 using Repository;
-using Stripe;
 
 namespace Services.IssueManagement
 {
@@ -75,7 +74,7 @@ namespace Services.IssueManagement
                 }
                 #endregion
                 #region Custom field
-                foreach (var customField in input.SubFrom)
+                foreach (var customField in input.SubForm)
                 {
                     TicketCustomFieldValue ticketCustomField = new TicketCustomFieldValue
                     {

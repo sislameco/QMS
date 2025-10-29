@@ -52,7 +52,7 @@ namespace Models.Dto.Ticket
         public int? FKProjectId { get; set; } // ddl
         // Screen 3 
         public int FkTicketTypeId { get; set; } // ddl
-        public List<SubFromInputDto> SubFrom { get; set; } // get api 
+        public List<SubFromInputDto> SubForm { get; set; } // get api 
         public int FkResolutionId { get; set; } // ddl
         public int FkRootCauseId { get; set; } // ddl
 
