@@ -19,6 +19,8 @@ namespace Services.IssueManagement
 
         #region Ticket Basic Details
         Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
+        Task<TicketSpecificationOutputDto> GetSpecification(int ticketId);
+        Task<TicketSpecificationOutputDto> GetTicketAttachments(int ticketId);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         #endregion
@@ -43,8 +45,8 @@ namespace Services.IssueManagement
                 {
 
                     TicketNumber = ticketNumber,
-                    Subject = input.Description,
-                    Description = "Open",
+                    Subject = input.Subject,
+                    Description = input.Description,
                     SubmittedByUserId = 1, // ??
                     FKCompanyId = 1,
                     RootCauseId = input.FkRootCauseId,
@@ -258,27 +260,7 @@ namespace Services.IssueManagement
             return ticketNumber;
         }
 
-        public async Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId)
-        {
-            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
 
-            var ticketLinkingItems = _unitOfWork.Repository<TicketLinkModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId, x=> new ListTicketOutputDto { Id = x.Id, TicketNumber = x.Ticket.TicketNumber, Subject = x.Ticket.Subject, Description = x.Ticket.Description});
-
-            var ticketView = new TicketBasicDetailOutputDto()
-            {
-                Company = new TicketCompanyViewDto()
-                {
-                    Id = ticket.FKCompanyId,
-                    CompanyName = ticket.Company.Name
-                },
-                Description = ticket.Description,
-                Id = ticket.Id,
-                Subject = ticket.Subject,
-                TicketNumber = ticket.TicketNumber,
-                LinkingItems = ticketLinkingItems.ToList()
-            };
-            return ticketView;
-        }
 
         public async Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input)
         {
@@ -316,6 +298,38 @@ namespace Services.IssueManagement
                 TotalTicket = 30
             };
             return ticketTile;
+        }
+        public async Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId)
+        {
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+
+            var ticketLinkingItems = _unitOfWork.Repository<TicketLinkModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId, x => new ListTicketOutputDto { Id = x.Id, TicketNumber = x.Ticket.TicketNumber, Subject = x.Ticket.Subject, Description = x.Ticket.Description });
+
+            var ticketView = new TicketBasicDetailOutputDto()
+            {
+                Company = new TicketCompanyViewDto()
+                {
+                    Id = ticket.FKCompanyId,
+                    CompanyName = ticket.Company.Name
+                },
+                Description = ticket.Description,
+                Id = ticket.Id,
+                Subject = ticket.Subject,
+                TicketNumber = ticket.TicketNumber,
+                LinkingItems = ticketLinkingItems.ToList()
+            };
+            return ticketView;
+        }
+        public async Task<TicketSpecificationOutputDto> GetSpecification(int ticketId)
+        {
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            return new TicketSpecificationOutputDto()
+            {
+                AssigneeId = ticket.AssignedUserId,
+                DepartmentIds = ticket.DepartmentMaps.Select(s => s.FKDepartmentId).ToList(),
+                 ResolutionId   = ticket.ResolutionId,
+                 RootCauseId = ticket.RootCauseId,
+            };
         }
         public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
         {

@@ -49,6 +49,16 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.GetBasicDetails(id));
         }
+        [HttpGet("specification/{id}")]
+        public async Task<IActionResult> TicketSpecification(int id)
+        {
+            return Ok(await _ticketService.GetSpecification(id));
+        }
+        [HttpGet("attachment/{id}")]
+        public async Task<IActionResult> GetAttachments(int id)
+        {
+            return Ok(await _ticketService.GetAttachments(id));
+        }
         #endregion
 
         #region Ticket Full Page and Project/Customer Details 1
