@@ -60,8 +60,29 @@ namespace Models.Dto.Ticket
         public int[] FKDepartmentId { get; set; } // ddl
         public int[] Files { get; set; } // api
     }
+    public class TicketBasicDetailOutputDto
+    {
+        public int Id { get; set; }
+        public string TicketNumber { get; set; }
+        public string Subject { get; set; }
+        public string Description { get; set; }
+        public TicketCompanyViewDto Company { get; set; }
+        public List<ListTicketOutputDto> LinkingItems { get; set; }
+    }
+    public class TicketBasicDetailInputDto
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+    }
 
 
+    public class ListTicketOutputDto
+    {
+        public int Id { get; set; }
+        public string TicketNumber { get; set; }
+        public string Subject { get; set; }
+        public string Description { get; set; }
+    }
     public class TicketViewOutputDto
     {
         public int Id { get; set; }
@@ -169,7 +190,6 @@ namespace Models.Dto.Ticket
         public string AddedBy { get; set; }
         public string AddedOn { get; set; }
     }
-
     public class TicketSubFromPutputDto
     {
         public int FkTicketTypeId { get; set; }

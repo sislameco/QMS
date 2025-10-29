@@ -13,10 +13,15 @@ namespace Services.IssueManagement
     public interface ITicketService
     {
         Task<string> CreateTicket(AddTicketInputDto input);
-        Task<string> TicketView(int id);
+
         Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input);
         TicketTileView GetTilesView(int companyId, TicketFilterInputDto input);
 
+
+        #region Ticket Basic Details
+        Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
+        Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
+        #endregion
     }
     public class TicketService : ITicketService
     {
@@ -253,14 +258,41 @@ namespace Services.IssueManagement
             return ticketNumber;
         }
 
-        public Task<string> TicketView(int id)
+        public async Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId)
         {
-            throw new NotImplementedException();
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+
+            var ticketLinkingItems = _unitOfWork.Repository<TicketLinkModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId, x=> new ListTicketOutputDto { Id = x.Id, TicketNumber = x.Ticket.TicketNumber, Subject = x.Ticket.Subject, Description = x.Ticket.Description});
+
+            var ticketView = new TicketBasicDetailOutputDto()
+            {
+                Company = new TicketCompanyViewDto()
+                {
+                    Id = ticket.FKCompanyId,
+                    CompanyName = ticket.Company.Name
+                },
+                Description = ticket.Description,
+                Id = ticket.Id,
+                Subject = ticket.Subject,
+                TicketNumber = ticket.TicketNumber,
+                LinkingItems = ticketLinkingItems.ToList()
+            };
+            return ticketView;
         }
 
+        public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
+        {
+
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            if (ticket == null)
+                throw new Exception($"Ticket not found for Id");
+            ticket.Description = input.Description;
+            _unitOfWork.Repository<TicketModel, int>().Update(ticket);
+            return await _unitOfWork.CommitAsync()>0;
+        }
         public async Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input)
         {
-            var ticket = await  _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s=> s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId);
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId);
 
 
             var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active);
@@ -269,7 +301,7 @@ namespace Services.IssueManagement
 
             var tickets = ticket.Select(s => new TicketListOutputView
             {
-                Assignee = users.Where(x=> x.Id == s.AssignedUserId).FirstOrDefault().FirstName,
+                Assignee = users.Where(x => x.Id == s.AssignedUserId).FirstOrDefault().FirstName,
                 Reporter = users.Where(x => x.Id == s.CreatedBy).FirstOrDefault().FirstName,
                 CreatedDate = s.CreatedDate,
                 Description = s.Description,

@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.Dto.Ticket;
 using Services.IssueManagement;
-using System.ComponentModel.Design;
-using WebApi.Helper.Security;
 
 namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
     [Route("ticket")]
-    [CustomAuthorization]
+    [AllowAnonymous]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
@@ -39,20 +38,23 @@ namespace WebApi.Controllers.IssueManagement
 
 
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> TicketView(int id)
-        {
-            var result = await _ticketService.TicketView(id);
-            return Ok(new { ticketId = result });
-        }
 
 
         // view sections apis
+
         #region Ticket Full Page and Project/Customer Details 1
         [HttpGet("basic-detail/{id}")]
-        public async Task<IActionResult> TicketView(int id)
+        public async Task<IActionResult> TicketBasicDetails(int id)
         {
-            var result = await _ticketService.TicketView(id);
+            return Ok(await _ticketService.GetBasicDetails(id));
+        }
+        #endregion
+
+        #region Ticket Full Page and Project/Customer Details 1
+        [HttpPut("basic-detail/{id}")]
+        public async Task<IActionResult> UpdateBasicDetails(int id, TicketBasicDetailInputDto input)
+        {
+            var result = await _ticketService.UpdateBasicDetails(id, input);
             return Ok(new { ticketId = result });
         }
         #endregion

@@ -24,7 +24,7 @@ namespace Models.Entities.Issue
         public DateTime? DueDate { get; set; }
         public DateTime? ResolvedAt { get; set; }
         [ForeignKey("FKCompanyId")]
-        public CompanyModel Ticket { get; set; }
+        public CompanyModel Company { get; set; }
         [ForeignKey("FKTicketTypeId")]
         public TicketTypeModel TicketType { get; set; }
         public ICollection<TicketAttachmentModel> Attachments { get; set; }
