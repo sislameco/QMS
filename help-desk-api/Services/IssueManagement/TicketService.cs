@@ -20,7 +20,7 @@ namespace Services.IssueManagement
         #region Ticket Basic Details
         Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
         Task<TicketSpecificationOutputDto> GetSpecification(int ticketId);
-        Task<TicketSpecificationOutputDto> GetTicketAttachments(int ticketId);
+        Task<List<FileDto>> GetAttachments(int ticketId);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         #endregion
@@ -330,6 +330,19 @@ namespace Services.IssueManagement
                  ResolutionId   = ticket.ResolutionId,
                  RootCauseId = ticket.RootCauseId,
             };
+        }
+        public async Task<List<FileDto>> GetAttachments(int ticketId)
+        {
+            var attachemnts =  _unitOfWork.Repository<TicketAttachmentModel, int>().FindByConditionSelected(s => s.FKTicketId == ticketId, x=> new FileDto
+            {
+                 Id = x.Id,
+                  FileName = x.FileName, 
+                   FilePath = x.FilePath,
+                    AddedBy = "Saiful",
+                    AddedOn = "saiful"
+            });
+
+            return attachemnts;
         }
         public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
         {
