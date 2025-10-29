@@ -75,6 +75,14 @@ namespace Models.Dto.Ticket
         public string Description { get; set; }
     }
 
+    public class TicketSpecificationOutputDto
+    {
+        public int RootCauseId { get; set; }
+        public int ResolutionId { get; set; }
+        public int AssigneeId { get; set; }
+        public List<int> DepartmentIds { get; set; }
+    }
+
 
     public class ListTicketOutputDto
     {

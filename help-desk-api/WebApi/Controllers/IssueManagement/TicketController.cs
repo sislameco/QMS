@@ -58,6 +58,17 @@ namespace WebApi.Controllers.IssueManagement
             var result = await _ticketService.UpdateBasicDetails(id, input);
             return Ok(new { ticketId = result });
         }
+
+        [HttpPut("assignee/{id}")]
+        public async Task<IActionResult> UpdateSpecification(int id, TicketSpecificationOutputDto input)
+        {
+            var result = await _ticketService.UpdateSpecification(id, input);
+            return Ok(new { ticketId = result });
+        }
+
+
+
+
         #endregion
         //[HttpGet("ticket-specification/{id}")]
         //public async Task<IActionResult> TicketSpecification(int id)

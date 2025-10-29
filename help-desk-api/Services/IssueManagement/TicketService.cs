@@ -21,6 +21,7 @@ namespace Services.IssueManagement
         #region Ticket Basic Details
         Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
+        Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         #endregion
     }
     public class TicketService : ITicketService
@@ -280,16 +281,6 @@ namespace Services.IssueManagement
             return ticketView;
         }
 
-        public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
-        {
-
-            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
-            if (ticket == null)
-                throw new Exception($"Ticket not found for Id");
-            ticket.Description = input.Description;
-            _unitOfWork.Repository<TicketModel, int>().Update(ticket);
-            return await _unitOfWork.CommitAsync()>0;
-        }
         public async Task<List<TicketListOutputView>> GetTicketLists(int companyId, TicketFilterInputDto input)
         {
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId);
@@ -326,6 +317,33 @@ namespace Services.IssueManagement
                 TotalTicket = 30
             };
             return ticketTile;
+        }
+        public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
+        {
+
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            if (ticket == null)
+                throw new Exception($"Ticket not found for Id");
+            ticket.Description = input.Description;
+            _unitOfWork.Repository<TicketModel, int>().Update(ticket);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
+        public async Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input)
+        {
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            if (ticket == null)
+                throw new Exception($"Ticket not found for Id");
+
+            ticket.RootCauseId = input.RootCauseId;
+            ticket.ResolutionId = input.ResolutionId;
+            ticket.AssignedUserId = input.AssigneeId;
+
+
+
+            //ticket.DepartmentMaps = new List<TicketDepartmentMapModel>();
+
+            _unitOfWork.Repository<TicketModel, int>().Update(ticket);
+            return await _unitOfWork.CommitAsync() > 0;
         }
     }
 }
