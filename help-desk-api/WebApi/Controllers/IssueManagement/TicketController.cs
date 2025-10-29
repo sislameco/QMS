@@ -59,6 +59,19 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.GetAttachments(id));
         }
+        [HttpGet("linking-item/{id}")]
+        public async Task<IActionResult> GetLinkingItems(int id)
+        {
+            return Ok(await _ticketService.GetLinkingItems(id));
+        }
+
+        [HttpGet("comments/{id}")]
+        public async Task<IActionResult> GetComments(int id)
+        {
+            return Ok(await _ticketService.GetComments(id));
+        }
+
+
         #endregion
 
         #region Ticket Full Page and Project/Customer Details 1

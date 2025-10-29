@@ -114,6 +114,13 @@ namespace Models.Dto.Ticket
         public List<TicketCommentOutputDto> Comments { get; set; }
         public List<WatcherOutputDto> Watchers { get; set; }
     }
+    public class TicketLinkingItemOutputDto
+    {
+        public int Id { get; set; }
+        public string TicketNumber { get; set; }
+        public string Subject { get; set; }
+        public string URL { get; set; }
+    }
     public class WatcherOutputDto
     {
         public int Id { get; set; }
@@ -123,7 +130,6 @@ namespace Models.Dto.Ticket
     public class TicketCommentOutputDto
     {
         public int Id { get; set; }
-        public int FkTicketId { get; set; }
         public int FkUserId { get; set; }
         public string CommentText { get; set; }
         public DateTime CommentedOn { get; set; }

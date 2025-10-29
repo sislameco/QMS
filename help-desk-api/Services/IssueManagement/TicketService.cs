@@ -21,6 +21,8 @@ namespace Services.IssueManagement
         Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
         Task<TicketSpecificationOutputDto> GetSpecification(int ticketId);
         Task<List<FileDto>> GetAttachments(int ticketId);
+        Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId);
+        Task<List<TicketCommentOutputDto>> GetComments(int ticketId);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         #endregion
@@ -267,14 +269,14 @@ namespace Services.IssueManagement
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FKCompanyId == companyId);
 
 
-            var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && ticket.Select(x=> x.AssignedUserId).Contains(s.Id));
+            var users = await _unitOfWork.Repository<Models.Entities.UserManagement.UserModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && ticket.Select(x => x.AssignedUserId).Contains(s.Id));
 
 
 
             var tickets = ticket.Select(s => new TicketListOutputView
             {
                 Assignee = users.Where(x => x.Id == s.AssignedUserId).FirstOrDefault().FirstName,
-                Reporter ="Saiful",
+                Reporter = "Saiful",
                 CreatedDate = s.CreatedDate,
                 Description = s.Description,
                 Id = s.Id,
@@ -327,22 +329,47 @@ namespace Services.IssueManagement
             {
                 AssigneeId = ticket.AssignedUserId,
                 DepartmentIds = ticket.DepartmentMaps.Select(s => s.FKDepartmentId).ToList(),
-                 ResolutionId   = ticket.ResolutionId,
-                 RootCauseId = ticket.RootCauseId,
+                ResolutionId = ticket.ResolutionId,
+                RootCauseId = ticket.RootCauseId,
             };
         }
         public async Task<List<FileDto>> GetAttachments(int ticketId)
         {
-            var attachemnts =  _unitOfWork.Repository<TicketAttachmentModel, int>().FindByConditionSelected(s => s.FKTicketId == ticketId, x=> new FileDto
+            var attachemnts = _unitOfWork.Repository<TicketAttachmentModel, int>().FindByConditionSelected(s => s.FKTicketId == ticketId, x => new FileDto
             {
-                 Id = x.Id,
-                  FileName = x.FileName, 
-                   FilePath = x.FilePath,
-                    AddedBy = "Saiful",
-                    AddedOn = "saiful"
+                Id = x.Id,
+                FileName = x.FileName,
+                FilePath = x.FilePath,
+                AddedBy = "Saiful",
+                AddedOn = "saiful"
             });
 
             return attachemnts;
+        }
+        public async Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId)
+        {
+            var linkings = _unitOfWork.Repository<TicketLinkModel, int>().FindByConditionSelected(s => s.FKTicketId == ticketId, x => new TicketLinkingItemOutputDto
+            {
+                Id = x.Id,
+                TicketNumber = "",
+                Subject = "",
+
+            });
+
+            return linkings;
+        }
+        public async Task<List<TicketCommentOutputDto>> GetComments(int ticketId)
+        {
+            var comments = _unitOfWork.Repository<TicketCommentModel, int>().FindByConditionSelected(s => s.TicketId == ticketId, x => new TicketCommentOutputDto
+            {
+                Id = x.Id,
+                CommentText = x.CommentText,
+                CommentedBy = "",// 
+                CommentedOn = DateTime.UtcNow, // 
+                FkUserId = 1 ///
+            });
+
+            return comments;
         }
         public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
         {
