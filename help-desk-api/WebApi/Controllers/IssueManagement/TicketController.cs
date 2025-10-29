@@ -48,13 +48,14 @@ namespace WebApi.Controllers.IssueManagement
 
 
         // view sections apis
-        //#region Ticket Full Page and Project/Customer Details 1
-        //[HttpGet("basic-detail/{id}")]
-        //public async Task<IActionResult> TicketView(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
+        #region Ticket Full Page and Project/Customer Details 1
+        [HttpGet("basic-detail/{id}")]
+        public async Task<IActionResult> TicketView(int id)
+        {
+            var result = await _ticketService.TicketView(id);
+            return Ok(new { ticketId = result });
+        }
+        #endregion
         //[HttpGet("ticket-specification/{id}")]
         //public async Task<IActionResult> TicketSpecification(int id)
         //{
