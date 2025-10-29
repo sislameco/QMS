@@ -4,8 +4,8 @@ namespace Models.Dto.Org
 {
     public class UserPaginationInputDto : PagedInputDto
     {
-        public int[] DepartmentId { get; set; }
-        public int RoleId { get; set; }
+        public List<int> DepartmentIds { get; set; } = new List<int>();
+        public int RoleId { get; set; } = 0;
 
     }
     public class UserSetupOutputDto
