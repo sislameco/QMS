@@ -1,9 +1,11 @@
 ﻿using Amazon.Runtime;
 using Microsoft.AspNetCore.Http;
+using Models.AppSettings;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using UAParser;
+using Utils.Exceptions;
 
 namespace Utils
 {
@@ -126,6 +128,31 @@ HttpRequest request)
                 text = text.Replace(key, replaceContent[key]);
             }
             return text;
+        }
+
+        public static string PreparePdfPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return "";
+            if (!path.Contains("wwwroot"))
+                return path;
+            if (string.IsNullOrEmpty(AppSettings.QMSApi.BaseUrl))
+                throw new ResourceNotFoundException("BaseUrl not found");
+
+            string host = AppSettings.QMSApi.BaseUrl;
+
+            var docPath = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                int i = path.IndexOf('/') + 1;
+                path = path.Substring(i);
+                return Path.Combine(host, path);
+
+
+            }
+            else
+                return "";
         }
     }
 }

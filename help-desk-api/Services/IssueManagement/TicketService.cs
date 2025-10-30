@@ -7,6 +7,7 @@ using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Enum;
 using Repository;
+using Utils;
 
 namespace Services.IssueManagement
 {
@@ -352,7 +353,7 @@ namespace Services.IssueManagement
             {
                 Id = x.Id,
                 FileName = x.FileName,
-                FilePath = x.FilePath,
+                FilePath = Common.PreparePdfPath(x.FilePath),
                 AddedBy = "Saiful",
                 AddedOn = "saiful"
             });
