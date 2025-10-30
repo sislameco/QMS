@@ -29,6 +29,14 @@ namespace Services.IssueManagement
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         #endregion
+
+
+        #region Ticket Item Delete
+
+        Task<bool> DeleteWatcher(int ticketId, int watcherId);
+        Task<bool> DeleteComment(int ticketId, int commentId);
+
+        #endregion
     }
     public class TicketService : ITicketService
     {
@@ -118,7 +126,7 @@ namespace Services.IssueManagement
                         FKTicketId = ticket.Id
                     };
                     await _unitOfWork.Repository<TicketAttachmentModel, int>().AddAsync(attachments);
-
+                    await _unitOfWork.CommitAsync();
                 }
                 #endregion
                 #region WatchList
@@ -308,21 +316,21 @@ namespace Services.IssueManagement
         public async Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId)
         {
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
-
-            var ticketLinkingItems = _unitOfWork.Repository<TicketLinkModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId, x => new ListTicketOutputDto { Id = x.Id, TicketNumber = x.Ticket.TicketNumber, Subject = x.Ticket.Subject, Description = x.Ticket.Description });
-
+            var company = await _unitOfWork.Repository<CompanyModel, int>().FirstOrDefaultAsync(s => s.Id == ticket.FKCompanyId);
             var ticketView = new TicketBasicDetailOutputDto()
             {
                 Company = new TicketCompanyViewDto()
                 {
-                    Id = ticket.FKCompanyId,
-                    CompanyName = ticket.Company.Name
+                    Id = company.Id,
+                    CompanyName = company.Name
                 },
                 Description = ticket.Description,
                 Id = ticket.Id,
                 Subject = ticket.Subject,
                 TicketNumber = ticket.TicketNumber,
-                LinkingItems = ticketLinkingItems.ToList()
+                Status = ticket.Status,
+                Priority = ticket.Priority
+               
             };
             return ticketView;
         }
@@ -420,12 +428,40 @@ namespace Services.IssueManagement
             ticket.ResolutionId = input.ResolutionId;
             ticket.AssignedUserId = input.AssigneeId;
 
-
-
             //ticket.DepartmentMaps = new List<TicketDepartmentMapModel>();
 
             _unitOfWork.Repository<TicketModel, int>().Update(ticket);
             return await _unitOfWork.CommitAsync() > 0;
         }
+
+
+
+
+
+
+
+
+
+        #region Ticket Item Delete
+        public Task<bool> DeleteWatcher(int ticketId, int watcherId)
+        {
+            var watcher = _unitOfWork.Repository<TicketWatchListModel, int>()
+                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId && s.Id == watcherId).Result;
+            if (watcher == null)
+                throw new Exception($"Watcher not found for Id");
+            _unitOfWork.Repository<TicketWatchListModel, int>().SoftDeleteAsync(watcher);
+            return _unitOfWork.CommitAsync().ContinueWith(t => t.Result > 0);
+        }
+
+        public Task<bool> DeleteComment(int ticketId, int commentId)
+        {
+            var comment = _unitOfWork.Repository<TicketCommentModel, int>()
+                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.TicketId == ticketId && s.Id == commentId).Result;
+            if (comment == null)
+                throw new Exception($"comment not found for Id");
+            _unitOfWork.Repository<TicketCommentModel, int>().SoftDeleteAsync(comment);
+            return _unitOfWork.CommitAsync().ContinueWith(t => t.Result > 0);
+        }
+        #endregion
     }
 }

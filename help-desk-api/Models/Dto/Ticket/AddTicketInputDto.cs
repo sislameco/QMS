@@ -66,8 +66,10 @@ namespace Models.Dto.Ticket
         public string TicketNumber { get; set; }
         public string Subject { get; set; }
         public string Description { get; set; }
+        public EnumTicketStatus Status { get; set; }
+        public EnumPriority Priority { get; set; }
         public TicketCompanyViewDto Company { get; set; }
-        public List<ListTicketOutputDto> LinkingItems { get; set; }
+        //public List<ListTicketOutputDto> LinkingItems { get; set; }
     }
     public class TicketBasicDetailInputDto
     {

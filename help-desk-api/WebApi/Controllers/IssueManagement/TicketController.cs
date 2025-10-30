@@ -8,7 +8,8 @@ namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
     [Route("ticket")]
-    [CustomAuthorization]
+    //[CustomAuthorization]
+    [AllowAnonymous]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
@@ -85,6 +86,20 @@ namespace WebApi.Controllers.IssueManagement
 
         #endregion
 
+
+
+        #region Delete Ticket Item
+        [HttpGet("watcher/{tickedId}")]
+        public async Task<IActionResult> DeleteWatcher(int tickedId, int watcherId)
+        {
+            return Ok(await _ticketService.DeleteWatcher(tickedId, watcherId));
+        }
+        [HttpGet("comment/{tickedId}")]
+        public async Task<IActionResult> DeleteComment(int tickedId, int commentId)
+        {
+            return Ok(await _ticketService.DeleteComment(tickedId, commentId));
+        }
+        #endregion
         #region Ticket Full Page and Project/Customer Details 1
         [HttpPut("basic-detail/{id}")]
         public async Task<IActionResult> UpdateBasicDetails(int id, TicketBasicDetailInputDto input)
