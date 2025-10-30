@@ -18,7 +18,7 @@ namespace Services.UserManagement
         Task<List<UserRolePermissionOutputDto>> GetUserRolesAsync(int userId);
         Task<bool> RemoveUserRolesAsync(int userId, List<int> roleIds);
         Task<List<PerMenuDto>> GetLoginUserMenus();
-        Task<List<PerMenuDto>> GetPermittedModules();
+        Task<List<IntegratedMenuOutputDto>> GetPermittedModules();
         Task<MenuResourceDto> GetMenuAccess(int roleId);
         Task<bool> SetMenuPermission(int roleId, List<RoleSetWithMenuActoinDto> menus);
         Task<List<DropdownOutputDto<int,string>>> GetModules();
@@ -122,10 +122,10 @@ namespace Services.UserManagement
             var menus = await _menuRepository.GetUserPermittedMenusAsync(userId);
             return menus;
         }
-        public async Task<List<PerMenuDto>> GetPermittedModules()
+        public async Task<List<IntegratedMenuOutputDto>> GetPermittedModules()
         {
             var userId = _user.GetCurrentUserId();
-            var menus = await _menuRepository.GetUserPermittedMenusAsync(userId);
+            var menus = await _menuRepository.GetUserPermittedModuleAsync(userId);
             return menus;
         }
         public async Task<MenuResourceDto> GetMenuAccess(int roleId)

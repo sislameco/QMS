@@ -64,6 +64,7 @@ namespace WebApi.Controllers.Auth
         [HttpGet]
         [Route("get-modules")]
         [ProducesResponseType(typeof(PermittedMenuDto), 200)]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPermittedModules()
         {
             return Ok(await _permissionService.GetPermittedModules());

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Models.AppSettings;
 using Models.Dto.Menus;
 using Models.Dto.UserManagement;
 using Repository.Db;
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
 
 namespace Repository.Repo.Permission
 {
@@ -124,24 +126,18 @@ namespace Repository.Repo.Permission
 
         public async Task<List<IntegratedMenuOutputDto>> GetUserPermittedModuleAsync(long userId)
         {
-
-
               var  flatMenus = await (
                       from m in _dbContext.Menus
                       join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
                       join moduleDepartment in _dbContext.MenuActionDepartmentMapping on map.Id equals moduleDepartment.FKMenuActionMapId into moduleDepartments
-
-                      from moduleDepartment in moduleDepartments.DefaultIfEmpty()
-                    
-
+                      from moduleDepartment in moduleDepartments.DefaultIfEmpty()                    
                       join users in _dbContext.Users on moduleDepartment.FkDepartmentId equals users.FkDepartmentId into userJoin
                       from user in userJoin.DefaultIfEmpty()
                       where user.Id == userId
-
                       select new IntegratedMenuOutputDto
                       {
                           MenuName = m.Name ?? string.Empty,
-                          Route = m.Route ?? string.Empty,
+                          Route = string.Concat(AppSettings.QMSApp.BaseUrl,m.Route),
                           DisplayOrder = m.DisplayOrder,
                           Icon = m.IconClass ?? string.Empty
                       }
@@ -149,7 +145,6 @@ namespace Repository.Repo.Permission
                .Distinct()
                .OrderBy(x => x.DisplayOrder)
                .ToListAsync();
-
             return flatMenus;
         }
         public async Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId)
@@ -255,7 +250,7 @@ namespace Repository.Repo.Permission
                     on action.Id equals map.FKMenuActionMapId into actionMapJoin
                 from map in actionMapJoin.DefaultIfEmpty()
 
-                where  menu.IsModule == true
+                where  menu.IsModule == true 
                 group new { ac, map, action } by new { menu.Id, menu.Name, menu.ParentId } into g
                 select new MenuAccessDto
                 {
@@ -264,7 +259,7 @@ namespace Repository.Repo.Permission
                     ParentId = g.Key.ParentId,
                     Actions = g
                         .Where(x => x.ac != null)
-                        .Select(x => new ManuWishActionPermissionDto
+                        .Select(x => new ManuWishActionPermissionDto 
                         {
                             Id = x.ac.Id,
                             HttpVerb = x.ac.HttpVerb ?? string.Empty,
@@ -274,6 +269,25 @@ namespace Repository.Repo.Permission
                         .ToList()
                 }
             ).ToListAsync();
+
+            var parentMenus = await (
+                    from m in _dbContext.Menus
+                    join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId into mapJoin
+                    from role in mapJoin.DefaultIfEmpty()
+                    where flatList.Select(s => s.ParentId).Contains(m.Id)
+
+                    select new MenuAccessDto
+                    {
+                        MenuId = m.Id,
+                        Menu = m.Name ?? string.Empty,
+                        ParentId = m.ParentId,
+                    }
+             )
+             .Distinct()
+             .OrderBy(x => x.MenuId)
+             .ToListAsync();
+
+            flatList.AddRange(parentMenus);
 
             return BuildRoleMenuTree(flatList);
         }
