@@ -64,6 +64,14 @@ namespace Models.Dto.Menus
         public int? ParentId { get; set; }
     }
 
+    public class IntegratedMenuOutputDto
+    {
+        public string MenuName { get; set; }
+        public string Icon { get; set; }
+        public int DisplayOrder { get; set; }
+        public string Route { get; set; }
+    }
+
     public class PerMenuDto: MenuBasicDto
     {
        public List<MenuBasicDto> SubMenus { get; set; }

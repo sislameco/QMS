@@ -107,7 +107,12 @@ namespace Services.AuthService
                 RefreshToken = refreshToken,
                 IsPasswordChange = true,
                 UserId = user.Id,
-                Name  = string.Concat(user.FirstName, " ", user.LastName)
+                User = new UserInfoDto
+                {
+                    Email = user.Email,
+                    Name = string.Concat(user.FirstName, " ", user.LastName),
+                    Image = ""
+                }
             };
         }
         public async Task<HelpDeskLoginResponseDto> LoginAsync(HelpDeskIntregationLoginDto input, HttpContext httpContext, HttpRequest request)

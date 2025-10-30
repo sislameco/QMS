@@ -60,6 +60,14 @@ namespace WebApi.Controllers.Auth
         {
             return Ok(await _permissionService.GetLoginUserMenus());
         }
+
+        [HttpGet]
+        [Route("get-modules")]
+        [ProducesResponseType(typeof(PermittedMenuDto), 200)]
+        public async Task<IActionResult> GetPermittedModules()
+        {
+            return Ok(await _permissionService.GetPermittedModules());
+        }
         [HttpGet]
         [Route("modules")]
         //[ProducesResponseType(typeof(DropdownOutputDto<int, string>), 200)]

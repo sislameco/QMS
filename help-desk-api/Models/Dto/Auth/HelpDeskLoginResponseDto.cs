@@ -10,6 +10,12 @@ namespace Models.Dto.Auth
         public string RefreshToken { get; set; }
         public bool IsPasswordChange { get; set; }
         public int UserId { get; set; }
+        public UserInfoDto User { get; set; }
+    }
+    public class UserInfoDto
+    {
         public string Name { get; set; }
+        public string Email { get; set; }
+        public string Image { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Repository.Repo.Permission
         Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId);
         Task<List<MenuAccessDto>> GetDepartmentPermittedMenusAsync(int departementId);
         Task<List<PermittedActionsOutputDto>> GetPermittedActions(int userId);
+        Task<List<IntegratedMenuOutputDto>> GetUserPermittedModuleAsync(long userId);
     }
 
     public class MenuRepository : IMenuRepository
@@ -121,6 +122,36 @@ namespace Repository.Repo.Permission
             return BuildUserMenuTree(flatMenus);
         }
 
+        public async Task<List<IntegratedMenuOutputDto>> GetUserPermittedModuleAsync(long userId)
+        {
+
+
+              var  flatMenus = await (
+                      from m in _dbContext.Menus
+                      join map in _dbContext.MenuActionMaps on m.Id equals map.FKMenuId
+                      join moduleDepartment in _dbContext.MenuActionDepartmentMapping on map.Id equals moduleDepartment.FKMenuActionMapId into moduleDepartments
+
+                      from moduleDepartment in moduleDepartments.DefaultIfEmpty()
+                    
+
+                      join users in _dbContext.Users on moduleDepartment.FkDepartmentId equals users.FkDepartmentId into userJoin
+                      from user in userJoin.DefaultIfEmpty()
+                      where user.Id == userId
+
+                      select new IntegratedMenuOutputDto
+                      {
+                          MenuName = m.Name ?? string.Empty,
+                          Route = m.Route ?? string.Empty,
+                          DisplayOrder = m.DisplayOrder,
+                          Icon = m.IconClass ?? string.Empty
+                      }
+               )
+               .Distinct()
+               .OrderBy(x => x.DisplayOrder)
+               .ToListAsync();
+
+            return flatMenus;
+        }
         public async Task<List<MenuAccessDto>> GetRolePermittedMenusAsync(int roleId)
         {
             var flatList = await (
