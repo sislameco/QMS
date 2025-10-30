@@ -1,4 +1,5 @@
-﻿using Models.AppSettings;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Models.AppSettings;
 using Models.Dto.Ticket;
 using Models.Dto.Tickets;
 using Models.Entities.File;
@@ -287,7 +288,8 @@ namespace Services.IssueManagement
                 Priority = s.Priority,
                 Subject = s.Subject
             });
-            return tickets.ToList();
+            int skip = (input.PageNo - 1) * input.ItemsPerPage;
+            return tickets.Skip(skip).Take(input.ItemsPerPage).ToList();
         }
 
         public TicketTileView GetTilesView(int companyId, TicketFilterInputDto input)
