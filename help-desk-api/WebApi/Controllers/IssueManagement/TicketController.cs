@@ -71,6 +71,17 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(await _ticketService.GetComments(id));
         }
 
+        [HttpGet("get-define-field/{id}")]
+        public async Task<IActionResult> GetDefineField(int id)
+        {
+            return Ok(await _ticketService.GetDefineFields(id));
+        }
+
+        [HttpGet("get-watchers/{id}")]
+        public async Task<IActionResult> GetWatchers(int id)
+        {
+            return Ok(await _ticketService.GetWatchers(id));
+        }
 
         #endregion
 

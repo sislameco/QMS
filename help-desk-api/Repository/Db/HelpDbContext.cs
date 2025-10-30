@@ -32,7 +32,7 @@ namespace Repository.Db
         public DbSet<SLAConfigurationModel> SLAs => Set<SLAConfigurationModel>();
         public DbSet<TempFileModel> TempFiles => Set<TempFileModel>();
         public DbSet<CustomFieldModel> CustomFields { get; set; }
-        public DbSet<TicketCustomFieldValue> TicketCustomFields { get; set; }
+        public DbSet<TicketCustomFieldValueModel> TicketCustomFields { get; set; }
         public DbSet<DepartmentModel> Departments => Set<DepartmentModel>();
         public DbSet<EmailConfigurationModel> EmailConfigurations => Set<EmailConfigurationModel>();
         public DbSet<NotificationScheduleModel> NotificationSchedules => Set<NotificationScheduleModel>();

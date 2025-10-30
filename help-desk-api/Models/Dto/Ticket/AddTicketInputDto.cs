@@ -77,6 +77,7 @@ namespace Models.Dto.Ticket
 
     public class TicketSpecificationOutputDto
     {
+        public int FkTicketTypeId { get; set; }
         public int? RootCauseId { get; set; }
         public int? ResolutionId { get; set; }
         public int? AssigneeId { get; set; }
@@ -135,6 +136,21 @@ namespace Models.Dto.Ticket
         public DateTime CommentedOn { get; set; }
         public string CommentedBy { get; set; }
     }
+    public class TicketFieldOutputDto
+    {
+        public int Id { get; set; }
+        public int FkTicketTypeId { get; set; }
+        public int FkCustomeFieldId { get; set; }
+        public string Value { get; set; }
+    }
+    public class TicketWatchersOutputDto
+    {
+        public int Id { get; set; }
+        public int FkUserId { get; set; }
+        public string AddedBy { get; set; }
+        public DateTime AddedOn { get; set; }
+    }
+
     public class ProjectViewDto
     {
         public int Id { get; set; }

@@ -24,6 +24,8 @@ namespace Services.IssueManagement
         Task<List<FileDto>> GetAttachments(int ticketId);
         Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId);
         Task<List<TicketCommentOutputDto>> GetComments(int ticketId);
+        Task<List<TicketFieldOutputDto>> GetDefineFields(int ticketId);
+        Task<List<TicketWatchersOutputDto>> GetWatchers(int ticketId);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         #endregion
@@ -87,7 +89,7 @@ namespace Services.IssueManagement
                 #region Custom field
                 foreach (var customField in input.SubForm)
                 {
-                    TicketCustomFieldValue ticketCustomField = new TicketCustomFieldValue
+                    TicketCustomFieldValueModel ticketCustomField = new TicketCustomFieldValueModel
                     {
                         Value = customField.Value,
                         RStatus = EnumRStatus.Active,
@@ -98,7 +100,7 @@ namespace Services.IssueManagement
 
                     };
 
-                    await _unitOfWork.Repository<TicketCustomFieldValue, int>().AddAsync(ticketCustomField);
+                    await _unitOfWork.Repository<TicketCustomFieldValueModel, int>().AddAsync(ticketCustomField);
 
                 }
                 #endregion
@@ -333,6 +335,7 @@ namespace Services.IssueManagement
                 DepartmentIds = ticket.DepartmentMaps.Select(s => s.FKDepartmentId).ToList(),
                 ResolutionId = ticket.ResolutionId,
                 RootCauseId = ticket.RootCauseId,
+                FkTicketTypeId = ticket.FKTicketTypeId
             };
         }
         public async Task<List<FileDto>> GetAttachments(int ticketId)
@@ -372,6 +375,30 @@ namespace Services.IssueManagement
             });
 
             return comments;
+        }
+        public async Task<List<TicketFieldOutputDto>> GetDefineFields(int ticketId)
+        {
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            var fields = _unitOfWork.Repository<TicketCustomFieldValueModel, int>().FindByConditionSelected(s => s.FkTicketId == ticketId, x => new TicketFieldOutputDto
+            {
+                Id = x.Id,
+                FkTicketTypeId = ticket.FKTicketTypeId,
+                FkCustomeFieldId = x.TicketTypeCustomFieldId,
+                Value = x.Value
+            });
+            return fields;
+
+        }
+        public async Task<List<TicketWatchersOutputDto>> GetWatchers(int ticketId)
+        {
+            var watchers = _unitOfWork.Repository<TicketWatchListModel, int>().FindByConditionSelected(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId, x => new TicketWatchersOutputDto
+            {
+                Id = x.Id,
+                FkUserId = x.FKUserId,
+                AddedBy = "", // 
+                AddedOn = DateTime.UtcNow // 
+            });
+            return watchers;
         }
         public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
         {

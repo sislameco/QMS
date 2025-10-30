@@ -26,7 +26,7 @@ namespace Models.Entities.Org
         public int DisplayOrder { get; set; }
     }
     [Table("TicketCustomFields", Schema = "Org")]
-    public class TicketCustomFieldValue : BaseEntity<int>
+    public class TicketCustomFieldValueModel : BaseEntity<int>
     {
         public int FkTicketId { get; set; }
         public int TicketTypeCustomFieldId { get; set; }

@@ -137,7 +137,7 @@ namespace Repository.Repo.Permission
                       select new IntegratedMenuOutputDto
                       {
                           MenuName = m.Name ?? string.Empty,
-                          Route = string.Concat(AppSettings.QMSApp.BaseUrl,m.Route),
+                          Route = string.Concat(AppSettings.QMSApp.BaseUrl,"/",m.Route),
                           DisplayOrder = m.DisplayOrder,
                           Icon = m.IconClass ?? string.Empty
                       }

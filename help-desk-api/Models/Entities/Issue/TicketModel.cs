@@ -33,7 +33,7 @@ namespace Models.Entities.Issue
         public ICollection<TicketDepartmentMapModel> DepartmentMaps { get; set; }
         public ICollection<TicketLinkModel> Links { get; set; }
         public ICollection<TicketCustomerMapModel> TicketCustomerMaps { get; set; }
-        public ICollection<TicketCustomFieldValue> CustomFieldValues { get; set; }
+        public ICollection<TicketCustomFieldValueModel> CustomFieldValues { get; set; }
         public ICollection<TicketProjectMapModel> TicketProjectMaps { get; set; }
     }
 
