@@ -62,6 +62,13 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.GetAttachments(id));
         }
+
+        [HttpDelete("attachment")]
+        public async Task<IActionResult> DeleteAttachment(int id)
+        {
+            return Ok(await _ticketService.DeleteAttachment(id));
+        }
+
         [HttpGet("linking-item/{id}")]
         public async Task<IActionResult> GetLinkingItems(int id)
         {
@@ -104,15 +111,6 @@ namespace WebApi.Controllers.IssueManagement
         #endregion
 
 
-
-        #region Delete Ticket Item
-        [HttpGet("watcher/{tickedId}")]
-        public async Task<IActionResult> DeleteWatcher(int tickedId, int watcherId)
-        {
-            return Ok(await _ticketService.DeleteWatcher(tickedId, watcherId));
-        }
-
-        #endregion
         #region Ticket Full Page and Project/Customer Details 1
         [HttpPut("basic-detail/{id}")]
         public async Task<IActionResult> UpdateBasicDetails(int id, TicketBasicDetailInputDto input)
@@ -158,109 +156,12 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.DeleteComment(tickedId, commentId));
         }
-
-
-        #endregion
-        //[HttpGet("ticket-specification/{id}")]
-        //public async Task<IActionResult> TicketSpecification(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //[HttpGet("linking-items/{id}")]
-        //public async Task<IActionResult> TicketView(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //#endregion
-
-        //#region Ticket SubFrom
-        //[HttpGet("aditional-data/{id}")]
-        //public async Task<IActionResult> TicketView(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //#endregion
-
-        //#region Ticket Tab Pages
-        //[HttpGet("change-log{id}")]
-        //public async Task<IActionResult> ChangeLogHistories(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //[HttpGet("comments/{id}")]
-        //public async Task<IActionResult> Comments(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //[HttpGet("files/{id}")]
-        //public async Task<IActionResult> Attachments(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //[HttpGet("watchers/{id}")]
-        //public async Task<IActionResult> Watchers(int id)
-        //{
-        //    var result = await _ticketService.TicketView(id);
-        //    return Ok(new { ticketId = result });
-        //}
-        //#endregion
-
-
-
-        // Ticket update apis
-        //[HttpPut("basic")]
-        //public IActionResult UpdateProject(int ticketId, TicketFilterInputDto input)
-        //{
-        //    var result = _ticketService.GetTilesView(companyId, input);
-        //    return Ok(result);
-        //}
-
-
-        //[HttpPut("root-cause-resulation")]
-        //public IActionResult UpdateProject(int ticketId, TicketFilterInputDto input)
-        //{
-        //    var result = _ticketService.GetTilesView(companyId, input);
-        //    return Ok(result);
-        //}
-
-        //[HttpPut("root-cause-resulation")]
-        //public IActionResult UpdateProject(int ticketId, TicketFilterInputDto input)
-        //{
-        //    var result = _ticketService.GetTilesView(companyId, input);
-        //    return Ok(result);
-        //}
-        //[HttpPut("project")]
-        //public IActionResult UpdateProject(int ticketId, TicketFilterInputDto input)
-        //{
-        //    var result = _ticketService.GetTilesView(companyId, input);
-        //    return Ok(result);
-        //}
-        //[HttpPut("customer")]
-        //public IActionResult UpdateProject(int ticketId, TicketFilterInputDto input)
-        //{
-        //    var result = _ticketService.GetTilesView(companyId, input);
-        //    return Ok(result);
-        //}
-
-
-        //[HttpPut("sub-form")]
-        //public IActionResult SaveSubForm(int ticketId, TicketFilterInputDto input)
-        //{
-        //    var result = _ticketService.GetTilesView(companyId, input);
-        //    return Ok(result);
-        //}
-
         [HttpGet("tiles")]
         public IActionResult GetTile(int companyId, TicketFilterInputDto input)
         {
             var result = _ticketService.GetTilesView(companyId,input);
             return Ok(result);
         }
+        #endregion
     }
 }

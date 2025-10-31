@@ -28,6 +28,7 @@ namespace Services.IssueManagement
         Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
         Task<TicketSpecificationOutputDto> GetSpecification(int ticketId);
         Task<List<FileDto>> GetAttachments(int ticketId);
+        Task<bool> DeleteAttachment(int id);
         Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId);
         Task<List<TicketCommentOutputDto>> GetComments(int ticketId);
         Task<List<TicketFieldOutputDto>> GetDefineFields(int ticketId);
@@ -373,6 +374,13 @@ namespace Services.IssueManagement
             });
 
             return attachemnts;
+        }
+       public async Task<bool> DeleteAttachment(int id)
+        {
+            var attachment = await _unitOfWork.Repository<TicketAttachmentModel, int>().FirstOrDefaultAsync(s => s.Id == id)?? throw new BadRequestException("No Attachment found");
+
+            await _unitOfWork.Repository<TicketAttachmentModel, int>().SoftDeleteAsync(attachment);
+            return await _unitOfWork.CommitAsync() > 0;
         }
         public async Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId)
         {
