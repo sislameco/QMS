@@ -353,13 +353,41 @@ namespace Services.IssueManagement
         public async Task<TicketSpecificationOutputDto> GetSpecification(int ticketId)
         {
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+
+            if(ticket == null)
+                throw new BadRequestException("No Ticket found");
+
+            var departments = _unitOfWork.Repository<TicketDepartmentMapModel, int>().FindByConditionSelected(s => s.Id == ticketId  && s.RStatus == EnumRStatus.Active, s=>  s.FKDepartmentId).ToList();
+
+            int customerId = 0;
+            int projectId = 0;
+
+            if (ticket.IsCustomer)
+                {
+                var customerMap = await _unitOfWork.Repository<TicketCustomerMapModel, int>().FirstOrDefaultAsync(s => s.FKTicketId == ticketId && s.RStatus == EnumRStatus.Active);
+                if (customerMap != null)
+                {
+                    customerId = customerMap.FkCustomerId;
+                }
+            }
+            else
+            {
+                var projectMap = await _unitOfWork.Repository<TicketProjectMapModel, int>().FirstOrDefaultAsync(s => s.FKTicketId == ticketId && s.RStatus == EnumRStatus.Active);
+                if (projectMap != null)
+                {
+                    projectId = projectMap.FkProjectId;
+                }
+            }
             return new TicketSpecificationOutputDto()
             {
                 AssigneeId = ticket.AssignedUserId,
-                DepartmentIds = ticket.DepartmentMaps.Select(s => s.FKDepartmentId).ToList(),
+                DepartmentIds = departments.ToList(),
+                IsCustomer = ticket.IsCustomer,
                 ResolutionId = ticket.ResolutionId,
                 RootCauseId = ticket.RootCauseId,
-                FkTicketTypeId = ticket.FKTicketTypeId
+                FkTicketTypeId = ticket.FKTicketTypeId  ,
+                CustomerId = customerId,
+                ProjectId = projectId
             };
         }
         public async Task<List<FileDto>> GetAttachments(int ticketId)

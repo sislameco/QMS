@@ -83,6 +83,9 @@ namespace Models.Dto.Ticket
         public int? RootCauseId { get; set; }
         public int? ResolutionId { get; set; }
         public int? AssigneeId { get; set; }
+        public int? ProjectId { get;set; }
+        public int? CustomerId { get; set; }
+        public bool IsCustomer { get; set; }
         public List<int> DepartmentIds { get; set; }
     }
 

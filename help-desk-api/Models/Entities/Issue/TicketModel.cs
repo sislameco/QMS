@@ -14,6 +14,7 @@ namespace Models.Entities.Issue
         public int SubmittedByUserId { get; set; }
         public int FKCompanyId { get; set; }
         public int FKTicketTypeId { get; set; }
+        public bool IsCustomer { get; set; }
         public EnumQMSType TicketCategory { get; set; }
         public EnumTicketStatus Status { get; set; }
         public EnumPriority Priority { get; set; }
