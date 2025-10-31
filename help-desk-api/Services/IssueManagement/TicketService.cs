@@ -300,7 +300,8 @@ namespace Services.IssueManagement
                 TicketNumber = s.TicketNumber,
                 Status = s.Status,
                 Priority = s.Priority,
-                Subject = s.Subject
+                Subject = s.Subject,
+                FkTicketTypeId = s.FKTicketTypeId,
             });
             int skip = (input.PageNo - 1) * input.ItemsPerPage;
             return tickets.Skip(skip).Take(input.ItemsPerPage).ToList();

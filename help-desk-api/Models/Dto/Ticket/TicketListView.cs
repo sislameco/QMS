@@ -21,6 +21,7 @@ namespace Models.Dto.Tickets
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         public DateTime OverDue { get; set; } = DateTime.UtcNow;
+        public int FkTicketTypeId { get; set; }
     }
     public class TicketListView
     {
