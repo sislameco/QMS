@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Amazon.SimpleEmailV2.Model;
+using Microsoft.AspNetCore.Components.Forms;
 using Models.AppSettings;
+using Models.Dto.Menus;
 using Models.Dto.Org;
 using Models.Dto.Ticket;
 using Models.Dto.Tickets;
@@ -8,7 +10,9 @@ using Models.Entities.Issue;
 using Models.Entities.Org;
 using Models.Enum;
 using Repository;
+using System.ComponentModel.Design;
 using Utils;
+using Utils.LoginData;
 
 namespace Services.IssueManagement
 {
@@ -37,6 +41,8 @@ namespace Services.IssueManagement
         #region Ticket Item Delete/Update SingleResponsibility
         Task<bool> DeleteWatcher(int ticketId, int watcherId);
         Task<bool> DeleteComment(int ticketId, int commentId);
+        Task<bool> UpdateComment(int id, string comment);
+        Task<bool>  AddComment(int ticketId, string comment);
         Task<bool> ChangeTicketStatus(int id, EnumTicketStatus status);
         #endregion
 
@@ -45,9 +51,11 @@ namespace Services.IssueManagement
     public class TicketService : ITicketService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public TicketService(IUnitOfWork unitOfWork)
+        private readonly IUserInfos _userInfo;
+        public TicketService(IUnitOfWork unitOfWork, IUserInfos userInfo)
         {
             _unitOfWork = unitOfWork;
+            _userInfo = userInfo;
         }
         public async Task<string> CreateTicket(AddTicketInputDto input)
         {
@@ -448,26 +456,49 @@ namespace Services.IssueManagement
 
 
         #region Ticket Item Delete
-        public Task<bool> DeleteWatcher(int ticketId, int watcherId)
+        public async Task<bool> DeleteWatcher(int ticketId, int watcherId)
         {
-            var watcher = _unitOfWork.Repository<TicketWatchListModel, int>()
-                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId && s.Id == watcherId).Result;
+            var watcher = await _unitOfWork.Repository<TicketWatchListModel, int>()
+                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId && s.Id == watcherId);
             if (watcher == null)
                 throw new Exception($"Watcher not found for Id");
-            _unitOfWork.Repository<TicketWatchListModel, int>().SoftDeleteAsync(watcher);
-            return _unitOfWork.CommitAsync().ContinueWith(t => t.Result > 0);
-        }
 
+            await _unitOfWork.Repository<TicketWatchListModel, int>().SoftDeleteAsync(watcher);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
+        public async Task<bool>  AddComment(int ticketId, string comment)
+        {
+            TicketCommentModel ticketComment = new TicketCommentModel
+            {
+                CommentText = comment,
+                RStatus = EnumRStatus.Active,
+                CreatedBy = _userInfo.GetCurrentUserId(),
+                CreatedDate = DateTime.UtcNow,
+                TicketId = ticketId,
+            };
+            await _unitOfWork.Repository<TicketCommentModel, int>().AddAsync(ticketComment);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
         public async Task<bool> DeleteComment(int ticketId, int commentId)
         {
-            var comment = _unitOfWork.Repository<TicketCommentModel, int>()
-                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.TicketId == ticketId && s.Id == commentId).Result;
+            var comment = await _unitOfWork.Repository<TicketCommentModel, int>()
+                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.TicketId == ticketId && s.Id == commentId);
             if (comment == null)
                 throw new Exception($"comment not found for Id");
-            _unitOfWork.Repository<TicketCommentModel, int>().SoftDeleteAsync(comment);
+            await _unitOfWork.Repository<TicketCommentModel, int>().SoftDeleteAsync(comment);
             return await _unitOfWork.CommitAsync()> 0;
         }
+        public async Task<bool> UpdateComment(int id, string comment)
+        {
+            var updateComment = await _unitOfWork.Repository<TicketCommentModel, int>()
+            .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.Id == id);
 
+            if(comment == null)
+               throw new BadRequestException($"comment not found for Id");
+
+            _unitOfWork.Repository<TicketCommentModel, int>().Update(updateComment);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
         public async Task<bool> ChangeTicketStatus(int ticketId, EnumTicketStatus status)
         {
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
@@ -508,6 +539,8 @@ namespace Services.IssueManagement
             return await _unitOfWork.CommitAsync() > 0;
 
         }
+
+
         #endregion
     }
 }

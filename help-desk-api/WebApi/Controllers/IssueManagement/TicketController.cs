@@ -68,11 +68,7 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(await _ticketService.GetLinkingItems(id));
         }
 
-        [HttpGet("comments/{id}")]
-        public async Task<IActionResult> GetComments(int id)
-        {
-            return Ok(await _ticketService.GetComments(id));
-        }
+
 
         [HttpGet("get-define-field/{id}")]
         public async Task<IActionResult> GetDefineField(int id)
@@ -102,11 +98,7 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.DeleteWatcher(tickedId, watcherId));
         }
-        [HttpGet("comment/{tickedId}")]
-        public async Task<IActionResult> DeleteComment(int tickedId, int commentId)
-        {
-            return Ok(await _ticketService.DeleteComment(tickedId, commentId));
-        }
+
         #endregion
         #region Ticket Full Page and Project/Customer Details 1
         [HttpPut("basic-detail/{id}")]
@@ -130,6 +122,29 @@ namespace WebApi.Controllers.IssueManagement
         }
 
 
+        [HttpGet("comments/{id}")]
+        public async Task<IActionResult> GetComments(int id)
+        {
+            return Ok(await _ticketService.GetComments(id));
+        }
+        [HttpPost("comment/{ticketId}")]
+        public async Task<IActionResult> AddComment(int ticketId, string comment)
+        {
+            var result = await _ticketService.AddComment(ticketId, comment);
+            return Ok(new { ticketId = result });
+        }
+        [HttpPut("comment")]
+        public async Task<IActionResult> UpdateComment(int id, string comment)
+        {
+            var result = await _ticketService.UpdateComment(id, comment);
+            return Ok(new { ticketId = result });
+        }
+
+        [HttpDelete("comment/{tickedId}")]
+        public async Task<IActionResult> DeleteComment(int tickedId, int commentId)
+        {
+            return Ok(await _ticketService.DeleteComment(tickedId, commentId));
+        }
 
 
         #endregion
