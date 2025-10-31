@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Models.AppSettings;
+using Models.Dto.Org;
 using Models.Dto.Ticket;
 using Models.Dto.Tickets;
 using Models.Entities.File;
@@ -29,15 +30,17 @@ namespace Services.IssueManagement
         Task<List<TicketWatchersOutputDto>> GetWatchers(int ticketId);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
+        Task<bool> UpdateDefineData(int ticketId,  List<UpdateSubFromInputDto> input  );
         #endregion
 
 
-        #region Ticket Item Delete
-
+        #region Ticket Item Delete/Update SingleResponsibility
         Task<bool> DeleteWatcher(int ticketId, int watcherId);
         Task<bool> DeleteComment(int ticketId, int commentId);
-
+        Task<bool> ChangeTicketStatus(int id, EnumTicketStatus status);
         #endregion
+
+
     }
     public class TicketService : ITicketService
     {
@@ -454,14 +457,55 @@ namespace Services.IssueManagement
             return _unitOfWork.CommitAsync().ContinueWith(t => t.Result > 0);
         }
 
-        public Task<bool> DeleteComment(int ticketId, int commentId)
+        public async Task<bool> DeleteComment(int ticketId, int commentId)
         {
             var comment = _unitOfWork.Repository<TicketCommentModel, int>()
                 .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.TicketId == ticketId && s.Id == commentId).Result;
             if (comment == null)
                 throw new Exception($"comment not found for Id");
             _unitOfWork.Repository<TicketCommentModel, int>().SoftDeleteAsync(comment);
-            return _unitOfWork.CommitAsync().ContinueWith(t => t.Result > 0);
+            return await _unitOfWork.CommitAsync()> 0;
+        }
+
+        public async Task<bool> ChangeTicketStatus(int ticketId, EnumTicketStatus status)
+        {
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            if (ticket == null)
+                throw new Exception($"Ticket not found for Id");
+            ticket.Status = status;
+            _unitOfWork.Repository<TicketModel, int>().Update(ticket);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
+        public async Task<bool> UpdateDefineData(int ticketId, List<UpdateSubFromInputDto> input)
+        {
+            var fields = await _unitOfWork.Repository<TicketCustomFieldValueModel, int>().FindByConditionAsync(s => s.FkTicketId == ticketId && input.Select(s=> s.Id).Contains(s.Id));
+            
+            foreach (var item in input)
+            {
+                var field = fields.Where(s => s.Id == item.Id && s.TicketTypeCustomFieldId == item.FkCustomField).FirstOrDefault();
+
+                if (field != null)
+                {
+                    field.Value = item.Value;
+                    _unitOfWork.Repository<TicketCustomFieldValueModel, int>().Update(field);
+                }
+                else
+                {
+                     TicketCustomFieldValueModel ticketCustomField = new TicketCustomFieldValueModel
+                    {
+                        Value = item.Value,
+                        RStatus = EnumRStatus.Active,
+                        TicketTypeCustomFieldId = item.FkCustomField,
+                        CreatedBy = 1, // ??
+                        CreatedDate = DateTime.UtcNow,
+                        FkTicketId = ticketId
+                    };
+                    await _unitOfWork.Repository<TicketCustomFieldValueModel, int>().AddAsync(ticketCustomField);
+                }
+
+            }
+            return await _unitOfWork.CommitAsync() > 0;
+
         }
         #endregion
     }

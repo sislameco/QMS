@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,6 +39,12 @@ namespace Models.Dto.Org
     public class SubFromInputDto
     {
         public int Id { get; set; }
+        public string Value { get; set; }
+    }
+    public class UpdateSubFromInputDto
+    {
+        public int Id { get; set; }
+        public int FkCustomField { get; set; }
         public string Value { get; set; }
     }
     public class FieldOutputDto

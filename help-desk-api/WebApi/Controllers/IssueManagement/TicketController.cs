@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.Org;
 using Models.Dto.Ticket;
+using Models.Enum;
 using Services.IssueManagement;
 using WebApi.Helper.Security;
 
@@ -78,6 +80,12 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(await _ticketService.GetDefineFields(id));
         }
 
+        [HttpPut("define-field/{id}")]
+        public async Task<IActionResult> UpdateDefineData(int id, List<UpdateSubFromInputDto> input)
+        {
+            return Ok(await _ticketService.UpdateDefineData(id, input));
+        }
+
         [HttpGet("get-watchers/{id}")]
         public async Task<IActionResult> GetWatchers(int id)
         {
@@ -108,10 +116,16 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(new { ticketId = result });
         }
 
-        [HttpPut("assignee/{id}")]
+        [HttpPut("specification/{id}")]
         public async Task<IActionResult> UpdateSpecification(int id, TicketSpecificationOutputDto input)
         {
             var result = await _ticketService.UpdateSpecification(id, input);
+            return Ok(new { ticketId = result });
+        }
+        [HttpPut("change-status/{id}")]
+        public async Task<IActionResult> ChangeTicketStatus(int id, EnumTicketStatus status)
+        {
+            var result = await _ticketService.ChangeTicketStatus(id, status);
             return Ok(new { ticketId = result });
         }
 
