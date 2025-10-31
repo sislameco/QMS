@@ -7,6 +7,7 @@ namespace Models.Entities.Issue
     public class TicketLinkModel : BaseEntity<int>
     {
         public int FKTicketId { get; set; }
+        public int LinkingTicketId { get; set; }
         public string ExternalKey { get; set; }
         public string Notes { get; set; }
         public int? FkUserId { get; set; }

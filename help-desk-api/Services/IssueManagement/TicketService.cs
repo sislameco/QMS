@@ -31,6 +31,7 @@ namespace Services.IssueManagement
         Task<bool> AddTicketAttachments(int id, List<int> files);
         Task<bool> DeleteAttachment(int id);
         Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId);
+        Task<bool> AddLinking(int id, List<int> tickets);
         Task<List<TicketCommentOutputDto>> GetComments(int ticketId);
         Task<List<TicketFieldOutputDto>> GetDefineFields(int ticketId);
         Task<List<TicketWatchersOutputDto>> GetWatchers(int ticketId);
@@ -443,6 +444,23 @@ namespace Services.IssueManagement
             });
 
             return linkings;
+        }
+        public async Task<bool> AddLinking(int id, List<int> tickets)
+        {
+            foreach (var ticketId in tickets)
+            {
+                TicketLinkModel ticketLink = new TicketLinkModel
+                {
+                    LinkingTicketId = ticketId,
+                    FKTicketId = id,
+                    FkUserId = _userInfo.GetCurrentUserId(),
+                    RStatus = EnumRStatus.Active,
+                    CreatedBy = _userInfo.GetCurrentUserId(),
+                    CreatedDate = DateTime.UtcNow
+                };
+                await _unitOfWork.Repository<TicketLinkModel, int>().AddAsync(ticketLink);
+            }
+            return await _unitOfWork.CommitAsync() > 0;
         }
         public async Task<List<TicketCommentOutputDto>> GetComments(int ticketId)
         {

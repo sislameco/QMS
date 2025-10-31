@@ -72,11 +72,17 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(await _ticketService.GetLinkingItems(id));
         }
 
-        //[HttpDelete("linking-item/{id}")]
-        //public async Task<IActionResult> GetLinkingItems(int id)
-        //{
-        //    return Ok(await _ticketService.GetLinkingItems(id));
-        //}
+        [HttpPost("linking-tickets/{id}")]
+        public async Task<IActionResult> AddLinking(int id, List<int> tickets)
+        {
+            return Ok(await _ticketService.AddLinking(id, tickets));
+        }
+
+        [HttpDelete("linking-ticket/{id}")]
+        public async Task<IActionResult> DeleteLinking(int id)
+        {
+            return Ok(await _ticketService.DeleteAttachment(id));
+        }
 
 
         [HttpGet("get-define-field/{id}")]
