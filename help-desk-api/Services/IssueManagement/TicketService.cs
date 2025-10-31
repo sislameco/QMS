@@ -28,6 +28,7 @@ namespace Services.IssueManagement
         Task<TicketBasicDetailOutputDto> GetBasicDetails(int ticketId);
         Task<TicketSpecificationOutputDto> GetSpecification(int ticketId);
         Task<List<FileDto>> GetAttachments(int ticketId);
+        Task<bool> AddTicketAttachments(int id, List<int> files);
         Task<bool> DeleteAttachment(int id);
         Task<List<TicketLinkingItemOutputDto>> GetLinkingItems(int ticketId);
         Task<List<TicketCommentOutputDto>> GetComments(int ticketId);
@@ -402,6 +403,27 @@ namespace Services.IssueManagement
             });
 
             return attachemnts;
+        }
+        public async Task<bool> AddTicketAttachments(int id, List<int> files)
+        {
+            var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == id) ?? throw new BadRequestException("No Ticket found");
+
+            var tempFiles = await GetAndMoveAttachments(files.ToList(), ticket.TicketNumber);
+
+            foreach (var file in tempFiles)
+            {
+                TicketAttachmentModel attachments = new TicketAttachmentModel
+                {
+                    FileName = file.Name,
+                    FilePath = file.Path,
+                    FileExtension = Path.GetExtension(file.Path),
+                    CreatedBy = _userInfo.GetCurrentUserId(),
+                    CreatedDate = DateTime.UtcNow,
+                    FKTicketId = id
+                };
+                await _unitOfWork.Repository<TicketAttachmentModel, int>().AddAsync(attachments);
+            }
+            return await _unitOfWork.CommitAsync() > 0;
         }
        public async Task<bool> DeleteAttachment(int id)
         {

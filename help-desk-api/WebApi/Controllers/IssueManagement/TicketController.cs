@@ -38,14 +38,6 @@ namespace WebApi.Controllers.IssueManagement
             var result = await _ticketService.CreateTicket(input);
             return Ok(new { ticketId = result });
         }
-
-
-
-
-
-
-        // view sections apis
-
         #region Ticket Full Page and Project/Customer Details 1
         [HttpGet("basic-detail/{id}")]
         public async Task<IActionResult> TicketBasicDetails(int id)
@@ -57,12 +49,17 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.GetSpecification(id));
         }
+
         [HttpGet("attachment/{id}")]
         public async Task<IActionResult> GetAttachments(int id)
         {
             return Ok(await _ticketService.GetAttachments(id));
         }
-
+        [HttpPost("attachment/{id}")]
+        public async Task<IActionResult> AddTicketAttachments(int id, List<int> files)
+        {
+            return Ok(await _ticketService.AddTicketAttachments(id, files));
+        }
         [HttpDelete("attachment")]
         public async Task<IActionResult> DeleteAttachment(int id)
         {
