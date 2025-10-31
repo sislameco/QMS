@@ -47,7 +47,7 @@ namespace Services.IssueManagement
         Task<bool> DeleteWatcher(int ticketId, int watcherId);
         Task<bool> DeleteComment(int ticketId, int commentId);
         Task<bool> UpdateComment(int id, string comment);
-        Task<bool>  AddComment(int ticketId, string comment);
+        Task<bool>  AddComment(int ticketId, string comment, List<int> taggedUsers);
         Task<bool> ChangeTicketStatus(int id, EnumTicketStatus status);
         #endregion
 
@@ -619,7 +619,7 @@ namespace Services.IssueManagement
             await _unitOfWork.Repository<TicketWatchListModel, int>().SoftDeleteAsync(watcher);
             return await _unitOfWork.CommitAsync() > 0;
         }
-        public async Task<bool>  AddComment(int ticketId, string comment)
+        public async Task<bool>  AddComment(int ticketId, string comment, List<int> taggedUsers)
         {
             TicketCommentModel ticketComment = new TicketCommentModel
             {
@@ -628,6 +628,7 @@ namespace Services.IssueManagement
                 CreatedBy = _userInfo.GetCurrentUserId(),
                 CreatedDate = DateTime.UtcNow,
                 TicketId = ticketId,
+                MentionUserIds = taggedUsers.ToArray()
             };
             await _unitOfWork.Repository<TicketCommentModel, int>().AddAsync(ticketComment);
             return await _unitOfWork.CommitAsync() > 0;

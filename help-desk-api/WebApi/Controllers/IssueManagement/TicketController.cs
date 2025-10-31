@@ -146,9 +146,9 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(await _ticketService.GetComments(id));
         }
         [HttpPost("comment/{ticketId}")]
-        public async Task<IActionResult> AddComment(int ticketId, string comment)
+        public async Task<IActionResult> AddComment(int ticketId, string comment, List<int> taggedUsers)
         {
-            var result = await _ticketService.AddComment(ticketId, comment);
+            var result = await _ticketService.AddComment(ticketId, comment, taggedUsers);
             return Ok(new { ticketId = result });
         }
         [HttpPut("comment")]
