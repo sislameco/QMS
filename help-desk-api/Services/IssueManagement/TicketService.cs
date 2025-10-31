@@ -32,6 +32,8 @@ namespace Services.IssueManagement
         Task<List<TicketCommentOutputDto>> GetComments(int ticketId);
         Task<List<TicketFieldOutputDto>> GetDefineFields(int ticketId);
         Task<List<TicketWatchersOutputDto>> GetWatchers(int ticketId);
+        Task<bool> AddWatcher(int ticketId,int userId);
+        Task<bool>  DeleteWatcher(int id);
         Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input);
         Task<bool> UpdateSpecification(int ticketId, TicketSpecificationOutputDto input);
         Task<bool> UpdateDefineData(int ticketId,  List<UpdateSubFromInputDto> input  );
@@ -420,6 +422,28 @@ namespace Services.IssueManagement
                 AddedOn = DateTime.UtcNow // 
             });
             return watchers;
+        }
+        public async Task<bool> AddWatcher(int ticketId, int userId)
+        {
+            TicketWatchListModel watchListModel = new TicketWatchListModel
+            {
+                FKUserId = userId,
+                RStatus = EnumRStatus.Active,
+                CreatedBy = _userInfo.GetCurrentUserId(),
+                CreatedDate = DateTime.UtcNow,
+                FKTicketId = ticketId
+            };
+            await _unitOfWork.Repository<TicketWatchListModel, int>().AddAsync(watchListModel);
+            return await _unitOfWork.CommitAsync() > 0;
+        }
+        public async Task<bool> DeleteWatcher(int id)
+        {
+            var watcher = await _unitOfWork.Repository<TicketWatchListModel, int>()
+                .FirstOrDefaultAsync(s => s.RStatus == EnumRStatus.Active && s.Id == id);
+            if (watcher == null)
+                throw new Exception($"Watcher not found for Id");
+            await _unitOfWork.Repository<TicketWatchListModel, int>().SoftDeleteAsync(watcher);
+            return await _unitOfWork.CommitAsync() > 0;
         }
         public async Task<bool> UpdateBasicDetails(int ticketId, TicketBasicDetailInputDto input)
         {

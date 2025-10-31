@@ -88,6 +88,19 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(await _ticketService.GetWatchers(id));
         }
 
+
+        [HttpPost("watcher/{ticketId}")]
+        public async Task<IActionResult> AddWatcher(int id,int userId)
+        {
+            return Ok(await _ticketService.AddWatcher(id, userId));
+        }
+
+        [HttpDelete("watcher/{Id}")]
+        public async Task<IActionResult> DeleteWatcher(int id)
+        {
+            return Ok(await _ticketService.DeleteWatcher(id));
+        }
+
         #endregion
 
 
