@@ -540,10 +540,6 @@ namespace Services.IssueManagement
             _unitOfWork.Repository<TicketModel, int>().Update(ticket);
             return await _unitOfWork.CommitAsync() > 0;
         }
-
-
-
-
         #region Ticket Item Delete
         public async Task<bool> DeleteWatcher(int ticketId, int watcherId)
         {
