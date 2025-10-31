@@ -110,7 +110,6 @@ namespace WebApi.Controllers.IssueManagement
 
         #endregion
 
-
         #region Ticket Full Page and Project/Customer Details 1
         [HttpPut("basic-detail/{id}")]
         public async Task<IActionResult> UpdateBasicDetails(int id, TicketBasicDetailInputDto input)
@@ -163,5 +162,7 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(result);
         }
         #endregion
+
+
     }
 }

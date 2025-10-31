@@ -510,8 +510,33 @@ namespace Services.IssueManagement
             ticket.ResolutionId = input.ResolutionId;
             ticket.AssignedUserId = input.AssigneeId;
 
-            //ticket.DepartmentMaps = new List<TicketDepartmentMapModel>();
+            var existingDepartments = await _unitOfWork.Repository<TicketDepartmentMapModel, int>()
+                .FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FKTicketId == ticketId);
+            // Remove departments that are no longer associated
+            foreach (var deptMap in existingDepartments)
+            {
+                if (!input.DepartmentIds.Contains(deptMap.FKDepartmentId))
+                {
+                    await _unitOfWork.Repository<TicketDepartmentMapModel, int>().SoftDeleteAsync(deptMap);
+                }
 
+            }
+            // Add new departments
+            foreach (var deptId in input.DepartmentIds)
+            {
+                if (!existingDepartments.Any(s => s.FKDepartmentId == deptId))
+                {
+                    TicketDepartmentMapModel departmentMap = new TicketDepartmentMapModel
+                    {
+                        FKDepartmentId = deptId,
+                        RStatus = EnumRStatus.Active,
+                        CreatedBy = _userInfo.GetCurrentUserId(),
+                        CreatedDate = DateTime.UtcNow,
+                        FKTicketId = ticket.Id
+                    };
+                    await _unitOfWork.Repository<TicketDepartmentMapModel, int>().AddAsync(departmentMap);
+                }
+            }
             _unitOfWork.Repository<TicketModel, int>().Update(ticket);
             return await _unitOfWork.CommitAsync() > 0;
         }
