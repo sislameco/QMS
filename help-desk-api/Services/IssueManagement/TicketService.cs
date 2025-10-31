@@ -411,6 +411,11 @@ namespace Services.IssueManagement
         public async Task<List<TicketFieldOutputDto>> GetDefineFields(int ticketId)
         {
             var ticket = await _unitOfWork.Repository<TicketModel, int>().FirstOrDefaultAsync(s => s.Id == ticketId);
+            if(ticket == null)
+                throw new Exception($"Ticket not found!");
+
+            var defineTypes = await _unitOfWork.Repository<CustomFieldModel, int>().FindByConditionAsync(s => s.RStatus == EnumRStatus.Active && s.FkTicketTypeId == ticket.FKTicketTypeId);
+
             var fields = _unitOfWork.Repository<TicketCustomFieldValueModel, int>().FindByConditionSelected(s => s.FkTicketId == ticketId, x => new TicketFieldOutputDto
             {
                 Id = x.Id,
@@ -418,6 +423,37 @@ namespace Services.IssueManagement
                 FkCustomeFieldId = x.TicketTypeCustomFieldId,
                 Value = x.Value
             });
+
+            foreach (var field in fields)
+            {
+                var defineField = defineTypes.Where(s => s.Id == field.FkCustomeFieldId).FirstOrDefault();
+                if (defineField != null)
+                {
+                    field.DataType = defineField.DataType;
+                    field.DisplayName = defineField.DisplayName;
+                    field.DDLValue = defineField.DDLValue;
+                    field.IsMultiSelect = defineField.IsMultiSelect;
+                    field.IsRequired = defineField.IsRequired;
+                }
+            }
+            // new fields should be added with null value
+            var newDefineTypes = defineTypes.Where(s => s.RStatus == EnumRStatus.Active && !fields.Select(x => x.FkCustomeFieldId).Contains(s.Id)).ToList();
+
+            foreach (var defineType in newDefineTypes)
+            {
+                fields.Add(new TicketFieldOutputDto
+                {
+                    Id = 0,
+                    FkTicketTypeId = ticket.FKTicketTypeId,
+                    FkCustomeFieldId = defineType.Id,
+                    Value = null,
+                    DataType = defineType.DataType,
+                    DisplayName = defineType.DisplayName,
+                    DDLValue = defineType.DDLValue,
+                    IsMultiSelect = defineType.IsMultiSelect,
+                    IsRequired = defineType.IsRequired
+                });
+            }
             return fields;
 
         }
@@ -479,11 +515,6 @@ namespace Services.IssueManagement
             _unitOfWork.Repository<TicketModel, int>().Update(ticket);
             return await _unitOfWork.CommitAsync() > 0;
         }
-
-
-
-
-
 
 
 
@@ -567,13 +598,9 @@ namespace Services.IssueManagement
                     };
                     await _unitOfWork.Repository<TicketCustomFieldValueModel, int>().AddAsync(ticketCustomField);
                 }
-
             }
             return await _unitOfWork.CommitAsync() > 0;
-
         }
-
-
         #endregion
     }
 }

@@ -145,6 +145,11 @@ namespace Models.Dto.Ticket
         public int FkTicketTypeId { get; set; }
         public int FkCustomeFieldId { get; set; }
         public string Value { get; set; }
+        public string DisplayName { get; set; }
+        public EnumDataType DataType { get; set; }
+        public string[] DDLValue { get; set; }
+        public bool IsRequired { get; set; }
+        public bool IsMultiSelect { get; set; }
     }
     public class TicketWatchersOutputDto
     {
