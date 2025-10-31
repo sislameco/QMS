@@ -137,6 +137,7 @@ namespace Models.Dto.Ticket
         public string CommentText { get; set; }
         public DateTime CommentedOn { get; set; }
         public string CommentedBy { get; set; }
+        public bool IsAuthorized { get; set; }
     }
     public class TicketFieldOutputDto
     {

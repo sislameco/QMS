@@ -402,7 +402,8 @@ namespace Services.IssueManagement
                 CommentText = x.CommentText,
                 CommentedBy = "",// 
                 CommentedOn = DateTime.UtcNow, // 
-                FkUserId = 1 ///
+                FkUserId = 1,
+                IsAuthorized = true // todo: check authorization
             });
 
             return comments;
