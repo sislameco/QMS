@@ -79,5 +79,13 @@ namespace WebApi.Controllers.IssueManagement
             return Ok(subforms);
         }
 
+        [AllowAnonymous]
+        [HttpGet("tickets/{fkCompanyId}")]
+        public IActionResult GetTickets(int fkCompanyId)
+        {
+            var tickets = _ticketReferenceService.GetTickets(fkCompanyId);
+            return Ok(tickets);
+        }
+
     }
 }
