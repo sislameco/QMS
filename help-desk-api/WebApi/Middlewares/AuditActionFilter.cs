@@ -23,7 +23,7 @@ namespace WebApi.Middlewares
             var action = context.ActionDescriptor.DisplayName;
 
             // ✅ You can now access the actual DTO object
-            if (context.ActionArguments.TryGetValue("input", out var inputDto))
+            if (context.ActionArguments.TryGetValue("input", out var inputDto) && action == "UpdateBasicDetails")
             {
                 var dtoJson = JsonSerializer.Serialize(inputDto);
 

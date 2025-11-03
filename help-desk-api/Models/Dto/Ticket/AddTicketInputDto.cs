@@ -123,6 +123,7 @@ namespace Models.Dto.Ticket
     public class TicketLinkingItemOutputDto
     {
         public int Id { get; set; }
+        public int LinkingTicketId { get; set; }
         public string TicketNumber { get; set; }
         public string Subject { get; set; }
         public string URL { get; set; }
