@@ -12,7 +12,7 @@ namespace Services.IssueManagement
 {
     public interface ITicketReferenceService
     {
-        List<DropdownOutputDto<int, string>> GetTickets(int fkCompanyId);
+        Task<List<DropdownOutputDto<int, string>>> GetTickets(int companyId);
         List<DropdownOutputDto<int, string>> GetDepartments(int fkCompanyId);
         List<TicketTypeDDL> GetTicketTypes(int fkCompanyId);
         List<DropdownOutputDto<int, string>> GetRootCauses(int fkCompanyId);
@@ -31,16 +31,19 @@ namespace Services.IssueManagement
             _unitOfWork = unitOfWork;
         }
 
-        public List<DropdownOutputDto<int, string>> GetTickets(int fkCompanyId)
+        public async Task<List<DropdownOutputDto<int, string>>> GetTickets(int companyId)
         {
-            var data = _unitOfWork.Repository<TicketModel, int>().FindByConditionSelected(x => x.FKCompanyId == fkCompanyId && x.RStatus == EnumRStatus.Active, x => new { x.Id, x.TicketNumber });
+            var data = _unitOfWork.Repository<TicketModel, int>()
+                .FindByConditionSelected(x => 
+                                            x.FKCompanyId == companyId 
+                                            && x.RStatus == EnumRStatus.Active, x => new 
+                                            { x.Id, x.TicketNumber });
 
             return data
                 .Select(t => new DropdownOutputDto<int, string>
                 {
                     Id = t.Id,
                     Name = t.TicketNumber,
-                    // Map other properties as needed
                 })
                 .ToList();
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Dto.GlobalDto;
 using Models.Dto.Org;
 using Models.Dto.Ticket;
 using Models.Enum;
@@ -15,9 +16,11 @@ namespace WebApi.Controllers.IssueManagement
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
-        public TicketController(ITicketService ticketService)
+        private readonly ITicketReferenceService _ticketReferenceService;
+        public TicketController(ITicketService ticketService, ITicketReferenceService ticketReferenceService)
         {
             _ticketService = ticketService;
+            _ticketReferenceService = ticketReferenceService;
         }
         [HttpGet("list")]
         public async Task<IActionResult> GetTickets(int companyId, [FromQuery] TicketFilterInputDto input)
@@ -70,6 +73,12 @@ namespace WebApi.Controllers.IssueManagement
         public async Task<IActionResult> GetLinkingItems(int id)
         {
             return Ok(await _ticketService.GetLinkingItems(id));
+        }
+        // for linking
+        [HttpGet("get-tickets/{companyId}")]
+        public async Task<IActionResult> GetTickets(int companyId)
+        {
+            return Ok(await _ticketReferenceService.GetTickets(companyId));
         }
 
         [HttpPost("linking-tickets/{id}")]
