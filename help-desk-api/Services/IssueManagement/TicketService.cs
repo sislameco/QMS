@@ -438,6 +438,7 @@ namespace Services.IssueManagement
             var linkings = _unitOfWork.Repository<TicketLinkModel, int>().FindByConditionSelected(s => s.FKTicketId == ticketId, x => new TicketLinkingItemOutputDto
             {
                 Id = x.Id,
+                LinkingTicketId = x.LinkingTicketId,
                 TicketNumber = "TEST-000",
                 Subject = "Live User Request",
 
