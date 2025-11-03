@@ -1,3 +1,4 @@
+using Models.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -21,6 +22,7 @@ namespace Models.Dto.Auth
     {
         [Required]
         public int UserId { get; set; }
+        public EnumIntregationType AppId { get; set; }
         [JsonIgnore]
         public Tuple<ClientInfo, IPAddress> Browser { get; set; }
     }

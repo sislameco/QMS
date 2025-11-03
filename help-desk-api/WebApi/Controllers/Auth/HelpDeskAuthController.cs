@@ -39,7 +39,7 @@ namespace WebApi.Controllers.Auth
         [Route("embedded-login")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(HelpDeskLoginResponseDto), 200)]
-        public async Task<IActionResult> EmbadedLogin(HelpDeskIntregationLoginDto input, EnumIntregationType app)
+        public async Task<IActionResult> EmbadedLogin(HelpDeskIntregationLoginDto input)
         {
             var response = await _authService.LoginAsync(input, HttpContext, Request);
             return Ok(response);
