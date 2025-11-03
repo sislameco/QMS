@@ -628,7 +628,7 @@ namespace Services.IssueManagement
                 CreatedBy = _userInfo.GetCurrentUserId(),
                 CreatedDate = DateTime.UtcNow,
                 TicketId = ticketId,
-                MentionUserIds = taggedUsers.ToArray()
+               // MentionUserIds = taggedUsers.Count() == 0 ? taggedUsers.ToArray() : []
             };
             await _unitOfWork.Repository<TicketCommentModel, int>().AddAsync(ticketComment);
             return await _unitOfWork.CommitAsync() > 0;
