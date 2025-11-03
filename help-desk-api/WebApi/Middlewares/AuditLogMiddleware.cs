@@ -23,6 +23,11 @@ namespace WebApi.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
+
+
+            var httpVerb = context.Request.Method;
+            var path = context.Request.Path.ToString();
+
             var request = context.Request;
             request.EnableBuffering();
 

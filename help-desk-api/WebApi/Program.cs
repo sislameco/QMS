@@ -48,6 +48,7 @@ var ddd = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(new KebabCaseParameterTransformer()));
+    options.Filters.Add<AuditActionFilter>();
 }).AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
@@ -139,7 +140,17 @@ var app = builder.Build();
 
 // Register Middlewares
 app.UseMiddleware<ErrorHandlingMiddleware>();
+// 2️⃣ routing & auth
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+// 3️⃣ your audit middleware – runs after routing, before controllers
 app.UseMiddleware<AuditLogMiddleware>();
+
+// 4️⃣ map controllers directly (no UseEndpoints)
+app.MapControllers();
+
 // Route Conf
 app.UsePathBase("/api");
 app.Use((context, next) =>
@@ -170,8 +181,6 @@ var cacheService = app.Services.GetRequiredService<ICacheService>();
 AuthCacheUtil.RedisCacheInitialize(cacheService);
 
 app.UseAuthorization();
-
-app.MapControllers();
 
 // ✅ Enable static file serving
 app.UseStaticFiles();
