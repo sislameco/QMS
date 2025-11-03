@@ -650,6 +650,7 @@ namespace Services.IssueManagement
             if(comment == null)
                throw new BadRequestException($"comment not found for Id");
 
+            updateComment.CommentText = comment;
             _unitOfWork.Repository<TicketCommentModel, int>().Update(updateComment);
             return await _unitOfWork.CommitAsync() > 0;
         }
