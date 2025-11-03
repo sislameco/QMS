@@ -11,8 +11,6 @@ namespace WebApi.Controllers.IssueManagement
 {
     [ApiController]
     [Route("ticket")]
-    //[CustomAuthorization]
-    [AllowAnonymous]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
@@ -47,6 +45,13 @@ namespace WebApi.Controllers.IssueManagement
         {
             return Ok(await _ticketService.GetBasicDetails(id));
         }
+        [HttpPut("basic-detail/{id}")]
+        public async Task<IActionResult> UpdateBasicDetails(int id, TicketBasicDetailInputDto input)
+        {
+            var result = await _ticketService.UpdateBasicDetails(id, input);
+            return Ok(new { ticketId = result });
+        }
+
         [HttpGet("specification/{id}")]
         public async Task<IActionResult> TicketSpecification(int id)
         {
@@ -128,19 +133,13 @@ namespace WebApi.Controllers.IssueManagement
         #endregion
 
         #region Ticket Full Page and Project/Customer Details 1
-        [HttpPut("basic-detail/{id}")]
-        public async Task<IActionResult> UpdateBasicDetails(int id, TicketBasicDetailInputDto input)
-        {
-            var result = await _ticketService.UpdateBasicDetails(id, input);
-            return Ok(new { ticketId = result });
-        }
-
         [HttpPut("specification/{id}")]
         public async Task<IActionResult> UpdateSpecification(int id, TicketSpecificationOutputDto input)
         {
             var result = await _ticketService.UpdateSpecification(id, input);
             return Ok(new { ticketId = result });
         }
+
         [HttpPut("change-status/{id}")]
         public async Task<IActionResult> ChangeTicketStatus(int id, EnumTicketStatus status)
         {

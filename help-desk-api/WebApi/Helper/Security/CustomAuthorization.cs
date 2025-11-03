@@ -45,7 +45,6 @@ namespace WebApi.Helper.Security
             //Get Pemitted menus for requested user using his userId from Redis cache
             //We normally store users permitted menus in redis when a user logged in
            
-            /// todo
             List<UserAccessDto> GetMenuActions = AuthCacheUtil.GetPermittedMenu($"{userId}");
             
             //Checking if user has this particular endpoint in his permitted menu list
